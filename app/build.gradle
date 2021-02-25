@@ -8,6 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.authorization"
+        android.defaultConfig.vectorDrawables.useSupportLibrary = true
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1

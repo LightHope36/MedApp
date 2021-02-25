@@ -48,7 +48,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/next_btn1"
+        android:id="@+id/next_btn3"
         android:layout_width="140dp"
         android:layout_height="45dp"
         android:layout_marginEnd="30dp"
@@ -56,14 +56,13 @@
         android:background="@drawable/btn1"
         android:drawableEnd="@drawable/ic_next"
         android:fontFamily="@font/manrope_regular"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:text="@string/Далее"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
-        app:backgroundTint="@color/btnStartColor"
-        app:backgroundTintMode="src_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
