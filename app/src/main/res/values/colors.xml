@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="btnStartColor">#2196F3</color>
+    <color name="btnEndColor">#3391DD</color>
+    <color name="bg_btn2">#EFEFEF</color>
+    <color name="back_btn">#FFFDFD</color>
+    <color name="thin_text">#434343</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
