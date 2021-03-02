@@ -118,7 +118,7 @@
             app:srcCompat="@drawable/ic_gos_logo" />
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/radioButton1"
             android:layout_width="107dp"
             android:layout_height="38dp"
             android:layout_marginStart="15dp"
