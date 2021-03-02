@@ -117,18 +117,36 @@
             app:layout_constraintTop_toTopOf="@+id/view"
             app:srcCompat="@drawable/ic_gos_logo" />
 
-        <RadioButton
-            android:id="@+id/radioButton1"
-            android:layout_width="107dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
-            android:fontFamily="@font/manrope_regular"
-            android:text="@string/Телефон"
-            app:layout_constraintBottom_toBottomOf="@+id/view2"
-            app:layout_constraintEnd_toEndOf="@+id/view2"
-            app:layout_constraintStart_toStartOf="@+id/view2" />
+        <RadioGroup
+            android:layout_width="260dp"
+            android:layout_height="41dp"
+            android:layout_marginBottom="117dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/view"
+            app:layout_constraintStart_toStartOf="@+id/view2">
+
+            <RadioButton
+                android:id="@+id/radioButton1"
+                android:layout_width="112dp"
+                android:layout_height="41dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/manrope_regular"
+                android:text="@string/Телефон" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="110dp"
+                android:layout_height="39dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/manrope_regular"
+                android:text="@string/ГосУслуги"
+                android:textSize="15sp"
+                tools:layout_marginStart="30dp" />
+        </RadioGroup>
 
         <Button
             android:id="@+id/next_btn1"
@@ -146,18 +164,6 @@
             app:backgroundTintMode="src_in"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
-        <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="110dp"
-            android:layout_height="39dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginBottom="15dp"
-            android:fontFamily="@font/manrope_regular"
-            android:text="@string/ГосУслуги"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/view"
-            app:layout_constraintEnd_toEndOf="@+id/view" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
