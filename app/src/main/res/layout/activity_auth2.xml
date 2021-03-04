@@ -56,38 +56,43 @@
             android:layout_height="140dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="123dp"
-            android:background="@drawable/btn2"
+            android:background="@drawable/gray_view"
+            android:elevation="2dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:cornerRadius="30dp"
-            tools:ignore="MissingConstraints" />
+            tools:targetApi="lollipop" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:elevation="6dp"
             app:layout_constraintEnd_toEndOf="@+id/view2"
             app:layout_constraintStart_toStartOf="@+id/view2"
             app:layout_constraintTop_toTopOf="@+id/view2"
-            app:srcCompat="@drawable/ic_chat_1" />
+            app:srcCompat="@drawable/ic_chat_1"
+            tools:targetApi="lollipop" />
 
 
         <View
             android:id="@+id/view"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:layout_marginStart="188dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="124dp"
-            android:background="@drawable/btn2"
+            android:background="@drawable/gray_view"
+            android:elevation="2dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view2"
             app:layout_constraintTop_toTopOf="parent"
             tools:cornerRadius="30dp"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            tools:targetApi="lollipop" />
 
         <Button
             android:id="@+id/back_btn1"
@@ -105,13 +110,15 @@
             app:backgroundTint="@color/back_btn"
             app:backgroundTintMode="src_over"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:targetApi="lollipop" />
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:elevation="6dp"
             app:layout_constraintEnd_toEndOf="@+id/view"
             app:layout_constraintStart_toStartOf="@+id/view"
             app:layout_constraintTop_toTopOf="@+id/view"
@@ -122,9 +129,11 @@
             android:layout_height="41dp"
             android:layout_marginBottom="117dp"
             android:orientation="horizontal"
+            android:elevation="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/view"
-            app:layout_constraintStart_toStartOf="@+id/view2">
+            app:layout_constraintStart_toStartOf="@+id/view2"
+            tools:targetApi="lollipop">
 
             <RadioButton
                 android:id="@+id/radioButton1"
@@ -133,19 +142,22 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="15dp"
+                android:checked="true"
+                android:buttonTint="@color/btnEndColor"
                 android:fontFamily="@font/manrope_regular"
-                android:text="@string/Телефон" />
+                android:text="@string/Телефон"
+                tools:targetApi="lollipop" />
 
             <RadioButton
                 android:id="@+id/radioButton2"
-                android:layout_width="110dp"
+                android:layout_width="104dp"
                 android:layout_height="39dp"
-                android:layout_marginEnd="18dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginEnd="50dp"
                 android:fontFamily="@font/manrope_regular"
                 android:text="@string/ГосУслуги"
-                android:textSize="15sp"
-                tools:layout_marginStart="30dp" />
+                android:buttonTint="@color/btnEndColor"
+                android:layout_marginStart="30dp"
+                tools:targetApi="lollipop" />
         </RadioGroup>
 
         <Button

@@ -85,26 +85,42 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="20dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="142dp"
-            android:text="+7"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <EditText
-            android:id="@+id/editTextPhone"
+            android:id="@+id/phone_input"
             android:layout_width="228dp"
             android:layout_height="39dp"
             android:layout_marginStart="102dp"
-            android:layout_marginTop="135dp"
+            android:layout_marginTop="14dp"
             android:ems="10"
+            android:background="@drawable/gray_view"
             android:inputType="phone"
+            android:singleLine="false"
+            android:textSize="18sp"
+            android:fontFamily="@font/manrope_light"
+            android:paddingStart="18dp"
+            android:elevation="2dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:targetApi="lollipop" />
+
+        <EditText
+            android:id="@+id/region_input"
+            android:layout_width="57dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/gray_view"
+            android:elevation="2dp"
+            android:ems="10"
+            android:fontFamily="@font/manrope_light"
+            android:inputType="phone"
+            android:singleLine="false"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:targetApi="lollipop" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

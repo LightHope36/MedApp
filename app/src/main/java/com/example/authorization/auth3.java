@@ -2,17 +2,22 @@ package com.example.authorization;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
-public class auth3 extends AppCompatActivity {
+import com.google.android.material.textfield.TextInputLayout;
 
+public class auth3 extends AppCompatActivity {
 
     private Button next2;
     private Button back2;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -22,6 +27,7 @@ public class auth3 extends AppCompatActivity {
 
         Button next2= findViewById(R.id.next_btn2);
         Button back2 = findViewById(R.id.back_btn2);
+
 
         next2.setOnClickListener(new View.OnClickListener() {
             @Override
