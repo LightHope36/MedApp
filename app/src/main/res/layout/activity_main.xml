@@ -8,17 +8,16 @@
     tools:ignore="ExtraText">
     tools:context=".MainActivity">
 
-
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="71dp"
+        android:fontFamily="@font/manrope_medium"
         android:text="@string/app_name"
         android:textColor="#000000"
         android:textSize="30sp"
-        android:fontFamily="@font/manrope_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,10 +27,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="144dp"
+        android:fontFamily="@font/manrope_regular"
         android:text="@string/Приветсвие_описание"
         android:textColor="#000000"
         android:textSize="16sp"
-        android:fontFamily="@font/manrope_regular"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,10 +40,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="115dp"
+        android:fontFamily="@font/manrope_light"
         android:text="@string/Обработка_ПД"
         android:textColor="#000000"
         android:textSize="12sp"
-        android:fontFamily="@font/manrope_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -65,6 +64,5 @@
         app:backgroundTintMode="src_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
