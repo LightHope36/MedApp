@@ -93,12 +93,13 @@
             android:layout_marginTop="14dp"
             android:ems="10"
             android:background="@drawable/gray_view"
-            android:inputType="phone"
+            android:inputType="number"
             android:singleLine="false"
             android:textSize="18sp"
             android:fontFamily="@font/manrope_light"
             android:paddingStart="18dp"
             android:elevation="2dp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             tools:targetApi="lollipop" />
@@ -117,6 +118,7 @@
             android:singleLine="false"
             android:textAlignment="center"
             android:textSize="18sp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             tools:targetApi="lollipop" />

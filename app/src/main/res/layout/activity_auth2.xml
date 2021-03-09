@@ -147,6 +147,7 @@
                 android:paddingTop="65dp"
                 android:fontFamily="@font/manrope_regular"
                 android:text="@string/Телефон"
+                android:textColor="@color/black"
                 tools:targetApi="lollipop" />
 
             <RadioButton
@@ -160,7 +161,10 @@
                 android:drawablePadding="5dp"
                 android:paddingTop="65dp"
                 android:fontFamily="@font/manrope_regular"
+                android:textColor="@color/black"
                 android:text="@string/ГосУслуги"
+
+
                 tools:targetApi="lollipop" />
         </RadioGroup>
 
