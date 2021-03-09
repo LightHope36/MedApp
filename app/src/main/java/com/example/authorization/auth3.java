@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -16,6 +19,8 @@ public class auth3 extends AppCompatActivity {
 
     private Button next2;
     private Button back2;
+    private EditText reg;
+    private EditText phone;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -27,15 +32,29 @@ public class auth3 extends AppCompatActivity {
 
         Button next2= findViewById(R.id.next_btn2);
         Button back2 = findViewById(R.id.back_btn2);
+        EditText reg = findViewById(R.id.region_input);
+        EditText phone = findViewById(R.id.phone_input);
 
 
         next2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), auth4.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                overridePendingTransition(0,0);
+                if (reg.getText().toString().matches("^[+7]&") && phone.getText().toString().matches("^[0-9]{10}&")) {
+                    Intent intent = new Intent(getApplicationContext(), auth4.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
+                else{
+                    if(!reg.getText().toString().matches("^[+]+[0-9]{1,3}&")) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Неправильный номер региона", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                    if(!phone.getText().toString().matches("^[0-9]{10}&")){
+                        Toast toast = Toast.makeText(getApplicationContext(), "Неправильный номер телефона", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                }
             }
         });
         back2.setOnClickListener(new View.OnClickListener() {
