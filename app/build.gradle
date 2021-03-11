@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
+
 }
+
 
 android {
     compileSdkVersion 30
@@ -8,6 +11,7 @@ android {
 
     defaultConfig {
         android.defaultConfig.vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
         applicationId "com.example.authorization"
         minSdkVersion 19
         targetSdkVersion 30
@@ -31,10 +35,33 @@ android {
 
 dependencies {
 
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation 'com.android.support:appcompat-v7:30.0.2'
+
+
+    //Add Library
+    implementation 'com.android.support:design:30.0.2'
+
+
+    // Single target that includes all FirebaseUI libraries above
+    implementation 'com.firebaseui:firebase-ui:1.2.0'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation platform('com.google.firebase:firebase-bom:26.6.0')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.firebase:firebase-analytics'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+
+
 }
+
+

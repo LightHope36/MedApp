@@ -39,22 +39,11 @@ public class auth3 extends AppCompatActivity {
         next2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (reg.getText().toString().matches("^[+7]&") && phone.getText().toString().matches("^[0-9]{10}&")) {
-                    Intent intent = new Intent(getApplicationContext(), auth4.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                }
-                else{
-                    if(!reg.getText().toString().matches("^[+]+[0-9]{1,3}&")) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Неправильный номер региона", Toast.LENGTH_LONG);
-                        toast.show();
-                    }
-                    if(!phone.getText().toString().matches("^[0-9]{10}&")){
-                        Toast toast = Toast.makeText(getApplicationContext(), "Неправильный номер телефона", Toast.LENGTH_LONG);
-                        toast.show();
-                    }
-                }
+                Intent intent = new Intent(getApplicationContext(), auth4.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+
             }
         });
         back2.setOnClickListener(new View.OnClickListener() {
