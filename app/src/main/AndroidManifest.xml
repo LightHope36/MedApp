@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.authorization">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Authorization">
-        <activity android:name=".Chat"></activity>
+        <activity android:name=".ChatTest"></activity>
+        <activity android:name=".Chat" />
         <activity android:name=".auth4" />
         <activity android:name=".auth3" />
         <activity android:name=".auth2" />
