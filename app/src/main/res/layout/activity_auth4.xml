@@ -86,25 +86,49 @@
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_width="223dp"
-            android:layout_height="18dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="182dp"
-            android:text="@string/Время_на_подтверждение"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="135dp"
-            android:ems="10"
-            android:inputType="number"
-            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/manrope_regular"
+            android:text="@string/Время_на_подтверждение"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
+
+        <EditText
+            android:id="@+id/editTextNumber"
+            android:layout_width="250dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/gray_view"
+            android:elevation="2dp"
+            android:ems="10"
+            android:fontFamily="@font/manrope_light"
+            android:inputType="number"
+            android:paddingStart="18dp"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:targetApi="lollipop" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/gray_view"
+            android:drawableTop="@drawable/ic_open_messages"
+            android:insetTop="3dp"
+            android:insetBottom="3dp"
+            app:backgroundTint="@color/gray_background"
+            app:layout_constraintStart_toEndOf="@+id/editTextNumber"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:ignore="MissingConstraints" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
