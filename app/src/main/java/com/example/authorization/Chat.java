@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,18 +31,34 @@ import java.util.List;
 public class Chat extends AppCompatActivity {
 
     private ListView listView;
+    private ImageView back;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+
+        back = findViewById(R.id.back_im);
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), auth3.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
 
         listView = findViewById(R.id.list_of_messages);
         List<Message> messages = new ArrayList<>();
 
 
-        for (int i=1; i<4; i++){
+        for (int i=1; i<10; i++){
             messages.add(new Message( "text" + i, "user"+i));
         }
 
