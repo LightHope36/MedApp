@@ -131,7 +131,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/manrope_regular"
-            android:text="Special for SLAAAAAAVA"
+            android:text="Special for SLAAAVA"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/region_input" />
 
