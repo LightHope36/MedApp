@@ -1,7 +1,8 @@
 <resources>
 
     <!-- Основные названия в приложении. -->
-    <string name="app_name">Добро пожаловать в МедКлик!</string>
+    <string name="app_name">МедКлик</string>
+    <string name="app_discription">Добро пожаловать в МедКлик!</string>
     <string name="Далее">Далее</string>
     <string name="Назад">Назад</string>
 
