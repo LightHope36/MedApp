@@ -15,7 +15,7 @@
         android:layout_marginStart="51dp"
         android:layout_marginTop="213dp"
         android:fontFamily="@font/manrope_medium"
-        android:text="@string/app_discription"
+        android:text="@string/app_discript"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
