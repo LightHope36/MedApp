@@ -7,6 +7,7 @@
     tools:context=".Chat">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:background="@drawable/top"
@@ -23,7 +24,7 @@
             android:layout_marginTop="14dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/back" />
+            app:srcCompat="@drawable/ic_back2" />
 
         <ImageView
             android:id="@+id/imageView4"
@@ -33,7 +34,7 @@
             android:layout_marginTop="14dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/profile_1" />
+            app:srcCompat="@drawable/ic_profile_1" />
 
         <ImageView
             android:id="@+id/imageView5"
@@ -51,12 +52,26 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="98dp"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/manrope_medium"
             android:text="Василиса Степанова"
             android:textColor="#000000"
-            android:fontFamily="@font/manrope_medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ListView
+        android:id="@+id/list_of_messages"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top"
+        app:layout_constraintVertical_bias="0.506" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bot"
@@ -80,11 +95,11 @@
             app:srcCompat="@drawable/app" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/input"
             android:layout_width="242dp"
             android:layout_height="36dp"
-            android:layout_marginStart="59dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/gray_view"
             android:elevation="2dp"
             android:ems="10"
@@ -100,7 +115,8 @@
             android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/mic_btn" />
+            app:srcCompat="@drawable/ic_micbtn" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

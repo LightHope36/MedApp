@@ -4,41 +4,43 @@ import java.util.Date;
 
 public class Message {
 
-    private String textMessage;
-    private String autor;
-    private long timeMessage;
+    private String messageText;
+    private String messageUser;
+    private long messageTime;
 
-    public Message(String textMessage, String autor) {
-        this.textMessage = textMessage;
-        this.autor = autor;
+    public Message(String messageText, String messageUser) {
+        this.messageText = messageText;
+        this.messageUser = messageUser;
 
-        timeMessage = new Date().getTime();
+        // Initialize to current time
+        messageTime = new Date().getTime();
     }
 
-    public Message() {
+    public Message(){
+
     }
 
-    public String getTextMessage() {
-        return textMessage;
+    public String getMessageText() {
+        return messageText;
     }
 
-    public void setTextMessage(String textMessage) {
-        this.textMessage = textMessage;
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
     }
 
-    public String getAutor() {
-        return autor;
+    public String getMessageUser() {
+        return messageUser;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setMessageUser(String messageUser) {
+        this.messageUser = messageUser;
     }
 
-    public long getTimeMessage() {
-        return timeMessage;
+    public long getMessageTime() {
+        return messageTime;
     }
 
-    public void setTimeMessage(long timeMessage) {
-        this.timeMessage = timeMessage;
+    public void setMessageTime(long messageTime) {
+        this.messageTime = messageTime;
     }
 }
