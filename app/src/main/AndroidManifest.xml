@@ -8,8 +8,6 @@
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:icon="@mipmap/ic_icon2"
-        android:roundIcon="@mipmap/ic_icon2_round"
         android:theme="@style/Theme.Authorization">
         <activity android:name=".Chat" />
         <activity android:name=".auth4" />
