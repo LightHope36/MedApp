@@ -60,7 +60,7 @@ public class auth4 extends AppCompatActivity {
                         "");
                 System.out.println(ranStr);
             if((editText.getText() + "").equals(ranStr)) {
-                Intent intent = new Intent(getApplicationContext(), Chat.class);
+                Intent intent = new Intent(getApplicationContext(), Reg.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);

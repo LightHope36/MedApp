@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class Soglashenie extends AppCompatActivity {
 
     private ImageView cancel;
+    private TextView sogl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +20,9 @@ public class Soglashenie extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_soglashenie);
 
+        sogl = findViewById(R.id.soglashenie);
         cancel = findViewById(R.id.cancel);
+
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

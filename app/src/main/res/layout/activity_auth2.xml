@@ -74,7 +74,7 @@
             app:layout_constraintEnd_toEndOf="@+id/view2"
             app:layout_constraintStart_toStartOf="@+id/view2"
             app:layout_constraintTop_toTopOf="@+id/view2"
-            app:srcCompat="@drawable/ic_chat_1"
+            app:srcCompat="@drawable/ic_gos_logo"
             tools:targetApi="lollipop" />
 
 
@@ -122,7 +122,7 @@
             app:layout_constraintEnd_toEndOf="@+id/view"
             app:layout_constraintStart_toStartOf="@+id/view"
             app:layout_constraintTop_toTopOf="@+id/view"
-            app:srcCompat="@drawable/ic_gos_logo" />
+            app:srcCompat="@drawable/ic_chat_1" />
 
         <RadioGroup
             android:layout_width="300dp"
@@ -146,7 +146,7 @@
                 android:drawablePadding="5dp"
                 android:paddingTop="65dp"
                 android:fontFamily="@font/manrope_regular"
-                android:text="@string/Телефон"
+                android:text="@string/ГосУслуги"
                 android:textColor="@color/black"
                 tools:targetApi="lollipop" />
 
@@ -162,7 +162,7 @@
                 android:paddingTop="65dp"
                 android:fontFamily="@font/manrope_regular"
                 android:textColor="@color/black"
-                android:text="@string/ГосУслуги"
+                android:text="@string/Телефон"
 
 
                 tools:targetApi="lollipop" />
