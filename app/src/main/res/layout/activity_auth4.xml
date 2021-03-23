@@ -21,6 +21,7 @@
         android:background="@drawable/flow_shape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -116,7 +117,7 @@
             tools:targetApi="lollipop" />
 
         <Button
-            android:id="@+id/messege"
+            android:id="@+id/open_messege"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
@@ -128,6 +129,22 @@
             app:backgroundTint="@color/gray_background"
             app:layout_constraintStart_toEndOf="@+id/editTextNumber"
             app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/messege"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/gray_view"
+            android:insetTop="3dp"
+            android:insetBottom="3dp"
+            android:text="Тост!"
+            android:textColor="@color/black"
+            app:backgroundTint="@color/gray_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
             tools:ignore="MissingConstraints" />
 
 

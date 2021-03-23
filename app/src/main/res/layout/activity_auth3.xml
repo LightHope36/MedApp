@@ -95,7 +95,6 @@
             android:elevation="2dp"
             android:ems="10"
             android:fontFamily="@font/manrope_light"
-            android:hint="Номер телефона"
             android:inputType="number"
             android:paddingStart="18dp"
             android:singleLine="false"
@@ -131,7 +130,6 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/manrope_regular"
-            android:text="Special for SLAAVA"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/region_input" />
 
