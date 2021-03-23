@@ -52,10 +52,12 @@ public class auth3 extends AppCompatActivity {
         next2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(phone.length()==10){
                 Intent intent = new Intent(getApplicationContext(), auth4.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
+            }
             }
         });
         back2.setOnClickListener(new View.OnClickListener() {
