@@ -4,46 +4,76 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseUser;
+import java.util.Random;
 
 public class auth4 extends AppCompatActivity {
 
+    private Button messege;
     private Button back3;
     private Button next3;
+    private EditText editText;
+    String ranStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        getSupportActionBar().hide();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auth4);
+        Random ran = new Random();
+        for(int i = 0; i <= 4; i ++){
+            int ranInt = ran.nextInt(9);
+            ranStr += ranInt;
+        }
+        Toast toast = Toast.makeText(getApplicationContext(),
+                ranStr,
+                Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
 
+            getSupportActionBar().hide();
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_auth4);
         Button back3 = findViewById(R.id.back_btn3);
         Button next3 = findViewById(R.id.next_btn3);
+        EditText editText = findViewById(R.id.editTextNumber);
+        Button messege = findViewById(R.id.messege);
 
         back3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), auth3.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                overridePendingTransition(0,0);
-            }
+
+                    Intent intent = new Intent(getApplicationContext(), auth3.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
         });
 
         next3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println(editText.getText() + "" +
+                        "");
+                System.out.println(ranStr);
+            if((editText.getText() + "").equals(ranStr)) {
                 Intent intent = new Intent(getApplicationContext(), Chat.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
-                overridePendingTransition(0,0);
+                overridePendingTransition(0, 0);
+            }
             }
         });
 
+        messege.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toast.show();
+            }
+        });
 
     }
 }

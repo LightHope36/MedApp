@@ -7,7 +7,6 @@
     tools:context=".Chat">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/top"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:background="@drawable/top"
@@ -17,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/back_im"
+            android:id="@+id/back_im2"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="16dp"
@@ -52,31 +51,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="98dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/manrope_medium"
             android:text="Василиса Степанова"
             android:textColor="#000000"
+            android:fontFamily="@font/manrope_medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ListView
-        android:id="@+id/list_of_messages"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/bot"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top"
-        app:layout_constraintVertical_bias="0.506" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bot"
         android:layout_width="fill_parent"
-        android:layout_height="62dp"
+        android:layout_height="135dp"
         android:background="@drawable/flow_shape"
         android:elevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +70,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/app"
+            android:id="@+id/app_back"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginStart="16dp"
@@ -95,13 +80,14 @@
             app:srcCompat="@drawable/ic_app" />
 
         <EditText
-            android:id="@+id/input"
+            android:id="@+id/editTextTextPersonName"
             android:layout_width="242dp"
             android:layout_height="36dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="59dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/gray_view"
             android:elevation="2dp"
+            android:textSize="11dp"
             android:ems="10"
             android:inputType="textPersonName"
             app:layout_constraintStart_toStartOf="parent"
@@ -116,6 +102,69 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_micbtn" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="254dp"
+            android:layout_marginTop="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_konsult" />
+
+        <ImageView
+            android:id="@+id/file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="158dp"
+            android:layout_marginTop="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_file" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_image" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="106dp"
+            android:textSize="11dp"
+            android:text="Изображение"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="160dp"
+            android:layout_marginTop="106dp"
+            android:textSize="11dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Файл" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="229dp"
+            android:textSize="11dp"
+            android:layout_marginTop="106dp"
+            android:text="Консультацию"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

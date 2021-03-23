@@ -9,6 +9,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Authorization">
+        <activity android:name=".Soglashenie"></activity>
+        <activity android:name=".Reg" />
+        <activity android:name=".Dialogs" />
         <activity android:name=".Chat" />
         <activity android:name=".auth4" />
         <activity android:name=".auth3" />
