@@ -116,9 +116,10 @@
             android:fontFamily="@font/manrope_light"
             android:inputType="phone"
             android:singleLine="false"
+            android:text="+7"
             android:textAlignment="center"
-            android:textSize="18sp"
             android:textColor="@color/black"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             tools:targetApi="lollipop" />
