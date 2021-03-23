@@ -96,6 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="139dp"
+            android:fontFamily="@font/manrope_regular"
             android:text="@string/Имя"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -127,6 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="221dp"
+            android:fontFamily="@font/manrope_regular"
             android:text="@string/Фамилия"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -137,6 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="319dp"
+            android:fontFamily="@font/manrope_regular"
             android:text="@string/Дата_рождения"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -147,6 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="399dp"
+            android:fontFamily="@font/manrope_regular"
             android:text="@string/Полис"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

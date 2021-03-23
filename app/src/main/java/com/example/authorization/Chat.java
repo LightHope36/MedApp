@@ -26,13 +26,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Chat extends AppCompatActivity {
 
     private ListView listView;
     private ImageView back;
-    private ImageView add;
+    private ImageView app;
 
 
     @Override
@@ -41,10 +42,10 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        add = findViewById(R.id.app);
+        app = findViewById(R.id.app);
         back = findViewById(R.id.back_im);
 
-        add.setOnClickListener(new View.OnClickListener() {
+        app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), DetailedChat.class);
@@ -69,7 +70,12 @@ public class Chat extends AppCompatActivity {
 
 
         for (int i=1; i<10; i++){
-            messages.add(new Message( "text" + i, "user"+i));
+            Message message = new Message();
+            message.setMessageText("text"+i);
+            message.setMessageUser("User"+i);
+            message.setMessageTime(new Date().getTime());
+            message.setAuthorAvatar("ic_profile_1");
+            messages.add(message);
         }
 
         MessageAdapter adapter = new MessageAdapter (getApplicationContext(), R.layout.message, messages);
@@ -90,6 +96,10 @@ public class Chat extends AppCompatActivity {
             Message message = getItem(position);
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.message, null);
+
+            ImageView imageView = convertView.findViewById(R.id.profile);
+            int imageId = getContext().getResources().getIdentifier(message.getAuthorAvatar(), "drawable", getContext().getPackageName());
+            imageView.setImageResource(imageId);
 
             MessageHolder holder = new MessageHolder();
             holder.UserName = convertView.findViewById(R.id.message_user);
