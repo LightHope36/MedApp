@@ -32,6 +32,7 @@ public class Chat extends AppCompatActivity {
 
     private ListView listView;
     private ImageView back;
+    private ImageView add;
 
 
     @Override
@@ -40,9 +41,18 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-
+        add = findViewById(R.id.app);
         back = findViewById(R.id.back_im);
 
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), DetailedChat.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

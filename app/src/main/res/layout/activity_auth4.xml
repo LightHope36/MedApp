@@ -77,7 +77,7 @@
             android:fontFamily="@font/manrope_regular"
             android:text="@string/Назад"
             android:textAllCaps="false"
-            android:textColor="@color/btnStartColor"
+            android:textColor="@color/btn_text"
             android:textSize="15sp"
             app:backgroundTint="@color/back_btn"
             app:backgroundTintMode="src_over"
