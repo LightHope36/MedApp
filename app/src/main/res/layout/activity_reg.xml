@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/water"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/flow_shape"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/manrope_medium"
+            android:text="@string/Данные"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="300dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="79dp"
+            android:fontFamily="@font/manrope_light"
+            android:text="@string/Данные_уточнение"
+            android:textColor="@color/thin_text"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/next_btn5"
+            android:layout_width="140dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btn1"
+            android:drawableEnd="@drawable/ic_next"
+            android:fontFamily="@font/manrope_regular"
+            android:text="@string/Далее"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+            app:backgroundTint="@color/btnStartColor"
+            app:backgroundTintMode="src_in"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/back_btn5"
+            android:layout_width="140dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btn1"
+            android:drawableLeft="@drawable/ic_back"
+            android:fontFamily="@font/manrope_regular"
+            android:text="@string/Назад"
+            android:textAllCaps="false"
+            android:textColor="@color/btn_text"
+            android:textSize="15sp"
+            app:backgroundTint="@color/back_btn"
+            app:backgroundTintMode="src_over"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="139dp"
+            android:fontFamily="@font/manrope_regular"
+            android:text="@string/Имя"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/Name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="165dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/inp_view"
+            android:elevation="2dp"
+            android:ems="10"
+            android:alpha="0.1"
+            android:fontFamily="@font/manrope_light"
+            android:paddingStart="18dp"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="lollipop" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="221dp"
+            android:fontFamily="@font/manrope_regular"
+            android:text="@string/Фамилия"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="319dp"
+            android:fontFamily="@font/manrope_regular"
+            android:text="@string/Дата_рождения"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="399dp"
+            android:text="@string/Полис"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/Surname"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="247dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/inp_view"
+            android:elevation="2dp"
+            android:ems="10"
+            android:fontFamily="@font/manrope_light"
+            android:paddingStart="18dp"
+            android:singleLine="false"
+            android:alpha="0.1"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="lollipop" />
+
+        <EditText
+            android:id="@+id/Birthday"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="343dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/inp_view"
+            android:elevation="2dp"
+            android:ems="10"
+            android:alpha="0.1"
+            android:fontFamily="@font/manrope_light"
+            android:paddingStart="18dp"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="lollipop" />
+
+        <EditText
+            android:id="@+id/Polis"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="423dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/inp_view"
+            android:elevation="2dp"
+            android:ems="10"
+            android:fontFamily="@font/manrope_light"
+            android:paddingStart="18dp"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:alpha="0.1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="lollipop" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

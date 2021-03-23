@@ -7,10 +7,12 @@ public class Message {
     private String messageText;
     private String messageUser;
     private long messageTime;
+    private String authorAvatar;
 
     public Message(String messageText, String messageUser) {
         this.messageText = messageText;
         this.messageUser = messageUser;
+        this.authorAvatar = authorAvatar;
 
         // Initialize to current time
         messageTime = new Date().getTime();
@@ -18,6 +20,14 @@ public class Message {
 
     public Message(){
 
+    }
+
+    public String getAuthorAvatar() {
+        return authorAvatar;
+    }
+
+    public void setAuthorAvatar(String authorAvatar) {
+        this.authorAvatar = authorAvatar;
     }
 
     public String getMessageText() {

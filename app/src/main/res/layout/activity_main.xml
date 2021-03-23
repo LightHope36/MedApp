@@ -5,19 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:ignore="ExtraText">
+    tools:ignore="ExtraText"><![CDATA[
     tools:context=".MainActivity">
+
+    ]]>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="259dp"
         android:layout_height="54dp"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="213dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginEnd="50dp"
         android:fontFamily="@font/manrope_medium"
-        android:text="@string/app_name"
+        android:text="@string/Приветствие"
         android:textColor="#000000"
         android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +61,7 @@
         android:fontFamily="@font/manrope_regular"
         android:text="@string/Начнём"
         android:textAllCaps="false"
-        android:textColor="@color/btnStartColor"
+        android:textColor="@color/btn_text"
         android:textSize="15sp"
         app:backgroundTint="@color/white"
         app:backgroundTintMode="src_in"
@@ -65,13 +69,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/sogl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginTop="442dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_code_of_conduct_1" />
+        app:srcCompat="@drawable/ic_info_1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
