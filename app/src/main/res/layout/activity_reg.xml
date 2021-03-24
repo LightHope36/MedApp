@@ -76,8 +76,8 @@
             android:id="@+id/back_btn5"
             android:layout_width="140dp"
             android:layout_height="45dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="28dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/btn1"
             android:drawableLeft="@drawable/ic_back"
             android:fontFamily="@font/manrope_regular"
@@ -95,23 +95,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="139dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/manrope_regular"
             android:text="@string/Имя"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <EditText
             android:id="@+id/Name"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="165dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
+            android:alpha="0.1"
             android:background="@drawable/inp_view"
             android:elevation="2dp"
             android:ems="10"
-            android:alpha="0.1"
             android:fontFamily="@font/manrope_light"
             android:paddingStart="18dp"
             android:singleLine="false"
@@ -119,7 +120,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
             tools:targetApi="lollipop" />
 
         <TextView
@@ -127,52 +128,56 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="221dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/manrope_regular"
             android:text="@string/Фамилия"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/Name" />
 
         <TextView
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="319dp"
+            android:layout_marginTop="32dp"
             android:fontFamily="@font/manrope_regular"
             android:text="@string/Дата_рождения"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/Surname" />
 
         <TextView
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="399dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/manrope_regular"
             android:text="@string/Полис"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/Birthday" />
 
         <EditText
             android:id="@+id/Surname"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="247dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
+            android:alpha="0.1"
             android:background="@drawable/inp_view"
             android:elevation="2dp"
             android:ems="10"
             android:fontFamily="@font/manrope_light"
             android:paddingStart="18dp"
             android:singleLine="false"
-            android:alpha="0.1"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10"
             tools:targetApi="lollipop" />
 
         <EditText
@@ -180,12 +185,12 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="343dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
+            android:alpha="0.1"
             android:background="@drawable/inp_view"
             android:elevation="2dp"
             android:ems="10"
-            android:alpha="0.1"
             android:fontFamily="@font/manrope_light"
             android:paddingStart="18dp"
             android:singleLine="false"
@@ -193,7 +198,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11"
             tools:targetApi="lollipop" />
 
         <EditText
@@ -201,8 +206,9 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="423dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
+            android:alpha="0.1"
             android:background="@drawable/inp_view"
             android:elevation="2dp"
             android:ems="10"
@@ -211,10 +217,9 @@
             android:singleLine="false"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:alpha="0.1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12"
             tools:targetApi="lollipop" />
 
 
