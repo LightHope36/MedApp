@@ -11,4 +11,5 @@
     <color name="radio_button_color">#2196F3</color>
     <color name="gray_background">#F8F8F8</color>
     <color name="Inp_Btn">#26C6DA</color>
+    <color name="start_background">#F8FBFC</color>
 </resources>

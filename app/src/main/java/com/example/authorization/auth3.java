@@ -53,17 +53,21 @@ public class auth3 extends AppCompatActivity {
         next2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (reg.getText().length() <= 4 & reg.getText().charAt(0) == '+') {
-                    if (phone.length() == 10) {
-                        Intent intent = new Intent(getApplicationContext(), auth4.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
-                        overridePendingTransition(0, 0);
+                if (phone.getText().equals("") || reg.getText().equals("")) {
+                    errortext.setText("Вы не ввели номер");
+                }else {
+                    if (reg.getText().length() <= 4 & reg.getText().charAt(0) == '+') {
+                        if (phone.length() == 10) {
+                            Intent intent = new Intent(getApplicationContext(), auth4.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            startActivity(intent);
+                            overridePendingTransition(0, 0);
+                        } else {
+                            errortext.setText("Неверный номер телефона");
+                        }
                     } else {
-                        errortext.setText("неверный номер");
+                        errortext.setText("Неверный код страны");
                     }
-                } else {
-                    errortext.setText("неверно введён код страны");
                 }
             }
         });
