@@ -3,12 +3,14 @@ package com.example.authorization;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -19,6 +21,7 @@ public class auth4 extends AppCompatActivity{
     private Button back3;
     private Button next3;
     private EditText editText;
+    private TextView text;
     String ranStr = "";
 
 
@@ -38,9 +41,6 @@ public class auth4 extends AppCompatActivity{
                 Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
-        try {
-            wait(1000);
-        }catch (Throwable r){}
 
             getSupportActionBar().hide();
             super.onCreate(savedInstanceState);
@@ -49,6 +49,7 @@ public class auth4 extends AppCompatActivity{
         Button next3 = findViewById(R.id.next_btn3);
         EditText editText = findViewById(R.id.editTextNumber);
         Button messege = findViewById(R.id.messege);
+        TextView text = findViewById(R.id.textView5);
 
         back3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,23 +77,11 @@ public class auth4 extends AppCompatActivity{
             }
         });
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
 
-                    try {
-                        Thread.sleep(600);
-                    }catch (Throwable t){
-
-
-                }
-            }
-        });
 
         messege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                thread.run();
                  toast.show();
             }
         });
@@ -100,3 +89,23 @@ public class auth4 extends AppCompatActivity{
     }
 
 }
+//class sThread extends Thread{
+//    public sThread(String name){
+//        super(name);
+//    }
+//
+//    @Override
+//    public void run() {
+//        int i = 60;
+//        while (true){
+//            try{
+//            if(i > 0){
+//                Thread.sleep(100);
+//
+//            }
+//        }catch(Throwable t){
+//
+//            }
+//        }
+//    }
+//} это вообще живое?
