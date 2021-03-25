@@ -1,8 +1,9 @@
 package com.example.authorization;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Message {
+public class Message implements Serializable {
 
     private String messageText;
     private String messageUser;

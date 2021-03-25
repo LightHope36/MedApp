@@ -36,6 +36,8 @@ public class Chat extends AppCompatActivity {
     private ImageView back;
     private ImageView app;
     private ImageView menu;
+    private ImageView avatar;
+    private TextView name;
     private ConstraintLayout cs;
     private int count;
 
@@ -52,6 +54,10 @@ public class Chat extends AppCompatActivity {
         cs = findViewById(R.id.menu_chata);
         count = 0;
         listView = findViewById(R.id.list_of_messages);
+        avatar = findViewById(R.id.avatar);
+        name = findViewById(R.id.UserName);
+
+
 
         app.setOnClickListener(new View.OnClickListener() {
             @Override
