@@ -32,13 +32,13 @@ public class auth2 extends AppCompatActivity {
         next1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (rb.isChecked()) {
+                if (rb1.isChecked()) {
                     Intent intent = new Intent(getApplicationContext(), auth3.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                 }
-                if(rb1.isChecked()) {
+                if(rb.isChecked()) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.gosuslugi.ru/"));
                     startActivity(browserIntent);
                 }

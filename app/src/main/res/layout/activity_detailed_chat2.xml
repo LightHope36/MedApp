@@ -7,6 +7,7 @@
     tools:context=".Chat">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:background="@drawable/top"
@@ -36,7 +37,7 @@
             app:srcCompat="@drawable/ic_profile_1" />
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/menu_det"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginTop="14dp"
@@ -51,12 +52,24 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="98dp"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/manrope_medium"
             android:text="Василиса Степанова"
             android:textColor="#000000"
-            android:fontFamily="@font/manrope_medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ListView
+        android:id="@+id/list_of_messages_det"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+    </ListView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bot"
@@ -77,7 +90,7 @@
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_app" />
+            app:srcCompat="@drawable/ic_add_used" />
 
         <EditText
             android:id="@+id/editTextTextPersonName"
@@ -137,35 +150,112 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="46dp"
             android:layout_marginTop="106dp"
-            android:textSize="11dp"
             android:text="Изображение"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="11dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageView9"
+            app:layout_constraintStart_toStartOf="@+id/imageView9"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="160dp"
             android:layout_marginTop="106dp"
+            android:text="Файл"
             android:textSize="11dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Файл" />
+            app:layout_constraintEnd_toEndOf="@+id/file"
+            app:layout_constraintStart_toStartOf="@+id/file"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="229dp"
-            android:textSize="11dp"
             android:layout_marginTop="106dp"
             android:text="Консультацию"
+            android:textSize="11dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageView6"
+            app:layout_constraintStart_toStartOf="@+id/imageView6"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menu_chata_det"
+        android:layout_width="160dp"
+        android:layout_height="166dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="160dp"
+            android:layout_height="166dp"
+            android:background="@drawable/gray_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/search_det"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_search" />
+
+        <ImageView
+            android:id="@+id/file_of_menu_det"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="74dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_file_in_menu" />
+
+        <ImageView
+            android:id="@+id/bim_det"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="122dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_bin" />
+
+        <TextView
+            android:id="@+id/search_text_det"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="49dp"
+            android:layout_marginTop="22dp"
+            android:text="@string/Поиск"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/vlojenie_text_det"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="49dp"
+            android:layout_marginTop="70dp"
+            android:text="@string/Вложения"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/delete_chat_det"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="49dp"
+            android:layout_marginTop="118dp"
+            android:text="@string/Удалить_чат"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

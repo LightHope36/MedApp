@@ -1,6 +1,7 @@
 package com.example.authorization;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button next;
     private ImageView sogl;
+    private ConstraintLayout cs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         next = findViewById(R.id.next_btn);
         sogl = findViewById(R.id.sogl);
+        cs = findViewById(R.id.sogl_cs);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        sogl.setOnClickListener(new View.OnClickListener() {
+        cs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Soglashenie.class);

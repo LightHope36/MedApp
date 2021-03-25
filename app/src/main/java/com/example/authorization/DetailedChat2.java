@@ -8,55 +8,45 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Chat extends AppCompatActivity {
+public class DetailedChat2 extends AppCompatActivity {
 
-    private ListView listView;
+    private ImageView add;
     private ImageView back;
-    private ImageView app;
+    private ListView listView;
     private ImageView menu;
     private ConstraintLayout cs;
     private int count;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_detailed_chat2);
 
-        app = findViewById(R.id.app);
-        back = findViewById(R.id.back_im);
-        menu = findViewById(R.id.menu);
-        cs = findViewById(R.id.menu_chata);
+        add = findViewById(R.id.app_back);
+        back = findViewById(R.id.back_im2);
+        menu = findViewById(R.id.menu_det);
+        cs = findViewById(R.id.menu_chata_det);
         count = 0;
-        listView = findViewById(R.id.list_of_messages);
+        listView = findViewById(R.id.list_of_messages_det);
 
-        app.setOnClickListener(new View.OnClickListener() {
+
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), DetailedChat2.class);
+                Intent intent = new Intent(getApplicationContext(), Chat.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -99,7 +89,7 @@ public class Chat extends AppCompatActivity {
             messages.add(message);
         }
 
-        MessageAdapter adapter = new MessageAdapter (getApplicationContext(), R.layout.message, messages);
+        MessageAdapter adapter = new MessageAdapter(getApplicationContext(), R.layout.message, messages);
         listView.setAdapter(adapter);
 
 
@@ -140,7 +130,4 @@ public class Chat extends AppCompatActivity {
         public TextView UserName;
         public TextView UserText;
     }
-
-
-
 }
