@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
     private Button next;
     private ImageView sogl;
     private ConstraintLayout cs;
-    private ImageView skip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,18 +28,6 @@ public class MainActivity extends AppCompatActivity {
         next = findViewById(R.id.next_btn);
         sogl = findViewById(R.id.sogl);
         cs = findViewById(R.id.sogl_cs);
-        skip = findViewById(R.id.skip);
-
-
-        skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Dialogs.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                overridePendingTransition(10,0);
-            }
-        });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override

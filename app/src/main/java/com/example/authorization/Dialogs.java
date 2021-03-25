@@ -26,6 +26,7 @@ public class Dialogs extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialogs);
 
@@ -44,9 +45,6 @@ public class Dialogs extends AppCompatActivity {
             persons.add(person);
         }
 
-        PersonAdapter adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
-        listView.setAdapter(adapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -58,7 +56,8 @@ public class Dialogs extends AppCompatActivity {
             }
         });
 
-
+        PersonAdapter adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
+        listView.setAdapter(adapter);
 
 
     }

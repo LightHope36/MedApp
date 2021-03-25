@@ -25,7 +25,7 @@ public class Reg extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Chat.class);
+                Intent intent = new Intent(getApplicationContext(), Dialogs.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0,0);

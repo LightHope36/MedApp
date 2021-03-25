@@ -59,6 +59,16 @@ public class Chat extends AppCompatActivity {
 
 
 
+        Intent intent = getIntent();
+        Person person = (Person) intent.getExtras().get("person");
+        if(person != null){
+            int imageId = getResources().getIdentifier(person.getAvatar(), "drawable", getPackageName());
+            avatar.setImageResource(imageId);
+
+            name.setText(person.getName());
+        }
+
+
         app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +82,7 @@ public class Chat extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), auth3.class);
+                Intent intent = new Intent(getApplicationContext(), Dialogs.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -99,7 +109,7 @@ public class Chat extends AppCompatActivity {
         for (int i=1; i<10; i++){
             Message message = new Message();
             message.setMessageText("text"+i);
-            message.setMessageUser("User"+i);
+            message.setMessageUser(person.getName());
             message.setMessageTime(new Date().getTime());
             message.setAuthorAvatar("ic_profile_1");
             messages.add(message);

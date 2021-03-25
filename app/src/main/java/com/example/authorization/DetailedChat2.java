@@ -56,7 +56,7 @@ public class DetailedChat2 extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), auth3.class);
+                Intent intent = new Intent(getApplicationContext(), Dialogs.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
