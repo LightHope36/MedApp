@@ -3,6 +3,7 @@ package com.example.authorization;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.widget.Toast;
 
 import java.util.Random;
 
-public class auth4 extends AppCompatActivity {
+public class auth4 extends AppCompatActivity{
 
     private Button messege;
     private Button back3;
@@ -20,8 +21,12 @@ public class auth4 extends AppCompatActivity {
     private EditText editText;
     String ranStr = "";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
 
         Random ran = new Random();
         for(int i = 0; i <= 4; i ++){
@@ -33,6 +38,9 @@ public class auth4 extends AppCompatActivity {
                 Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+        try {
+            wait(1000);
+        }catch (Throwable r){}
 
             getSupportActionBar().hide();
             super.onCreate(savedInstanceState);
@@ -68,12 +76,27 @@ public class auth4 extends AppCompatActivity {
             }
         });
 
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                    try {
+                        Thread.sleep(600);
+                    }catch (Throwable t){
+
+
+                }
+            }
+        });
+
         messege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toast.show();
+                thread.run();
+                 toast.show();
             }
         });
 
     }
+
 }
