@@ -8,6 +8,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +42,10 @@ public class Chat extends AppCompatActivity {
     private TextView name;
     private ConstraintLayout cs;
     private int count;
+    private int count2;
+    private ImageView send;
+    private EditText input;
+    private ImageView mic;
 
 
     @Override
@@ -53,9 +59,13 @@ public class Chat extends AppCompatActivity {
         menu = findViewById(R.id.menu);
         cs = findViewById(R.id.menu_chata);
         count = 0;
+        count2 = 0;
         listView = findViewById(R.id.list_of_messages);
         avatar = findViewById(R.id.avatar);
         name = findViewById(R.id.UserName);
+        send = findViewById(R.id.send);
+        input = findViewById(R.id.input);
+        mic = findViewById(R.id.mic);
 
 
 
@@ -69,10 +79,18 @@ public class Chat extends AppCompatActivity {
         }
 
 
+        List<Message> messages = new ArrayList<>();
+
+        MessageAdapter adapter = new MessageAdapter (getApplicationContext(), R.layout.message, messages);
+
+        listView.setAdapter(adapter);
+
+
         app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), DetailedChat2.class);
+                intent.putExtra("person", person);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -103,20 +121,27 @@ public class Chat extends AppCompatActivity {
         });
 
 
-        List<Message> messages = new ArrayList<>();
 
 
-        for (int i=1; i<10; i++){
-            Message message = new Message();
-            message.setMessageText("text"+i);
-            message.setMessageUser(person.getName());
-            message.setMessageTime(new Date().getTime());
-            message.setAuthorAvatar("ic_profile_1");
-            messages.add(message);
-        }
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(input.getText().toString().equals("")){
+                    Toast toast = Toast.makeText(getApplicationContext(), "Вы ничего не ввели", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else{
+                    Message message = new Message();
+                    message.setMessageUser("You");
+                    message.setMessageText(input.getText().toString());
+                    message.setMessageTime(new Date().getTime());
+                    adapter.add(message);
+                    input.getText().clear();
+                }
+            }
+        });
 
-        MessageAdapter adapter = new MessageAdapter (getApplicationContext(), R.layout.message, messages);
-        listView.setAdapter(adapter);
+
 
 
     }
@@ -132,11 +157,8 @@ public class Chat extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             Message message = getItem(position);
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.message, null);
+            convertView = inflater.inflate(R.layout.my_message, null);
 
-            ImageView imageView = convertView.findViewById(R.id.profile);
-            int imageId = getContext().getResources().getIdentifier(message.getAuthorAvatar(), "drawable", getContext().getPackageName());
-            imageView.setImageResource(imageId);
 
             MessageHolder holder = new MessageHolder();
             holder.UserName = convertView.findViewById(R.id.message_user);

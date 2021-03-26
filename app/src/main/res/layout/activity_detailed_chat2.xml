@@ -27,7 +27,7 @@
             app:srcCompat="@drawable/ic_back2" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/avatar1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="58dp"
@@ -47,7 +47,7 @@
             app:srcCompat="@drawable/menu" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/name1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="98dp"
@@ -138,6 +138,7 @@
 
     <ListView
         android:id="@+id/list_of_messages_det"
+        android:stackFromBottom="true"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bot"
@@ -160,6 +161,16 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_send" />
+
+        <ImageView
             android:id="@+id/app_back"
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -170,25 +181,25 @@
             app:srcCompat="@drawable/ic_add_used" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/input"
             android:layout_width="242dp"
             android:layout_height="36dp"
             android:layout_marginStart="59dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/gray_view"
             android:elevation="2dp"
-            android:textSize="11dp"
             android:ems="10"
             android:inputType="textPersonName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/mic"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_micbtn" />

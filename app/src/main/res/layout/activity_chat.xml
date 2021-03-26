@@ -138,6 +138,7 @@
 
     <ListView
         android:id="@+id/list_of_messages"
+        android:stackFromBottom="true"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignParentStart="true"
@@ -148,7 +149,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top"
-        app:layout_constraintVertical_bias="0.506" />
+        app:layout_constraintVertical_bias="0.506" >
+
+    </ListView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bot"
@@ -160,6 +163,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_send" />
 
         <ImageView
             android:id="@+id/app"
@@ -185,11 +198,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/mic"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_micbtn" />

@@ -73,18 +73,15 @@ public class Dialogs extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             Person person = getItem(position);
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.message, null);
+            convertView = inflater.inflate(R.layout.person, null);
 
             ImageView imageView = convertView.findViewById(R.id.profile);
             int imageId = getContext().getResources().getIdentifier(person.getAvatar(), "drawable", getContext().getPackageName());
             imageView.setImageResource(imageId);
 
             PersonHolder holder = new PersonHolder();
-            holder.UserName = convertView.findViewById(R.id.message_user);
-            holder.UserText = convertView.findViewById(R.id.message_text);
-
-
-
+            holder.UserName = convertView.findViewById(R.id.user);
+            holder.UserText = convertView.findViewById(R.id.last_message_text);
 
 
             holder.UserName.setText(person.getName());
