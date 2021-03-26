@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="9dp"
                 android:layout_marginEnd="12dp"
                 android:autoSizeMaxTextSize="240dp"
                 android:textStyle="normal|bold"
@@ -41,12 +41,12 @@
                 android:layout_below="@+id/message_user"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="9dp"
                 android:autoSizeMaxTextSize="240dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/message_user" />
 
@@ -55,10 +55,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="8sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/message_text" />
+                app:layout_constraintStart_toEndOf="@id/message_text"
+                app:layout_constraintTop_toTopOf="@id/message_user" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

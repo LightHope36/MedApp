@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +27,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Chat extends AppCompatActivity {
 
@@ -131,10 +133,16 @@ public class Chat extends AppCompatActivity {
                     toast.show();
                 }
                 else{
+
+                    Date currentDate = new Date();
+                    DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                    String timeText = timeFormat.format(currentDate);
+
+
                     Message message = new Message();
                     message.setMessageUser("You");
                     message.setMessageText(input.getText().toString());
-                    message.setMessageTime(new Date().getTime());
+                    message.setMessageTime(timeText);
                     adapter.add(message);
                     input.getText().clear();
                 }
@@ -163,11 +171,13 @@ public class Chat extends AppCompatActivity {
             MessageHolder holder = new MessageHolder();
             holder.UserName = convertView.findViewById(R.id.message_user);
             holder.UserText = convertView.findViewById(R.id.message_text);
+            holder.Time = convertView.findViewById(R.id.message_time);
 
 
 
             holder.UserName.setText(message.getMessageUser());
             holder.UserText.setText(message.getMessageText());
+            holder.Time.setText(message.getMessageTime());
 
             convertView.setTag(holder);
             return convertView;
@@ -177,6 +187,7 @@ public class Chat extends AppCompatActivity {
     private static class MessageHolder {
         public TextView UserName;
         public TextView UserText;
+        public TextView Time;
     }
 
 

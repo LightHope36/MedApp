@@ -18,9 +18,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DetailedChat2 extends AppCompatActivity {
 
@@ -117,15 +120,22 @@ public class DetailedChat2 extends AppCompatActivity {
                     toast.show();
                 }
                 else{
+
+                    Date currentDate = new Date();
+                    DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                    String timeText = timeFormat.format(currentDate);
+
+
                     Message message = new Message();
                     message.setMessageUser("You");
                     message.setMessageText(input.getText().toString());
-                    message.setMessageTime(new Date().getTime());
-                    adapter.add(message);
+                    message.setMessageTime(timeText);
+                    adapter.insert(message, 0);
                     input.getText().clear();
                 }
             }
         });
+
 
     }
 

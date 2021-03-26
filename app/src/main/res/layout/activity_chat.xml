@@ -193,7 +193,6 @@
             android:background="@drawable/gray_view"
             android:elevation="2dp"
             android:ems="10"
-            android:inputType="textPersonName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
