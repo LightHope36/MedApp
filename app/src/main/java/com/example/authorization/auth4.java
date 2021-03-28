@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import java.util.Random;
 
-public class auth4 extends AppCompatActivity{
+public class auth4 extends AppCompatActivity {
 
     private Button messege;
     private Button back3;
@@ -23,6 +23,7 @@ public class auth4 extends AppCompatActivity{
     private EditText editText;
     private TextView text;
     String ranStr = "";
+
 
 
 
@@ -36,9 +37,8 @@ public class auth4 extends AppCompatActivity{
             int ranInt = ran.nextInt(9);
             ranStr += ranInt;
         }
-        Toast toast = Toast.makeText(getApplicationContext(),
-                ranStr,
-                Toast.LENGTH_SHORT);
+
+        Toast toast = Toast.makeText(getApplicationContext(), ranStr, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
 
@@ -50,6 +50,8 @@ public class auth4 extends AppCompatActivity{
         EditText editText = findViewById(R.id.editTextNumber);
         Button messege = findViewById(R.id.messege);
         TextView text = findViewById(R.id.textView5);
+
+
 
         back3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,35 +79,63 @@ public class auth4 extends AppCompatActivity{
             }
         });
 
-
-
         messege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                  toast.show();
+                 messege.setClickable(false);
+                new sThread("s", new In() {
+                     @Override
+                     public void act(String s) {
+                         text.setText(s);
+                     }
+                     @Override
+                     public void anact(String s){
+                         messege.setClickable(true);
+                         toast.show();
+                         text.setText(s);
+                     }
+                 }).start();
+
             }
         });
 
     }
+    interface In {
+        void act(String s);
+        void anact(String s);
+    }
 
+    class sThread extends Thread{
+
+        private In in;
+        public sThread(String name, In in){
+            super(name);
+            this.in = in;
+        }
+
+        @Override
+        public void run() {
+            int i = 60;
+            String s;
+            while (true){
+                try{
+                    if(i > 0){
+                        Thread.sleep(1000);
+                        i--;
+                        s = "код придёт через " + i;
+                        in.act(s);
+
+                    }else {
+                        in.anact("отправить код повторно " );
+                        break;
+                    }
+                }catch(Throwable t){
+                    //text.setText("не повезло");
+                }
+            }
+        }
+    }
 }
-//class sThread extends Thread{
-//    public sThread(String name){
-//        super(name);
-//    }
-//
-//    @Override
-//    public void run() {
-//        int i = 60;
-//        while (true){
-//            try{
-//            if(i > 0){
-//                Thread.sleep(100);
-//
-//            }
-//        }catch(Throwable t){
-//
-//            }
-//        }
-//    }
-//} это вообще живое?
+
+
