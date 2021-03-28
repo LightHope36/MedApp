@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="Main_appcolor">#26C6DA</color>
+    <color name="Second_appcolor">#8CE1EB</color>
+    <color name="Third_appcolor">#E3F8FA</color>
     <color name="btnStartColor">#29B6C8</color>
     <color name="btn_text">#1897A7</color>
     <color name="btnEndColor">#3391DD</color>
@@ -8,9 +11,8 @@
     <color name="thin_text">#434343</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_min">#FAFAFA</color>
     <color name="radio_button_color">#2196F3</color>
-    <color name="gray_background">#F8F8F8</color>
-    <color name="Inp_Btn">#26C6DA</color>
     <color name="start_background">#F8FBFC</color>
     <color name="back_of_my_message">#E3F8FA</color>
     <color name="back_of_message">#F8F8F7</color>
