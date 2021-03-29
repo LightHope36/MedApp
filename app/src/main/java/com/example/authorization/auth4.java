@@ -1,4 +1,4 @@
-package com.example.authorization;
+ package com.example.authorization;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import java.util.Random;
 
-public class auth4 extends AppCompatActivity {
+public class auth4 extends AppCompatActivity implements Runnable{
 
     private Button messege;
     private Button back3;
@@ -56,7 +56,7 @@ public class auth4 extends AppCompatActivity {
         back3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                    sThread.close();
                     Intent intent = new Intent(getApplicationContext(), auth3.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
@@ -67,6 +67,7 @@ public class auth4 extends AppCompatActivity {
         next3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sThread.close();
                 System.out.println(editText.getText() + "" +
                         "");
                 System.out.println(ranStr);
@@ -84,7 +85,7 @@ public class auth4 extends AppCompatActivity {
             public void onClick(View v) {
                  toast.show();
                  messege.setClickable(false);
-                new sThread("s", new In() {
+                 new sThread("s", new In() {
                      @Override
                      public void act(String s) {
                          text.setText(s);
@@ -92,7 +93,6 @@ public class auth4 extends AppCompatActivity {
                      @Override
                      public void anact(String s){
                          messege.setClickable(true);
-                         toast.show();
                          text.setText(s);
                      }
                  }).start();
@@ -101,12 +101,23 @@ public class auth4 extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void run() {
+
+    }
+
     interface In {
         void act(String s);
         void anact(String s);
     }
 
-    class sThread extends Thread{
+    static class sThread extends Thread{
+        private static boolean isActive;
+
+       static void close(){
+            isActive = false;
+        }
 
         private In in;
         public sThread(String name, In in){
@@ -116,19 +127,23 @@ public class auth4 extends AppCompatActivity {
 
         @Override
         public void run() {
+            isActive = true;
             int i = 60;
             String s;
-            while (true){
+            while (isActive == true){
                 try{
-                    if(i > 0){
-                        Thread.sleep(1000);
-                        i--;
-                        s = "код придёт через " + i;
-                        in.act(s);
 
-                    }else {
-                        in.anact("отправить код повторно " );
-                        break;
+                        if (i > 0) {
+                            s = "отправить код повторно через " + i;
+                            in.act(s);
+                            Thread.sleep(1000);
+                            i--;
+
+
+                        } else {
+                            in.anact("отправить код повторно");
+                            break;
+
                     }
                 }catch(Throwable t){
                     //text.setText("не повезло");
