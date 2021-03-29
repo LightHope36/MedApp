@@ -3,6 +3,7 @@ package com.example.authorization;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,6 +25,10 @@ import java.util.List;
 public class Dialogs extends AppCompatActivity {
 
     private ListView listView;
+    private ImageView cancel;
+    private ImageView search;
+    private EditText input;
+    private ConstraintLayout cs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,9 @@ public class Dialogs extends AppCompatActivity {
         setContentView(R.layout.activity_dialogs);
 
         listView = findViewById(R.id.list_of_persons);
+        search = findViewById(R.id.search_dial);
+        cancel = findViewById(R.id.search_cancel_dialogs);
+        cs = findViewById(R.id.search_cs_dialogs);
 
 
         List<Person> persons = new ArrayList<>();
@@ -44,6 +53,20 @@ public class Dialogs extends AppCompatActivity {
             person.setAvatar("ic_profile_1");
             persons.add(person);
         }
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cs.setVisibility(View.VISIBLE);
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cs.setVisibility(View.INVISIBLE);
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

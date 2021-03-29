@@ -11,7 +11,6 @@
         android:roundIcon="@mipmap/ic_icon2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Authorization">
-        <activity android:name=".DetailedChat2" />
         <activity android:name=".Soglashenie" />
         <activity android:name=".Reg" />
         <activity android:name=".Dialogs" />
