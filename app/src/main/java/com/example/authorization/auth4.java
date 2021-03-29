@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import java.util.Random;
 
-public class auth4 extends AppCompatActivity implements Runnable{
+public class auth4 extends AppCompatActivity{
 
     private Button messege;
     private Button back3;
@@ -102,10 +102,6 @@ public class auth4 extends AppCompatActivity implements Runnable{
 
     }
 
-    @Override
-    public void run() {
-
-    }
 
     interface In {
         void act(String s);
