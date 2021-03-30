@@ -38,6 +38,7 @@ public class auth4 extends AppCompatActivity{
         for(int i = 0; i <= 4; i ++){
             int ranInt = ran.nextInt(9);
             ranStr += ranInt;
+
         }
 
         Toast toast = Toast.makeText(getApplicationContext(), ranStr, Toast.LENGTH_SHORT);
