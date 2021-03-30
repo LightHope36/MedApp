@@ -29,7 +29,9 @@ public class auth4 extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        getSupportActionBar().hide();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_auth4);
 
 
         Random ran = new Random();
@@ -42,9 +44,7 @@ public class auth4 extends AppCompatActivity{
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
 
-            getSupportActionBar().hide();
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_auth4);
+
         Button back3 = findViewById(R.id.back_btn3);
         Button next3 = findViewById(R.id.next_btn3);
         EditText editText = findViewById(R.id.editTextNumber);
