@@ -25,10 +25,7 @@ import java.util.List;
 public class Dialogs extends AppCompatActivity {
 
     private ListView listView;
-    private ImageView cancel;
     private ImageView search;
-    private EditText input;
-    private ConstraintLayout cs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +35,19 @@ public class Dialogs extends AppCompatActivity {
 
         listView = findViewById(R.id.list_of_persons);
         search = findViewById(R.id.search_dial);
-        cancel = findViewById(R.id.search_cancel_dialogs);
-        cs = findViewById(R.id.search_cs_dialogs);
 
 
         List<Person> persons = new ArrayList<>();
+
+        PersonAdapter adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
+        listView.setAdapter(adapter);
 
 
         for (int i=1; i<10; i++){
             Person person = new Person();
             person.setLastmessage("text"+i);
             person.setName("User"+i);
-            person.setMessageTime(new Date().getTime());
+            person.setMessageTime("time");
             person.setAvatar("ic_profile_1");
             persons.add(person);
         }
@@ -57,16 +55,14 @@ public class Dialogs extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cs.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(getApplicationContext(), Search.class);
+                intent.putExtra("dialogs", "Dialogs");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cs.setVisibility(View.INVISIBLE);
-            }
-        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -79,8 +75,7 @@ public class Dialogs extends AppCompatActivity {
             }
         });
 
-        PersonAdapter adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
-        listView.setAdapter(adapter);
+
 
 
     }
@@ -98,17 +93,20 @@ public class Dialogs extends AppCompatActivity {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.person, null);
 
-            ImageView imageView = convertView.findViewById(R.id.profile);
-            int imageId = getContext().getResources().getIdentifier(person.getAvatar(), "drawable", getContext().getPackageName());
-            imageView.setImageResource(imageId);
+
 
             PersonHolder holder = new PersonHolder();
             holder.UserName = convertView.findViewById(R.id.user);
             holder.UserText = convertView.findViewById(R.id.last_message_text);
+            holder.imageView = convertView.findViewById(R.id.profile);
+            holder.LastmessageTime = convertView.findViewById(R.id.last_message_time);
 
+            int imageId = getContext().getResources().getIdentifier(person.getAvatar(), "drawable", getContext().getPackageName());
 
+            holder.imageView.setImageResource(imageId);
             holder.UserName.setText(person.getName());
             holder.UserText.setText(person.getLastmessage());
+            holder.LastmessageTime.setText(person.getMessageTime());
 
             convertView.setTag(holder);
 
@@ -120,5 +118,7 @@ public class Dialogs extends AppCompatActivity {
     private static class PersonHolder {
         public TextView UserName;
         public TextView UserText;
+        public ImageView imageView;
+        public TextView LastmessageTime;
     }
 }

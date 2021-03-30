@@ -6,7 +6,7 @@ public class Person implements Serializable {
 
     private String avatar;
     private String name;
-    private long messageTime;
+    private String messageTime;
     private String lastmessage;
 
     public String getAvatar() {
@@ -32,11 +32,11 @@ public class Person implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public long getMessageTime() {
+    public String getMessageTime() {
         return messageTime;
     }
 
-    public void setMessageTime(long messageTime) {
+    public void setMessageTime(String messageTime) {
         this.messageTime = messageTime;
     }
 }

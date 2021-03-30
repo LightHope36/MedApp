@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".Dialogs">
 
+    <ListView
+        android:id="@+id/list_of_persons"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -80,39 +89,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_search" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/search_cs_dialogs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toStartOf="@+id/search_dial"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/search_cancel_dialogs"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/search_input"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_cancel_1" />
-
-            <EditText
-                android:id="@+id/search_input"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/gray_view"
-                android:elevation="2dp"
-                android:ems="10"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -193,11 +169,4 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView11" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ListView
-        android:id="@+id/list_of_persons"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -61,11 +61,8 @@ public class Chat extends AppCompatActivity {
     private ConstraintLayout details;
     private ImageView add_image;
     static final int GALLERY_REQUEST = 1;
-    private ConstraintLayout search_cs;
     private ImageView search;
-    private  ImageView search_cancel;
-    private ConstraintLayout ll;
-    private int eventY;
+    private ConstraintLayout search_open;
 
 
     @Override
@@ -89,10 +86,9 @@ public class Chat extends AppCompatActivity {
         bot = findViewById(R.id.bot);
         details = findViewById(R.id.details);
         add_image = findViewById(R.id.add_image);
-        search_cs = findViewById(R.id.search_cs_chat);
         search = findViewById(R.id.search);
-        search_cancel = findViewById(R.id.search_cancel_chat);
-        ll = findViewById(R.id.message_redact_lay);
+        search_open = findViewById(R.id.search_cs_chat_open);
+
 
 
 
@@ -164,6 +160,8 @@ public class Chat extends AppCompatActivity {
             }
         });
 
+
+
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,20 +176,17 @@ public class Chat extends AppCompatActivity {
         });
 
 
-        search.setOnClickListener(new View.OnClickListener() {
+        search_open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                search_cs.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(getApplicationContext(), Search.class);
+                intent.putExtra("chat", "Chat");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         });
 
-
-        search_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                search_cs.setVisibility(View.INVISIBLE);
-            }
-        });
 
 
 
@@ -232,14 +227,7 @@ public class Chat extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                eventY = (int) event.getY();
-        }
-        return false;
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
