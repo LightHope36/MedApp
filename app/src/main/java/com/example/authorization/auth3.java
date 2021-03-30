@@ -31,8 +31,7 @@ public class auth3 extends AppCompatActivity {
     private Button back2;
     private EditText reg;
     private TextView errortext;
-    // Идентификатор уведомления
-    private static final int NOTIFY_ID = 10;
+
 
 
     @SuppressLint("WrongViewCast")
@@ -47,6 +46,7 @@ public class auth3 extends AppCompatActivity {
         Button back2 = findViewById(R.id.back_btn2);
         EditText reg = findViewById(R.id.region_input);
         EditText phone = findViewById(R.id.phone_input);
+        phone.setText("9999999999");
         TextView errortext = findViewById(R.id.errortext);
 
 
