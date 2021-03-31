@@ -12,8 +12,13 @@
         android:id="@+id/skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:paddingBottom="10dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_cancel_1" />
@@ -49,9 +54,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sogl_cs"
-        android:layout_width="241dp"
+        android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_marginBottom="30dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+
         app:layout_constraintBottom_toTopOf="@+id/next_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

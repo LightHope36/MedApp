@@ -30,7 +30,7 @@ public class auth4 extends AppCompatActivity{
      void setRanStr () {
         ranStr = "";
         Random ran = new Random();
-        for(int i = 0; i <= 4; i ++){
+        for(int i = 0; i <= 3; i ++){
             int ranInt = ran.nextInt(9);
              ranStr += ranInt;
 
