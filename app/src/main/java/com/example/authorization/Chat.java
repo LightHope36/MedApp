@@ -122,8 +122,6 @@ public class Chat extends AppCompatActivity {
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
-
-
         Cursor c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageTaker=?", new String[] {taker});
         c.moveToFirst();
 
@@ -213,7 +211,7 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Search.class);
-                intent.putExtra("chat", "Chat");
+                intent.putExtra("person", person);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);

@@ -1,16 +1,34 @@
 package com.example.authorization;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Search extends AppCompatActivity {
 
     private ImageView back;
-    String key = "";
+    private EditText search;
+    private ListView listView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +37,29 @@ public class Search extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         back = findViewById(R.id.back_im_from_search);
+        search = findViewById(R.id.search_input_chat);
+        listView = findViewById(R.id.list_of_messages_in_search);
+
+        Intent intent = getIntent();
+        Person person = (Person) intent.getExtras().get("person");
+        String taker = person.getName();
+
+        List<Message> messages = new ArrayList<>();
+
+        MessageAdapter adapter = new MessageAdapter(getApplicationContext(), R.layout.message, messages);
+
+        listView.setAdapter(adapter);
+
+//        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
+//        sqLiteDatabase.execSQL("create table if not exists messages\n" +
+//                "(\n" +
+//                "\tmessageUser varchar(1000), \n" +
+//                "\tmessageText varchar(3000), \n" +
+//                "\tmessageTaker varchar(1000), \n" +
+//                "\tmessageTime varchar(100) \n" +
+//                ");");
+
+
 
 
 
@@ -29,5 +70,79 @@ public class Search extends AppCompatActivity {
                 Search.super.finish();
             }
         });
+
+
+//        search.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                String text = search.getText().toString();
+//
+//                Cursor c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageText=? and messageTaker=?", new String[] {text, taker});
+//                c.moveToFirst();
+//
+//                int messageUserIndex = c.getColumnIndex("messageUser");
+//                int messageTextIndex = c.getColumnIndex("messageText");
+//                int messageTimeIndex = c.getColumnIndex("messageTime");
+//
+//                while (!c.isAfterLast()) {
+//                    Message message = new Message();
+//                    message.setMessageUser(c.getString(messageUserIndex));
+//                    message.setMessageText(c.getString(messageTextIndex));
+//                    message.setMessageTime(c.getString(messageTimeIndex));
+//                    adapter.add(message);
+//                    c.moveToNext();
+//
+//                }
+//            }
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+
+
     }
+
+    private static class MessageAdapter extends ArrayAdapter<Message> {
+
+        public MessageAdapter(@NonNull Context context, int resource, @NonNull List<Message> objects) {
+            super(context, resource, objects);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            Message message = getItem(position);
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.my_message, null);
+
+
+            MessageHolder holder = new MessageHolder();
+            holder.UserName = convertView.findViewById(R.id.message_user);
+            holder.UserText = convertView.findViewById(R.id.message_text);
+            holder.Time = convertView.findViewById(R.id.message_time);
+
+
+
+            holder.UserName.setText(message.getMessageUser());
+            holder.UserText.setText(message.getMessageText());
+            holder.Time.setText(message.getMessageTime());
+
+            convertView.setTag(holder);
+            return convertView;
+        }
+    }
+
+    private static class MessageHolder {
+        public TextView UserName;
+        public TextView UserText;
+        public TextView Time;
+    }
+
 }
