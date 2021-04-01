@@ -38,8 +38,15 @@ public class auth4 extends AppCompatActivity{
     }
 
 
-     public void snackBarView (View view){
-         Snackbar snackbar = Snackbar.make(view ,"f", Snackbar.LENGTH_LONG);
+     public void snackBarView (View view, EditText editText){
+         Snackbar snackbar = Snackbar.make(view ,ranStr, Snackbar.LENGTH_LONG);
+         snackbar.show();
+         snackbar.setAction("Вставить", new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 editText.setText(ranStr);
+             }
+         });
      }
 
     @Override
@@ -72,26 +79,25 @@ public class auth4 extends AppCompatActivity{
         next3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sThread.close();
+
                 System.out.println(ranStr);
             if((editText.getText() + "").equals(ranStr)) {
+                sThread.close();
                 Intent intent = new Intent(getApplicationContext(), Reg.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
-            }
+               }
             }
         });
-
 
         messege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setRanStr();
-                 Snackbar snackbar = Snackbar.make(v, ranStr, Snackbar.LENGTH_LONG);
-                 snackbar.show();
+                 setRanStr();
+                 snackBarView(v,editText);
                  messege.setClickable(false);
-                messege.setVisibility(View.GONE);
+                 messege.setVisibility(View.GONE);
                  new sThread("s", new In() {
                      @Override
                      public void act(String s) {
@@ -103,11 +109,12 @@ public class auth4 extends AppCompatActivity{
                          text.setOnClickListener(new View.OnClickListener() {
                              @Override
                              public void onClick(View v) {
+
                                  setRanStr();
-                                 Snackbar snackbar = Snackbar.make(v, ranStr, Snackbar.LENGTH_LONG);
-                                 snackbar.show();
+                                 snackBarView(v,editText);
                                  text.setClickable(false);
                                  new sThread("s", new In() {
+
                                      @Override
                                      public void act(String s) {
                                          text.setText(s);
@@ -153,6 +160,7 @@ public class auth4 extends AppCompatActivity{
 
         @Override
         public void run() {
+
             isActive = true;
             int i = 10;
             String s;
@@ -179,5 +187,3 @@ public class auth4 extends AppCompatActivity{
         }
     }
 }
-
-
