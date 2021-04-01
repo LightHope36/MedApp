@@ -7,6 +7,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -108,6 +110,37 @@ public class Chat extends AppCompatActivity {
 
         listView.setAdapter(adapter);
 
+        String taker = person.getName();
+
+
+        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
+        sqLiteDatabase.execSQL("create table if not exists messages\n" +
+                "(\n" +
+                "\tmessageUser varchar(1000), \n" +
+                "\tmessageText varchar(3000), \n" +
+                "\tmessageTaker varchar(1000), \n" +
+                "\tmessageTime varchar(100) \n" +
+                ");");
+
+
+
+        Cursor c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTime from messages", null);
+        c.moveToFirst();
+
+        int messageUserIndex = c.getColumnIndex("messageUser");
+        int messageTextIndex = c.getColumnIndex("messageText");
+        int messageTimeIndex = c.getColumnIndex("messageTime");
+
+        while (!c.isAfterLast()) {
+            Message message = new Message();
+            message.setMessageUser(c.getString(messageUserIndex));
+            message.setMessageText(c.getString(messageTextIndex));
+            message.setMessageTime(c.getString(messageTimeIndex));
+            adapter.add(message);
+            c.moveToNext();
+        }
+
+
 //        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
 //            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -202,14 +235,19 @@ public class Chat extends AppCompatActivity {
                     Date currentDate = new Date();
                     DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
                     String timeText = timeFormat.format(currentDate);
+                    String text = input.getText().toString();
 
+                    input.getText().clear();
+
+
+//                    sqLiteDatabase.execSQL("insert into messages(messageUser,messageText, messageTaker, messageTime) values('You','"+text+"','"+taker+"','"+timeText+"')");
 
                     Message message = new Message();
                     message.setMessageUser("You");
-                    message.setMessageText(input.getText().toString());
+                    message.setMessageText(text);
                     message.setMessageTime(timeText);
                     adapter.add(message);
-                    input.getText().clear();
+
                 }
             }
         });

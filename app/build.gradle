@@ -51,6 +51,7 @@ dependencies {
     // Single target that includes all FirebaseUI libraries above
     implementation 'com.firebaseui:firebase-ui:1.2.0'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'ru.egslava:MaskedEditText:1.0.5'
 
     implementation platform('com.google.firebase:firebase-bom:26.6.0')
     implementation 'androidx.appcompat:appcompat:1.2.0'

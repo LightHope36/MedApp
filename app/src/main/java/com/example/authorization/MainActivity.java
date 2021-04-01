@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Dialogs.class);
+                Intent intent = new Intent(getApplicationContext(), Reg.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0,0);
