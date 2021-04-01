@@ -124,7 +124,7 @@ public class Chat extends AppCompatActivity {
 
 
 
-        Cursor c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTime from messages", null);
+        Cursor c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageTaker=?", new String[] {taker});
         c.moveToFirst();
 
         int messageUserIndex = c.getColumnIndex("messageUser");
@@ -240,7 +240,7 @@ public class Chat extends AppCompatActivity {
                     input.getText().clear();
 
 
-//                    sqLiteDatabase.execSQL("insert into messages(messageUser,messageText, messageTaker, messageTime) values('You','"+text+"','"+taker+"','"+timeText+"')");
+                    sqLiteDatabase.execSQL("insert into messages(messageUser,messageText, messageTaker, messageTime) values('You','"+text+"','"+taker+"','"+timeText+"')");
 
                     Message message = new Message();
                     message.setMessageUser("You");

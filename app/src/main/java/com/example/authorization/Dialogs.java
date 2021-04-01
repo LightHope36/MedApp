@@ -7,6 +7,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,13 +45,42 @@ public class Dialogs extends AppCompatActivity {
         listView.setAdapter(adapter);
 
 
+        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
+        sqLiteDatabase.execSQL("create table if not exists messages\n" +
+                "(\n" +
+                "\tmessageUser varchar(1000), \n" +
+                "\tmessageText varchar(3000), \n" +
+                "\tmessageTaker varchar(1000), \n" +
+                "\tmessageTime varchar(100) \n" +
+                ");");
+
+
         for (int i=1; i<10; i++){
-            Person person = new Person();
-            person.setLastmessage("text"+i);
-            person.setName("User"+i);
-            person.setMessageTime("time");
-            person.setAvatar("ic_profile_1");
-            persons.add(person);
+            String taker = "user"+i;
+            try {
+                Cursor c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageTaker=?", new String[]{taker});
+                c.moveToLast();
+
+
+                int messageUserIndex = c.getColumnIndex("messageUser");
+                int messageTextIndex = c.getColumnIndex("messageText");
+                int messageTimeIndex = c.getColumnIndex("messageTime");
+
+                Person person = new Person();
+                person.setLastmessage(c.getString(messageTextIndex));
+                person.setName(taker);
+                person.setMessageTime(c.getString(messageTimeIndex));
+                person.setAvatar("ic_profile_1");
+                persons.add(person);
+            }
+            catch (Exception e){
+                Person person = new Person();
+                person.setLastmessage("Нет сообщений");
+                person.setName(taker);
+                person.setMessageTime("");
+                person.setAvatar("ic_profile_1");
+                persons.add(person);
+            }
         }
 
         search.setOnClickListener(new View.OnClickListener() {
