@@ -87,7 +87,7 @@ public class Dialogs extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Search.class);
-                intent.putExtra("dialogs", "Dialogs");
+                intent.putExtra("person", "0");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);

@@ -28,6 +28,7 @@ public class Search extends AppCompatActivity {
     private ImageView back;
     private EditText search;
     private ListView listView;
+    Cursor c;
 
 
     @Override
@@ -41,8 +42,7 @@ public class Search extends AppCompatActivity {
         listView = findViewById(R.id.list_of_messages_in_search);
 
         Intent intent = getIntent();
-        Person person = (Person) intent.getExtras().get("person");
-        String taker = person.getName();
+        String taker = (String) intent.getExtras().get("person");
 
         List<Message> messages = new ArrayList<>();
 
@@ -50,14 +50,14 @@ public class Search extends AppCompatActivity {
 
         listView.setAdapter(adapter);
 
-//        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
-//        sqLiteDatabase.execSQL("create table if not exists messages\n" +
-//                "(\n" +
-//                "\tmessageUser varchar(1000), \n" +
-//                "\tmessageText varchar(3000), \n" +
-//                "\tmessageTaker varchar(1000), \n" +
-//                "\tmessageTime varchar(100) \n" +
-//                ");");
+        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
+        sqLiteDatabase.execSQL("create table if not exists messages\n" +
+                "(\n" +
+                "\tmessageUser varchar(1000), \n" +
+                "\tmessageText varchar(3000), \n" +
+                "\tmessageTaker varchar(1000), \n" +
+                "\tmessageTime varchar(100) \n" +
+                ");");
 
 
 
@@ -72,39 +72,55 @@ public class Search extends AppCompatActivity {
         });
 
 
-//        search.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                String text = search.getText().toString();
-//
-//                Cursor c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageText=? and messageTaker=?", new String[] {text, taker});
-//                c.moveToFirst();
-//
-//                int messageUserIndex = c.getColumnIndex("messageUser");
-//                int messageTextIndex = c.getColumnIndex("messageText");
-//                int messageTimeIndex = c.getColumnIndex("messageTime");
-//
-//                while (!c.isAfterLast()) {
-//                    Message message = new Message();
-//                    message.setMessageUser(c.getString(messageUserIndex));
-//                    message.setMessageText(c.getString(messageTextIndex));
-//                    message.setMessageTime(c.getString(messageTimeIndex));
-//                    adapter.add(message);
-//                    c.moveToNext();
-//
-//                }
-//            }
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                String text = search.getText().toString();
+
+                if (!text.equals("")) {
+
+                    adapter.clear();
+
+                    if(!taker.equals("0")) {
+
+                        c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageText like '%' || ? || '%' and messageTaker=?", new String[]{text, taker});
+                    }
+                    else{
+                        c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageText like '%' || ? || '%' ", new String[]{text});
+
+                    }
+                    c.moveToFirst();
+
+
+                    int messageUserIndex = c.getColumnIndex("messageUser");
+                    int messageTextIndex = c.getColumnIndex("messageText");
+                    int messageTimeIndex = c.getColumnIndex("messageTime");
+
+                    while (!c.isAfterLast()) {
+                        Message message = new Message();
+                        message.setMessageUser(c.getString(messageUserIndex));
+                        message.setMessageText(c.getString(messageTextIndex));
+                        message.setMessageTime(c.getString(messageTimeIndex));
+                        adapter.add(message);
+                        c.moveToNext();
+
+                        }
+                }
+                else {
+                    adapter.clear();
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
     }
