@@ -38,6 +38,10 @@ public class Dialogs extends AppCompatActivity {
         listView = findViewById(R.id.list_of_persons);
         search = findViewById(R.id.search_dial);
 
+        Intent intent = getIntent();
+
+        String number = (String) intent.getExtras().get("number");
+
 
         List<Person> persons = new ArrayList<>();
 
@@ -45,31 +49,48 @@ public class Dialogs extends AppCompatActivity {
         listView.setAdapter(adapter);
 
 
-        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
-        sqLiteDatabase.execSQL("create table if not exists messages\n" +
+        SQLiteDatabase messagesDataBase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
+        messagesDataBase.execSQL("create table if not exists messages\n" +
                 "(\n" +
+                "\tmessageSender varchar(1000), \n" +
                 "\tmessageUser varchar(1000), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
+        SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
+        usersDataBase.execSQL("create table if not exists users\n" +
+                "(\n" +
+                "\tUserPhone varchar(1000), \n" +
+                "\tUserName varchar(1000), \n" +
+                "\tUserSurname varchar(1000), \n" +
+                "\tUserBirthday varchar(1000), \n" +
+                "\tUserPolis varchar(1000) \n" +
+                ");");
 
-        for (int i=1; i<10; i++){
-            String taker = "user"+i;
+        Cursor cper = usersDataBase.rawQuery("select UserPhone, UserName, UserSurname, UserBirthday from users where UserPhone!=?", new String[]{number});
+        cper.moveToFirst();
+
+        while (!cper.isAfterLast()) {
+
+            int UserNameIndex = cper.getColumnIndex("UserName");
+            int UserSurnameIndex = cper.getColumnIndex("UserSurname");
+            String taker = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
+
             try {
-                Cursor c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageTaker=?", new String[]{taker});
-                c.moveToLast();
+                Cursor cmes = messagesDataBase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageTaker=? and messageUser=?", new String[]{taker, number});
+                cmes.moveToLast();
 
 
-                int messageUserIndex = c.getColumnIndex("messageUser");
-                int messageTextIndex = c.getColumnIndex("messageText");
-                int messageTimeIndex = c.getColumnIndex("messageTime");
+                int messageUserIndex = cmes.getColumnIndex("messageUser");
+                int messageTextIndex = cmes.getColumnIndex("messageText");
+                int messageTimeIndex = cmes.getColumnIndex("messageTime");
 
                 Person person = new Person();
-                person.setLastmessage(c.getString(messageTextIndex));
+                person.setLastmessage(cmes.getString(messageTextIndex));
                 person.setName(taker);
-                person.setMessageTime(c.getString(messageTimeIndex));
+                person.setMessageTime(cmes.getString(messageTimeIndex));
                 person.setAvatar("ic_profile_1");
                 persons.add(person);
             }
@@ -81,6 +102,7 @@ public class Dialogs extends AppCompatActivity {
                 person.setAvatar("ic_profile_1");
                 persons.add(person);
             }
+            cper.moveToNext();
         }
 
         search.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +122,7 @@ public class Dialogs extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), Chat.class);
                 intent.putExtra("person", persons.get(position));
+                intent.putExtra("number", number);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);

@@ -3,6 +3,8 @@
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
@@ -27,27 +29,6 @@ public class auth4 extends AppCompatActivity{
     private TextView text;
     String ranStr = "";
 
-     void setRanStr () {
-        ranStr = "";
-        Random ran = new Random();
-        for(int i = 0; i <= 3; i ++){
-            int ranInt = ran.nextInt(9);
-             ranStr += ranInt;
-
-        }
-    }
-
-
-     public void snackBarView (View view, EditText editText){
-         Snackbar snackbar = Snackbar.make(view ,ranStr, Snackbar.LENGTH_LONG);
-         snackbar.show();
-         snackbar.setAction("Вставить", new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 editText.setText(ranStr);
-             }
-         });
-     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +43,22 @@ public class auth4 extends AppCompatActivity{
         EditText editText = findViewById(R.id.editTextNumber);
         Button messege = findViewById(R.id.messege);
         TextView text = findViewById(R.id.textView5);
+
+        Intent intent = getIntent();
+        final String number = (String) intent.getExtras().get("number");
+
+
+        SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
+        usersDataBase.execSQL("create table if not exists users\n" +
+                "(\n" +
+                "\tUserPhone varchar(10), \n" +
+                "\tUserName varchar(1000), \n" +
+                "\tUserSurname varchar(1000), \n" +
+                "\tUserBirthday varchar(1000), \n" +
+                "\tUserPolis varchar(1000) \n" +
+                ");");
+
+        Cursor cper = usersDataBase.rawQuery("select UserPhone from users where UserPhone=?", new String[]{number});
 
 
 
@@ -79,15 +76,25 @@ public class auth4 extends AppCompatActivity{
         next3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 System.out.println(ranStr);
-            if((editText.getText() + "").equals(ranStr)) {
-                sThread.close();
-                Intent intent = new Intent(getApplicationContext(), Reg.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-               }
+                if((editText.getText().toString()).equals(ranStr)) {
+                    if(cper.moveToFirst()){
+                        sThread.close();
+                        Intent intent_dial = new Intent(getApplicationContext(), Dialogs.class);
+                        intent_dial.putExtra("number", number);
+                        intent_dial.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent_dial);
+                        overridePendingTransition(0, 0);
+                    }
+                    else {
+                        sThread.close();
+                        Intent intent_reg = new Intent(getApplicationContext(), Reg.class);
+                        intent_reg.putExtra("number", number);
+                        intent_reg.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent_reg);
+                        overridePendingTransition(0, 0);
+                    }
+                }
             }
         });
 
@@ -139,11 +146,34 @@ public class auth4 extends AppCompatActivity{
     }
 
 
+    void setRanStr () {
+        ranStr = "";
+        Random ran = new Random();
+        for(int i = 0; i <= 3; i ++){
+            int ranInt = ran.nextInt(9);
+            ranStr += ranInt;
+
+        }
+    }
+
+
+    public void snackBarView (View view, EditText editText){
+        Snackbar snackbar = Snackbar.make(view ,ranStr, Snackbar.LENGTH_LONG);
+        snackbar.show();
+        snackbar.setAction("Вставить", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.setText(ranStr);
+            }
+        });
+    }
 
     interface In {
         void act(String s);
         void anact(String s);
     }
+
+
 
     static class sThread extends Thread{
         private static boolean isActive;

@@ -96,6 +96,7 @@ public class Chat extends AppCompatActivity {
 
         Intent intent = getIntent();
         Person person = (Person) intent.getExtras().get("person");
+        String number = (String) intent.getExtras().get("number");
         if(person != null){
             int imageId = getResources().getIdentifier(person.getAvatar(), "drawable", getPackageName());
             avatar.setImageResource(imageId);
@@ -116,22 +117,21 @@ public class Chat extends AppCompatActivity {
         SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
         sqLiteDatabase.execSQL("create table if not exists messages\n" +
                 "(\n" +
-                "\tmessageUser varchar(1000), \n" +
+                "\tmessageUser varchar(10), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
-        Cursor c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageTaker=?", new String[] {taker});
+        Cursor c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageTaker=? and messageUser=?", new String[] {taker, number});
         c.moveToFirst();
 
-        int messageUserIndex = c.getColumnIndex("messageUser");
         int messageTextIndex = c.getColumnIndex("messageText");
         int messageTimeIndex = c.getColumnIndex("messageTime");
 
         while (!c.isAfterLast()) {
             Message message = new Message();
-            message.setMessageUser(c.getString(messageUserIndex));
+            message.setMessageUser("You");
             message.setMessageText(c.getString(messageTextIndex));
             message.setMessageTime(c.getString(messageTimeIndex));
             adapter.add(message);
@@ -185,6 +185,7 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Dialogs.class);
+                intent.putExtra("number", number);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -238,7 +239,7 @@ public class Chat extends AppCompatActivity {
                     input.getText().clear();
 
 
-                    sqLiteDatabase.execSQL("insert into messages(messageUser,messageText, messageTaker, messageTime) values('You','"+text+"','"+taker+"','"+timeText+"')");
+                    sqLiteDatabase.execSQL("insert into messages(messageUser,messageText, messageTaker, messageTime) values('"+number+"','"+text+"','"+taker+"','"+timeText+"')");
 
                     Message message = new Message();
                     message.setMessageUser("You");
@@ -247,6 +248,30 @@ public class Chat extends AppCompatActivity {
                     adapter.add(message);
 
                 }
+            }
+        });
+
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(input.getText().toString().equals("")){
+                    mic.setVisibility(View.VISIBLE);
+                    send.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    mic.setVisibility(View.INVISIBLE);
+                    send.setVisibility(View.VISIBLE);
+                }
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 

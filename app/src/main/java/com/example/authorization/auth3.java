@@ -31,6 +31,7 @@ public class auth3 extends AppCompatActivity {
     private Button back2;
     private EditText reg;
     private TextView errortext;
+    private EditText input;
 
 
 
@@ -58,7 +59,13 @@ public class auth3 extends AppCompatActivity {
                 }else {
                     if (reg.getText().length() <= 4 & reg.getText().charAt(0) == '+') {
                         if (phone.length() == 10) {
+                            String number = phone.getText().toString();
+
+                            Intent intent_dialogs = new Intent(getApplicationContext(), Dialogs.class);
+                            intent_dialogs.putExtra("number", number);
+
                             Intent intent = new Intent(getApplicationContext(), auth4.class);
+                            intent.putExtra("number", number);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             startActivity(intent);
                             overridePendingTransition(0, 0);
@@ -71,6 +78,7 @@ public class auth3 extends AppCompatActivity {
                 }
             }
         });
+
         back2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
