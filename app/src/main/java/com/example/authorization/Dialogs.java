@@ -52,11 +52,10 @@ public class Dialogs extends AppCompatActivity {
         SQLiteDatabase messagesDataBase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
         messagesDataBase.execSQL("create table if not exists messages\n" +
                 "(\n" +
-                "\tmessageSender varchar(1000), \n" +
                 "\tmessageUser varchar(1000), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
-                "\tmessageTime varchar(100) \n" +
+                "\tmessageTime int \n" +
                 ");");
 
         SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
