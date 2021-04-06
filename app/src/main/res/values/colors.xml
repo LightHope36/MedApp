@@ -16,4 +16,5 @@
     <color name="start_background">#F8FBFC</color>
     <color name="back_of_my_message">#E3F8FA</color>
     <color name="back_of_message">#F8F8F7</color>
+    <color name="red">#F44336</color>
 </resources>

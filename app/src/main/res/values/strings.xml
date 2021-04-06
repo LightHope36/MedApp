@@ -30,6 +30,7 @@
     <string name="Имя">Имя:</string>
     <string name="Фамилия">Фамилия:</string>
     <string name="Дата_рождения">Дата рождения:</string>
+    <string name="Не_все_поля">* Заполните обязательные поля</string>
     <string name="Полис">Полис ОМС (не обязательно):</string>
 
     <!-- Меню чата. -->

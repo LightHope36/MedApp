@@ -156,7 +156,7 @@
                         android:id="@+id/textView11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="16dp"
                         android:fontFamily="@font/manrope_regular"
                         android:text="@string/Дата_рождения"
                         android:textColor="@color/black"
@@ -172,7 +172,7 @@
                         android:text="@string/Полис"
                         android:textColor="@color/black"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/birthday" />
+                        app:layout_constraintTop_toBottomOf="@+id/error" />
 
                     <EditText
                         android:id="@+id/Surname"
@@ -227,6 +227,16 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView12"
                         tools:targetApi="lollipop" />
+
+                    <TextView
+                        android:id="@+id/error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16sp"
+                        android:enabled="false"
+                        android:fontFamily="@font/manrope_regular"
+                        android:textColor="@color/red"
+                        app:layout_constraintTop_toBottomOf="@+id/birthday" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </ScrollView>
