@@ -31,6 +31,8 @@ public class Reg extends AppCompatActivity {
     public String Usersurname;
     public String Userbithday;
     public String Userpolis;
+    public TextView error;
+
 
     Calendar dateAndTime=Calendar.getInstance();
 
@@ -48,6 +50,7 @@ public class Reg extends AppCompatActivity {
         name = findViewById(R.id.Name);
         surname = findViewById(R.id.Surname);
         polis = findViewById(R.id.Polis);
+        error = findViewById(R.id.error);
 
         Intent intent = getIntent();
         String number = (String) intent.getExtras().get("number");
@@ -103,7 +106,8 @@ public class Reg extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Введены не все обязательные данные", Toast.LENGTH_LONG).show();
+                    error.setText(getString(R.string.Не_все_поля));
+                    //Toast.makeText(getApplicationContext(), "Введены не все обязательные данные", Toast.LENGTH_LONG).show();
                 }
             }
         });
