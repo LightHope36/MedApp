@@ -74,27 +74,30 @@ public class Dialogs extends AppCompatActivity {
         while (!cper.isAfterLast()) {
 
             int UserNameIndex = cper.getColumnIndex("UserName");
+            int UserPhoneIndex = cper.getColumnIndex("UserPhone");
             int UserSurnameIndex = cper.getColumnIndex("UserSurname");
-            String taker = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
+            String taker = cper.getString(UserPhoneIndex);
+            String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
 
             try {
                 Cursor cmes = messagesDataBase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageTaker=? and messageUser=?", new String[]{taker, number});
                 cmes.moveToLast();
-
 
                 int messageUserIndex = cmes.getColumnIndex("messageUser");
                 int messageTextIndex = cmes.getColumnIndex("messageText");
                 int messageTimeIndex = cmes.getColumnIndex("messageTime");
 
                 Person person = new Person();
+                person.setNumber(cper.getString(UserPhoneIndex));
                 person.setLastmessage(cmes.getString(messageTextIndex));
-                person.setName(taker);
+                person.setName(taker_text);
                 person.setMessageTime(cmes.getString(messageTimeIndex));
                 person.setAvatar("ic_profile_1");
                 persons.add(person);
             }
             catch (Exception e){
                 Person person = new Person();
+                person.setNumber(cper.getString(UserPhoneIndex));
                 person.setLastmessage("Нет сообщений");
                 person.setName(taker);
                 person.setMessageTime("");

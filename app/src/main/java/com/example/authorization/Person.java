@@ -8,6 +8,15 @@ public class Person implements Serializable {
     private String name;
     private String messageTime;
     private String lastmessage;
+    private String number;
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
     public String getAvatar() {
         return avatar;

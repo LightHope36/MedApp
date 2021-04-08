@@ -59,7 +59,15 @@ public class Search extends AppCompatActivity {
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
-
+        SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
+        usersDataBase.execSQL("create table if not exists users\n" +
+                "(\n" +
+                "\tUserPhone varchar(1000), \n" +
+                "\tUserName varchar(1000), \n" +
+                "\tUserSurname varchar(1000), \n" +
+                "\tUserBirthday varchar(1000), \n" +
+                "\tUserPolis varchar(1000) \n" +
+                ");");
 
 
 
