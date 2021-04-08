@@ -101,7 +101,10 @@ public class auth4 extends AppCompatActivity{
         messege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 setRanStr();
+                String [] strings = new String[]{getString(R.string.Время_на_подтверждение1),
+                                                 getString(R.string.Время_на_подтверждение2),
+                                                 getString(R.string.Отправить_повторно)};
+                setRanStr();
                  snackBarView(v,editText);
                  messege.setClickable(false);
                  messege.setVisibility(View.GONE);
@@ -131,13 +134,13 @@ public class auth4 extends AppCompatActivity{
                                          text.setText(s);
                                          text.setClickable(true);
                                      }
-                                 }).start();
+                                 }, strings).start();
 
 
                              }
                          });
                      }
-                 }).start();
+                 }, strings).start();
 
             }
         });
@@ -177,15 +180,17 @@ public class auth4 extends AppCompatActivity{
 
     static class sThread extends Thread{
         private static boolean isActive;
+        private static String [] strings;
 
        static void close(){
             isActive = false;
         }
 
         private In in;
-        public sThread(String name, In in){
+        public sThread(String name, In in, String [] strings){
             super(name);
             this.in = in;
+            this.strings = strings;
         }
 
         @Override
@@ -199,14 +204,15 @@ public class auth4 extends AppCompatActivity{
 
                         if (i > 0) {
                             String si = i + "";
-                            s = "Отправить код повторно через " + si + " сек";
+
+                            s = strings[0] + " " + si + " " + strings[1];
                             in.act(s);
                             Thread.sleep(1000);
                             i--;
 
 
                         } else {
-                            in.anact("Нажмите для повторного кода");
+                            in.anact(strings[2]);
                             break;
 
                     }
