@@ -55,7 +55,7 @@ public class Chat extends AppCompatActivity {
     private TextView name;
     private ConstraintLayout cs;
     private int count;
-    private int count2;
+    public int count2=1;
     private ImageView send;
     private EditText input;
     private ImageView mic;
@@ -123,18 +123,38 @@ public class Chat extends AppCompatActivity {
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
-        Cursor c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageTaker=? and messageUser=?", new String[] {taker, number});
+        Cursor c = sqLiteDatabase.rawQuery("select * from messages where ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))", new String[] {taker, number, taker, number});
         c.moveToFirst();
 
         int messageTextIndex = c.getColumnIndex("messageText");
         int messageTimeIndex = c.getColumnIndex("messageTime");
+        int messageUserIndex = c.getColumnIndex("messageUser");
+
 
         while (!c.isAfterLast()) {
+
+
+            String timeText = c.getString(messageTimeIndex);
             Message message = new Message();
-            message.setMessageUser("You");
-            message.setMessageText(c.getString(messageTextIndex));
-            message.setMessageTime(c.getString(messageTimeIndex));
-            adapter.add(message);
+
+            if ((c.getString(messageUserIndex)).equals(number)) {
+                message.setMessageUser("You");
+                message.setMessageText(c.getString(messageTextIndex));
+                message.setMessageTime(timeText);
+
+                count2 = 1;
+                listView.setAdapter(adapter);
+                adapter.add(message);
+            }
+            else{
+                message.setMessageUser(c.getString(messageUserIndex));
+                message.setMessageText(c.getString(messageTextIndex));
+                message.setMessageTime(timeText);
+
+                count2 = 2;
+                listView.setAdapter(adapter);
+                adapter.add(message);
+            }
             c.moveToNext();
         }
 
@@ -232,8 +252,10 @@ public class Chat extends AppCompatActivity {
                 else{
 
                     Date currentDate = new Date();
+
                     DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
                     String timeText = timeFormat.format(currentDate);
+
                     String text = input.getText().toString();
 
                     input.getText().clear();
@@ -245,6 +267,7 @@ public class Chat extends AppCompatActivity {
                     message.setMessageUser("You");
                     message.setMessageText(text);
                     message.setMessageTime(timeText);
+                    count2 = 1;
                     adapter.add(message);
 
                 }
@@ -312,7 +335,8 @@ public class Chat extends AppCompatActivity {
     }
 
 
-    private static class MessageAdapter extends ArrayAdapter<Message> {
+    private class MessageAdapter extends ArrayAdapter<Message> {
+
 
         public MessageAdapter(@NonNull Context context, int resource, @NonNull List<Message> objects) {
             super(context, resource, objects);
@@ -323,21 +347,39 @@ public class Chat extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             Message message = getItem(position);
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.my_message, null);
+
+            if(count2 == 1) {
+                convertView = inflater.inflate(R.layout.my_message, null);
 
 
-            MessageHolder holder = new MessageHolder();
-            holder.UserName = convertView.findViewById(R.id.message_user);
-            holder.UserText = convertView.findViewById(R.id.message_text);
-            holder.Time = convertView.findViewById(R.id.message_time);
+                MessageHolder holder = new MessageHolder();
+                holder.UserName = convertView.findViewById(R.id.message_user);
+                holder.UserText = convertView.findViewById(R.id.message_text);
+                holder.Time = convertView.findViewById(R.id.message_time);
 
 
+                holder.UserName.setText(message.getMessageUser());
+                holder.UserText.setText(message.getMessageText());
+                holder.Time.setText(message.getMessageTime());
 
-            holder.UserName.setText(message.getMessageUser());
-            holder.UserText.setText(message.getMessageText());
-            holder.Time.setText(message.getMessageTime());
+                convertView.setTag(holder);
+            }
+            if(count2 == 2) {
+                convertView = inflater.inflate(R.layout.message, null);
 
-            convertView.setTag(holder);
+
+                MessageHolder holder = new MessageHolder();
+                holder.UserName = convertView.findViewById(R.id.message_user);
+                holder.UserText = convertView.findViewById(R.id.message_text);
+                holder.Time = convertView.findViewById(R.id.message_time);
+
+
+                holder.UserName.setText(message.getMessageUser());
+                holder.UserText.setText(message.getMessageText());
+                holder.Time.setText(message.getMessageTime());
+
+                convertView.setTag(holder);
+            }
             return convertView;
         }
     }
