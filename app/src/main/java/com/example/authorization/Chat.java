@@ -135,8 +135,8 @@ public class Chat extends AppCompatActivity {
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
-        SQLiteDatabase allmessagesDataBase = openOrCreateDatabase("allmessagesDataBase", MODE_PRIVATE, null);
-        VisibleMessagesDataBase.execSQL("create table if not exists allmessagesDataBase\n" +
+        SQLiteDatabase allmessagesDataBase = openOrCreateDatabase("AllMessages", MODE_PRIVATE, null);
+        allmessagesDataBase.execSQL("create table if not exists AllMessages\n" +
                 "(\n" +
                 "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "\tmessageUser varchar(10), \n" +
@@ -228,7 +228,7 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 adapter.clear();
-                VisibleMessagesDataBase.delete("VisibleMessages", "User" + "=\"" + user, new String[]{user});
+                VisibleMessagesDataBase.execSQL("DELETE FROM VisibleMessages where User=? and messageTaker = ?", new String[]{user, taker});
             }
         });
 
@@ -325,7 +325,7 @@ public class Chat extends AppCompatActivity {
                     Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessages", null);
                     cmes.moveToLast();
 
-                    allmessagesDataBase.execSQL("insert into allmessagesDataBase(messageUser,messageText, messageTaker, messageTime) values('"+number+"','"+text+"','"+taker+"','"+timeText+"')");
+                    allmessagesDataBase.execSQL("insert into AllMessages(messageUser,messageText, messageTaker, messageTime) values('"+number+"','"+text+"','"+taker+"','"+timeText+"')");
 
                     int messageIDIndex = cmes.getColumnIndex("ID");
 
