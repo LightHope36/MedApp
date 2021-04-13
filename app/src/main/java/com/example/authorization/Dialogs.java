@@ -49,9 +49,10 @@ public class Dialogs extends AppCompatActivity {
         listView.setAdapter(adapter);
 
 
-        SQLiteDatabase messagesDataBase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
-        messagesDataBase.execSQL("create table if not exists messages\n" +
+        SQLiteDatabase messagesDataBase = openOrCreateDatabase("VisibleMessages", MODE_PRIVATE, null);
+        messagesDataBase.execSQL("create table if not exists VisibleMessages\n" +
                 "(\n" +
+                "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "\tmessageUser varchar(1000), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
@@ -80,7 +81,7 @@ public class Dialogs extends AppCompatActivity {
             String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
 
             try {
-                Cursor cmes = messagesDataBase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageTaker=? and messageUser=?", new String[]{taker, number});
+                Cursor cmes = messagesDataBase.rawQuery("select * from VisibleMessages where messageTaker=? and messageUser=?", new String[]{taker, number});
                 cmes.moveToLast();
 
                 int messageUserIndex = cmes.getColumnIndex("messageUser");
@@ -99,7 +100,7 @@ public class Dialogs extends AppCompatActivity {
                 Person person = new Person();
                 person.setNumber(cper.getString(UserPhoneIndex));
                 person.setLastmessage("Нет сообщений");
-                person.setName(taker);
+                person.setName(taker_text);
                 person.setMessageTime("");
                 person.setAvatar("ic_profile_1");
                 persons.add(person);

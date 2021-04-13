@@ -11,6 +11,7 @@ public class Message implements Serializable {
     private String messageText;
     private String messageUser;
     private String messageTime;
+    private Long messageId;
 
     public Message(String messageText, String messageUser, String messageTime) {
         this.messageText = messageText;
@@ -26,6 +27,13 @@ public class Message implements Serializable {
     }
 
 
+    public void setMessageId(Long messageId) {
+        this.messageId = messageId;
+    }
+
+    public Long getMessageId() {
+        return messageId;
+    }
 
     public String getMessageText() {
         return messageText;

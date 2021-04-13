@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,7 +43,9 @@ public class Search extends AppCompatActivity {
         listView = findViewById(R.id.list_of_messages_in_search);
 
         Intent intent = getIntent();
-        String taker = (String) intent.getExtras().get("person");
+        Person person = (Person) intent.getExtras().get("person");
+        String number = (String) intent.getExtras().get("number");
+        String taker = person.getNumber();
 
         List<Message> messages = new ArrayList<>();
 
@@ -50,9 +53,10 @@ public class Search extends AppCompatActivity {
 
         listView.setAdapter(adapter);
 
-        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
-        sqLiteDatabase.execSQL("create table if not exists messages\n" +
+        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("VisibleMessages", MODE_PRIVATE, null);
+        sqLiteDatabase.execSQL("create table if not exists VisibleMessages\n" +
                 "(\n" +
+                "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "\tmessageUser varchar(1000), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
@@ -70,7 +74,18 @@ public class Search extends AppCompatActivity {
                 ");");
 
 
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), Chat.class);
+                intent.putExtra("messageId", messages.get(position).getMessageId());
+                intent.putExtra("person", person);
+                intent.putExtra("number", number);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,10 +112,10 @@ public class Search extends AppCompatActivity {
 
                     if(!taker.equals("0")) {
 
-                        c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageText like '%' || ? || '%' and messageTaker=?", new String[]{text, taker});
+                        c = sqLiteDatabase.rawQuery("select * from VisibleMessages where messageText like '%' || ? || '%' and messageTaker=?", new String[]{text, taker});
                     }
                     else{
-                        c = sqLiteDatabase.rawQuery("select messageUser, messageText, messageTaker, messageTime from messages where messageText like '%' || ? || '%' ", new String[]{text});
+                        c = sqLiteDatabase.rawQuery("select * from VisibleMessages where messageText like '%' || ? || '%' ", new String[]{text});
 
                     }
                     c.moveToFirst();
@@ -109,9 +124,11 @@ public class Search extends AppCompatActivity {
                     int messageUserIndex = c.getColumnIndex("messageUser");
                     int messageTextIndex = c.getColumnIndex("messageText");
                     int messageTimeIndex = c.getColumnIndex("messageTime");
+                    int messageIDIndex = c.getColumnIndex("ID");
 
                     while (!c.isAfterLast()) {
                         Message message = new Message();
+                        message.setMessageId(c.getLong(messageIDIndex));
                         message.setMessageUser(c.getString(messageUserIndex));
                         message.setMessageText(c.getString(messageTextIndex));
                         message.setMessageTime(c.getString(messageTimeIndex));

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,28 +15,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -53,19 +47,24 @@ public class Chat extends AppCompatActivity {
     private ImageView menu;
     private ImageView avatar;
     private TextView name;
-    private ConstraintLayout cs;
+    private LinearLayout cs;
     private int count;
-    private int count3=1;
     public int count2=1;
+    public int messageType;
     private ImageView send;
     private EditText input;
     private ImageView mic;
     private ConstraintLayout bot;
     private ConstraintLayout details;
+    private ConstraintLayout delete_chat;
     private ImageView add_image;
     static final int GALLERY_REQUEST = 1;
     private ImageView search;
     private ConstraintLayout search_open;
+    private ConstraintLayout layout;
+    private long id=0;
+    private int i=0;
+    private int n=0;
 
 
     @Override
@@ -91,7 +90,8 @@ public class Chat extends AppCompatActivity {
         add_image = findViewById(R.id.add_image);
         search = findViewById(R.id.search);
         search_open = findViewById(R.id.search_cs_chat_open);
-        ConstraintLayout cs = findViewById(R.id.message_cs);
+        layout = findViewById(R.id.clicker);
+        delete_chat = findViewById(R.id.delete_chat_cs);
 
 
 
@@ -99,6 +99,16 @@ public class Chat extends AppCompatActivity {
         Intent intent = getIntent();
         Person person = (Person) intent.getExtras().get("person");
         String number = (String) intent.getExtras().get("number");
+        String user = number;
+
+
+        try{
+            id = (long) intent.getExtras().get("messageId");
+
+        } catch (Exception e){}
+
+        cs.setVisibility(View.INVISIBLE);
+
         if(person != null){
             int imageId = getResources().getIdentifier(person.getAvatar(), "drawable", getPackageName());
             avatar.setImageResource(imageId);
@@ -110,27 +120,40 @@ public class Chat extends AppCompatActivity {
         List<Message> messages = new ArrayList<>();
 
         MessageAdapter adapter = new MessageAdapter (getApplicationContext(), R.layout.message, messages);
+        listView.setAdapter(adapter);
 
         String taker = person.getNumber();
 
-        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("messages", MODE_PRIVATE, null);
-        sqLiteDatabase.execSQL("create table if not exists messages\n" +
+        SQLiteDatabase VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessages", MODE_PRIVATE, null);
+        VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessages\n" +
                 "(\n" +
+                "\tUser varchar(10), \n" +
+                "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "\tmessageUser varchar(10), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
-        Cursor c = sqLiteDatabase.rawQuery("select * from messages where ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))", new String[] {taker, number, taker, number});
-        c.moveToFirst();
+        SQLiteDatabase allmessagesDataBase = openOrCreateDatabase("allmessagesDataBase", MODE_PRIVATE, null);
+        VisibleMessagesDataBase.execSQL("create table if not exists allmessagesDataBase\n" +
+                "(\n" +
+                "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
+                "\tmessageUser varchar(10), \n" +
+                "\tmessageText varchar(3000), \n" +
+                "\tmessageTaker varchar(1000), \n" +
+                "\tmessageTime varchar(100) \n" +
+                ");");
 
+        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessages where ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))", new String[] {taker, number, taker, number});
+        c.moveToFirst();
 
         while (!c.isAfterLast()) {
 
             int messageTextIndex = c.getColumnIndex("messageText");
             int messageTimeIndex = c.getColumnIndex("messageTime");
             int messageUserIndex = c.getColumnIndex("messageUser");
+            int messageIDIndex = c.getColumnIndex("ID");
 
 
 
@@ -138,26 +161,42 @@ public class Chat extends AppCompatActivity {
             Message message = new Message();
 
             if ((c.getString(messageUserIndex)).equals(number)) {
-
-
+                message.setMessageId(c.getLong(messageIDIndex));
                 message.setMessageUser("You");
                 message.setMessageText(c.getString(messageTextIndex));
                 message.setMessageTime(timeText);
 
-                listView.setAdapter(adapter);
+
+                messageType=1;
+                if(c.getLong(messageIDIndex)==id){
+                    n=i;
+                }
+                i++;
+
                 adapter.add(message);
+
             }
             else{
-
+                messageType=2;
+                message.setMessageId(c.getLong(messageIDIndex));
                 message.setMessageUser(person.getName());
                 message.setMessageText(c.getString(messageTextIndex));
                 message.setMessageTime(timeText);
 
-                listView.setAdapter(adapter);
+                if(c.getLong(messageIDIndex)==id){
+                    n=i;
+                }
+                i++;
+
                 adapter.add(message);
             }
             c.moveToNext();
         }
+
+        if (n == 0) {
+            n=i;
+        }
+        listView.smoothScrollToPosition(n);
 
 
 //        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -175,7 +214,23 @@ public class Chat extends AppCompatActivity {
 //        });
 
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (count%2==1) {
+                    count++;
+                    cs.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
+        delete_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.clear();
+                VisibleMessagesDataBase.delete("VisibleMessages", "User" + "=\"" + user, new String[]{user});
+            }
+        });
 
         app.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,8 +287,11 @@ public class Chat extends AppCompatActivity {
         search_open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                cs.setVisibility(View.INVISIBLE);
                 Intent intent = new Intent(getApplicationContext(), Search.class);
-                intent.putExtra("person", taker);
+                intent.putExtra("person", person);
+                intent.putExtra("number", number);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -254,10 +312,6 @@ public class Chat extends AppCompatActivity {
 
                     Date currentDate = new Date();
 
-                    count3 = 1;
-                    MessageAdapter adapter = new MessageAdapter (getApplicationContext(), R.layout.my_message, messages);
-
-
                     DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
                     String timeText = timeFormat.format(currentDate);
 
@@ -266,16 +320,27 @@ public class Chat extends AppCompatActivity {
                     input.getText().clear();
 
 
-                    sqLiteDatabase.execSQL("insert into messages(messageUser,messageText, messageTaker, messageTime) values('"+number+"','"+text+"','"+taker+"','"+timeText+"')");
+                    VisibleMessagesDataBase.execSQL("insert into VisibleMessages(messageUser,messageText, messageTaker, messageTime) values('"+number+"','"+text+"','"+taker+"','"+timeText+"')");
 
+                    Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessages", null);
+                    cmes.moveToLast();
+
+                    allmessagesDataBase.execSQL("insert into allmessagesDataBase(messageUser,messageText, messageTaker, messageTime) values('"+number+"','"+text+"','"+taker+"','"+timeText+"')");
+
+                    int messageIDIndex = cmes.getColumnIndex("ID");
+
+                    messageType=1;
                     Message message = new Message();
+                    message.setMessageId(cmes.getLong(messageIDIndex));
                     message.setMessageUser("You");
                     message.setMessageText(text);
                     message.setMessageTime(timeText);
-                    count2 = 1;
                     adapter.add(message);
 
                 }
+                i++;
+                n=i;
+                listView.smoothScrollToPosition(n);
             }
         });
 
@@ -313,10 +378,23 @@ public class Chat extends AppCompatActivity {
         });
 
 
-
     }
 
+    public int getViewType(int messageType) {
+        if (messageType==1) {
+            return 1;
+        } else{
+            return 2;
+        }
+    }
 
+    public boolean onTouchEvent(MotionEvent event) {
+        if (count%2==1) {
+            count++;
+            cs.setVisibility(View.INVISIBLE);
+        }
+        return super.onTouchEvent(event);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
@@ -353,20 +431,31 @@ public class Chat extends AppCompatActivity {
             Message message = getItem(position);
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
-            convertView = inflater.inflate(R.layout.message, null);
+            MessageHolder holder = null;
+            convertView = null;
 
+            int viewType = getViewType(messageType);
 
-            MessageHolder holder = new MessageHolder();
+            Toast.makeText(getApplicationContext(), "" + viewType + "", Toast.LENGTH_SHORT).show();
+
+            switch(viewType){
+                case 1:
+                    convertView = inflater.inflate(R.layout.my_message, null);
+                    break;
+                case 2:
+                    convertView = inflater.inflate(R.layout.message, null);
+                    break;
+
+            }
+            holder = new MessageHolder();
+
             holder.UserName = convertView.findViewById(R.id.message_user);
             holder.UserText = convertView.findViewById(R.id.message_text);
             holder.Time = convertView.findViewById(R.id.message_time);
 
-
             holder.UserName.setText(message.getMessageUser());
             holder.UserText.setText(message.getMessageText());
             holder.Time.setText(message.getMessageTime());
-
-            convertView.setTag(holder);
 
             return convertView;
         }
