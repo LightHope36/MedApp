@@ -49,8 +49,8 @@ public class Dialogs extends AppCompatActivity {
         listView.setAdapter(adapter);
 
 
-        SQLiteDatabase messagesDataBase = openOrCreateDatabase("VisibleMessages", MODE_PRIVATE, null);
-        messagesDataBase.execSQL("create table if not exists VisibleMessages\n" +
+        SQLiteDatabase messagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
+        messagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
                 "(\n" +
                 "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "\tmessageUser varchar(1000), \n" +
@@ -81,7 +81,7 @@ public class Dialogs extends AppCompatActivity {
             String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
 
             try {
-                Cursor cmes = messagesDataBase.rawQuery("select * from VisibleMessages where messageTaker=? and messageUser=?", new String[]{taker, number});
+                Cursor cmes = messagesDataBase.rawQuery("select * from VisibleMessagess where messageTaker=? and messageUser=?", new String[]{taker, number});
                 cmes.moveToLast();
 
                 int messageUserIndex = cmes.getColumnIndex("messageUser");

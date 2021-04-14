@@ -137,6 +137,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/vlojenia"
             android:layout_width="match_parent"
             android:layout_height="54dp">
 
@@ -162,18 +163,19 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/add_to_contacts_cs"
             android:layout_width="match_parent"
             android:layout_height="54dp">
 
-<!--            <ImageView-->
-<!--                android:id="@+id/add_to_contacts_image"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="20dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:srcCompat="@drawable/ic_bin" />-->
+            <!--            <ImageView-->
+            <!--                android:id="@+id/add_to_contacts_image"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="20dp"-->
+            <!--                android:layout_marginTop="20dp"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                app:srcCompat="@drawable/ic_bin" />-->
 
             <TextView
                 android:id="@+id/add_to_contacts"

@@ -2,16 +2,19 @@ package com.example.authorization;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -62,11 +65,16 @@ public class Chat extends AppCompatActivity {
     private ImageView search;
     private ConstraintLayout search_open;
     private ConstraintLayout layout;
+    private ConstraintLayout vlojenia;
+    private ConstraintLayout add_to_contacts;
     private long id=0;
     private int i=0;
     private int n=0;
+    public String number;
+    public String user;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getSupportActionBar().hide();
@@ -92,14 +100,16 @@ public class Chat extends AppCompatActivity {
         search_open = findViewById(R.id.search_cs_chat_open);
         layout = findViewById(R.id.clicker);
         delete_chat = findViewById(R.id.delete_chat_cs);
+        vlojenia = findViewById(R.id.vlojenia);
+        add_to_contacts = findViewById(R.id.add_to_contacts_cs);
 
 
 
 
         Intent intent = getIntent();
         Person person = (Person) intent.getExtras().get("person");
-        String number = (String) intent.getExtras().get("number");
-        String user = number;
+        number = (String) intent.getExtras().get("number");
+        user = (String) intent.getExtras().get("number");
 
 
         try{
@@ -119,16 +129,16 @@ public class Chat extends AppCompatActivity {
 
         List<Message> messages = new ArrayList<>();
 
-        MessageAdapter adapter = new MessageAdapter (getApplicationContext(), R.layout.message, messages);
+        MessageAdapter adapter = new MessageAdapter (this);
         listView.setAdapter(adapter);
 
         String taker = person.getNumber();
 
-        SQLiteDatabase VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessages", MODE_PRIVATE, null);
-        VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessages\n" +
+        SQLiteDatabase VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
+        VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
                 "(\n" +
-                "\tUser varchar(10), \n" +
                 "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
+                "\tmessageSender varchar(100), \n" +
                 "\tmessageUser varchar(10), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
@@ -145,7 +155,7 @@ public class Chat extends AppCompatActivity {
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
-        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessages where ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))", new String[] {taker, number, taker, number});
+        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))", new String[] {taker, number, taker, number});
         c.moveToFirst();
 
         while (!c.isAfterLast()) {
@@ -228,7 +238,69 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 adapter.clear();
-                VisibleMessagesDataBase.execSQL("DELETE FROM VisibleMessages where User=? and messageTaker = ?", new String[]{user, taker});
+                VisibleMessagesDataBase.execSQL( "delete from VisibleMessagess where messageSender = ? and messageTaker=? ", new String[] {user, taker});
+            }
+        });
+
+        delete_chat.setOnTouchListener(new View.OnTouchListener(){
+
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: // нажатие
+                        delete_chat.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
+                        break;
+                    case MotionEvent.ACTION_MOVE: // движение
+                        break;
+                    case MotionEvent.ACTION_UP: // отпускание
+                        delete_chat.setBackground(getDrawable(R.drawable.rectangular_white));
+                        adapter.clear();
+                        VisibleMessagesDataBase.execSQL( "delete from VisibleMessagess where messageSender = ? and messageTaker=? ", new String[] {user, taker});
+                    case MotionEvent.ACTION_CANCEL:
+                        break;
+                }
+                return true;
+            }
+        });
+
+        vlojenia.setOnTouchListener(new View.OnTouchListener(){
+
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: // нажатие
+                        vlojenia.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
+                        break;
+                    case MotionEvent.ACTION_MOVE: // движение
+                        break;
+                    case MotionEvent.ACTION_UP: // отпускание
+                        vlojenia.setBackground(getDrawable(R.drawable.rectangular_white));
+                    case MotionEvent.ACTION_CANCEL:
+                        break;
+                }
+                return true;
+            }
+        });
+
+        add_to_contacts.setOnTouchListener(new View.OnTouchListener(){
+
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: // нажатие
+                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
+                        break;
+                    case MotionEvent.ACTION_MOVE: // движение
+                        break;
+                    case MotionEvent.ACTION_UP: // отпускание
+                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_white));
+                    case MotionEvent.ACTION_CANCEL:
+                        break;
+                }
+                return true;
             }
         });
 
@@ -284,6 +356,36 @@ public class Chat extends AppCompatActivity {
         });
 
 
+
+        search_open.setOnTouchListener(new View.OnTouchListener(){
+
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: // нажатие
+                        search_open.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
+                        break;
+                    case MotionEvent.ACTION_MOVE: // движение
+                        break;
+                    case MotionEvent.ACTION_UP: // отпускание
+                        search_open.setBackground(getDrawable(R.drawable.rectangular_white));
+                        count++;
+                        cs.setVisibility(View.INVISIBLE);
+                        Intent intent = new Intent(getApplicationContext(), Search.class);
+                        intent.putExtra("person", person);
+                        intent.putExtra("number", number);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                    case MotionEvent.ACTION_CANCEL:
+                        break;
+                }
+                return true;
+            }
+        });
+
+
         search_open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -320,9 +422,9 @@ public class Chat extends AppCompatActivity {
                     input.getText().clear();
 
 
-                    VisibleMessagesDataBase.execSQL("insert into VisibleMessages(messageUser,messageText, messageTaker, messageTime) values('"+number+"','"+text+"','"+taker+"','"+timeText+"')");
+                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageSender, messageUser,messageText, messageTaker, messageTime) values('"+user+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
 
-                    Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessages", null);
+                    Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess", null);
                     cmes.moveToLast();
 
                     allmessagesDataBase.execSQL("insert into AllMessages(messageUser,messageText, messageTaker, messageTime) values('"+number+"','"+text+"','"+taker+"','"+timeText+"')");
@@ -336,6 +438,8 @@ public class Chat extends AppCompatActivity {
                     message.setMessageText(text);
                     message.setMessageTime(timeText);
                     adapter.add(message);
+                    listView.setSelection(listView.getCount() - 1);
+
 
                 }
                 i++;
@@ -416,57 +520,4 @@ public class Chat extends AppCompatActivity {
                 }
         }
     }
-
-
-    private class MessageAdapter extends ArrayAdapter<Message> {
-
-
-        public MessageAdapter(@NonNull Context context, int resource, @NonNull List<Message> objects) {
-            super(context, resource, objects);
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            Message message = getItem(position);
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-
-            MessageHolder holder = null;
-            convertView = null;
-
-            int viewType = getViewType(messageType);
-
-            Toast.makeText(getApplicationContext(), "" + viewType + "", Toast.LENGTH_SHORT).show();
-
-            switch(viewType){
-                case 1:
-                    convertView = inflater.inflate(R.layout.my_message, null);
-                    break;
-                case 2:
-                    convertView = inflater.inflate(R.layout.message, null);
-                    break;
-
-            }
-            holder = new MessageHolder();
-
-            holder.UserName = convertView.findViewById(R.id.message_user);
-            holder.UserText = convertView.findViewById(R.id.message_text);
-            holder.Time = convertView.findViewById(R.id.message_time);
-
-            holder.UserName.setText(message.getMessageUser());
-            holder.UserText.setText(message.getMessageText());
-            holder.Time.setText(message.getMessageTime());
-
-            return convertView;
-        }
-    }
-
-    private static class MessageHolder {
-        public TextView UserName;
-        public TextView UserText;
-        public TextView Time;
-    }
-
-
-
 }
