@@ -49,14 +49,15 @@ public class Dialogs extends AppCompatActivity {
         listView.setAdapter(adapter);
 
 
-        SQLiteDatabase messagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
-        messagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
+        SQLiteDatabase VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
+        VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
                 "(\n" +
                 "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "\tmessageUser varchar(1000), \n" +
+                "\tmessageSender varchar(100), \n" +
+                "\tmessageUser varchar(10), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
-                "\tmessageTime int \n" +
+                "\tmessageTime varchar(100) \n" +
                 ");");
 
         SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
@@ -81,7 +82,7 @@ public class Dialogs extends AppCompatActivity {
             String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
 
             try {
-                Cursor cmes = messagesDataBase.rawQuery("select * from VisibleMessagess where messageTaker=? and messageUser=?", new String[]{taker, number});
+                Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageSender = ? and (messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?)", new String[]{number, taker, number, taker, number});
                 cmes.moveToLast();
 
                 int messageUserIndex = cmes.getColumnIndex("messageUser");

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -50,13 +51,7 @@ public class MessageAdapter extends BaseAdapter {
         MessageHolder holder = new MessageHolder();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         Message message = messages.get(i);
-        int viewType;
-        if(message.getMessageUser().equals("You")) {
-            viewType = 1;
-        }
-        else{
-            viewType = 2;
-        }
+        int viewType = message.getMessageType();
 
         switch(viewType){
             case 1:
@@ -80,6 +75,20 @@ public class MessageAdapter extends BaseAdapter {
                 holder.UserName.setText(message.getMessageUser());
                 holder.UserText.setText(message.getMessageText());
                 holder.Time.setText(message.getMessageTime());
+                convertView.setTag(holder);
+                break;
+            case 3:
+                convertView = inflater.inflate(R.layout.my_message_image, null);
+
+                holder.UserName = convertView.findViewById(R.id.message_user);
+                holder.Time = convertView.findViewById(R.id.message_time);
+
+                ImageView picture = convertView.findViewById(R.id.user_image);
+                picture.setImageBitmap(message.getImage());
+
+                holder.UserName.setText(message.getMessageUser());
+                holder.Time.setText(message.getMessageTime());
+
                 convertView.setTag(holder);
                 break;
         }

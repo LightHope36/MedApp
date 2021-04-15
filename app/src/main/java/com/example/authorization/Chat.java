@@ -72,6 +72,8 @@ public class Chat extends AppCompatActivity {
     private int n=0;
     public String number;
     public String user;
+    Bitmap bitmap = null;
+    MessageAdapter adapter = new MessageAdapter (this);
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -129,7 +131,6 @@ public class Chat extends AppCompatActivity {
 
         List<Message> messages = new ArrayList<>();
 
-        MessageAdapter adapter = new MessageAdapter (this);
         listView.setAdapter(adapter);
 
         String taker = person.getNumber();
@@ -155,7 +156,7 @@ public class Chat extends AppCompatActivity {
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
-        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))", new String[] {taker, number, taker, number});
+        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageSender = ? and ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))", new String[] {user, taker, number, taker, number});
         c.moveToFirst();
 
         while (!c.isAfterLast()) {
@@ -173,6 +174,7 @@ public class Chat extends AppCompatActivity {
             if ((c.getString(messageUserIndex)).equals(number)) {
                 message.setMessageId(c.getLong(messageIDIndex));
                 message.setMessageUser("You");
+                message.setMessageType(1);
                 message.setMessageText(c.getString(messageTextIndex));
                 message.setMessageTime(timeText);
 
@@ -192,6 +194,7 @@ public class Chat extends AppCompatActivity {
                 message.setMessageUser(person.getName());
                 message.setMessageText(c.getString(messageTextIndex));
                 message.setMessageTime(timeText);
+                message.setMessageType(2);
 
                 if(c.getLong(messageIDIndex)==id){
                     n=i;
@@ -209,21 +212,6 @@ public class Chat extends AppCompatActivity {
         listView.smoothScrollToPosition(n);
 
 
-//        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
-//                        (300, 300);
-//                layoutParams.setMargins(0, eventY, 0, 0);
-//                layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-//                layoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
-//                ll.setLayoutParams(layoutParams);
-//                ll.setVisibility(View.VISIBLE);
-//                return false;
-//            }
-//        });
-
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -231,14 +219,6 @@ public class Chat extends AppCompatActivity {
                     count++;
                     cs.setVisibility(View.INVISIBLE);
                 }
-            }
-        });
-
-        delete_chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.clear();
-                VisibleMessagesDataBase.execSQL( "delete from VisibleMessagess where messageSender = ? and messageTaker=? ", new String[] {user, taker});
             }
         });
 
@@ -256,7 +236,7 @@ public class Chat extends AppCompatActivity {
                     case MotionEvent.ACTION_UP: // отпускание
                         delete_chat.setBackground(getDrawable(R.drawable.rectangular_white));
                         adapter.clear();
-                        VisibleMessagesDataBase.execSQL( "delete from VisibleMessagess where messageSender = ? and messageTaker=? ", new String[] {user, taker});
+                        VisibleMessagesDataBase.execSQL( "delete from VisibleMessagess where (messageSender = ? and ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))) ", new String[] {user, taker, user, taker, user});
                     case MotionEvent.ACTION_CANCEL:
                         break;
                 }
@@ -423,6 +403,8 @@ public class Chat extends AppCompatActivity {
 
 
                     VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageSender, messageUser,messageText, messageTaker, messageTime) values('"+user+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
+                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageSender, messageUser,messageText, messageTaker, messageTime) values('"+taker+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
+
 
                     Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess", null);
                     cmes.moveToLast();
@@ -431,11 +413,13 @@ public class Chat extends AppCompatActivity {
 
                     int messageIDIndex = cmes.getColumnIndex("ID");
 
+
                     messageType=1;
                     Message message = new Message();
                     message.setMessageId(cmes.getLong(messageIDIndex));
                     message.setMessageUser("You");
                     message.setMessageText(text);
+                    message.setMessageType(1);
                     message.setMessageTime(timeText);
                     adapter.add(message);
                     listView.setSelection(listView.getCount() - 1);
@@ -478,6 +462,9 @@ public class Chat extends AppCompatActivity {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+
+
+
             }
         });
 
@@ -504,19 +491,29 @@ public class Chat extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-        Bitmap bitmap = null;
-        //ImageView imageView = (ImageView) findViewById(R.id.imageView);
-
         switch(requestCode) {
             case GALLERY_REQUEST:
                 if(resultCode == RESULT_OK){
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
+                        Date currentDate = new Date();
+
+                        DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                        String timeText = timeFormat.format(currentDate);
+
                         bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+
+                        Message message = new Message();
+                        message.setMessageUser("You");
+                        message.setMessageType(3);
+                        message.setImage(bitmap);
+                        message.setMessageTime(timeText);
+                        adapter.add(message);
+                        listView.setSelection(listView.getCount() - 1);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    //imageView.setImageBitmap(bitmap);
                 }
         }
     }
