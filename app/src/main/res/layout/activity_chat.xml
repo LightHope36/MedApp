@@ -31,9 +31,9 @@
             android:id="@+id/avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="58dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="14dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/back_im"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_profile_1" />
 
@@ -51,12 +51,12 @@
             android:id="@+id/UserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="98dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/manrope_medium"
             android:text="Василиса Степанова"
             android:textColor="#000000"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/avatar"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -100,9 +100,11 @@
         android:id="@+id/menu_chata"
         android:layout_width="160dp"
         android:layout_height="216dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/elm_view"
         android:orientation="vertical"
         android:visibility="invisible"
-        android:background="@drawable/elm_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top">
 
@@ -246,19 +248,19 @@
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_app" />
+            app:srcCompat="@drawable/ic_attachment_1" />
 
         <EditText
             android:id="@+id/input"
             android:layout_width="242dp"
             android:layout_height="36dp"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/elm_view"
             android:elevation="2dp"
             android:ems="10"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/app"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -266,10 +268,10 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_micbtn" />
+            app:srcCompat="@drawable/ic_mic" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/details"

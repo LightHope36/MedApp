@@ -41,44 +41,30 @@
             android:id="@+id/textView15"
             android:layout_width="123dp"
             android:layout_height="26dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="58dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
             android:alpha="0.9"
             android:background="@drawable/back_text"
-            android:text="Все сообщения"
             android:gravity="center"
+            android:text="Все сообщения"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="96dp"
-            android:layout_height="26dp"
-            android:layout_marginStart="155dp"
-            android:layout_marginTop="58dp"
-            android:alpha="0.9"
-            android:text="Избранные"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <TextView
             android:id="@+id/textView17"
             android:layout_width="83dp"
             android:layout_height="26dp"
-            android:layout_marginStart="247dp"
-            android:layout_marginTop="58dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
             android:alpha="0.9"
-            android:text="Контакты"
             android:gravity="center"
+            android:text="Контакты"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/textView15"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <ImageView
             android:id="@+id/search_dial"
