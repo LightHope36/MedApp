@@ -53,7 +53,7 @@
         <Button
             android:id="@+id/next_btn3"
             android:layout_width="140dp"
-            android:layout_height="45dp"
+            android:layout_height="48dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/btn1"
@@ -70,7 +70,7 @@
         <Button
             android:id="@+id/back_btn3"
             android:layout_width="140dp"
-            android:layout_height="45dp"
+            android:layout_height="48dp"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/btn1"
@@ -88,10 +88,11 @@
         <TextView
             android:id="@+id/textView5"
             android:layout_width="310dp"
-            android:layout_height="20dp"
+            android:layout_height="30dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/manrope_regular"
+            android:gravity="center|start"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,10 +100,11 @@
 
         <EditText
             android:id="@+id/editTextNumber"
-            android:layout_width="250dp"
-            android:layout_height="39dp"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="22dp"
+            android:layout_marginEnd="30dp"
             android:background="@drawable/elm_view"
             android:elevation="2dp"
             android:ems="10"
@@ -112,31 +114,17 @@
             android:singleLine="false"
             android:textColor="@color/black"
             android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             tools:targetApi="lollipop" />
 
         <Button
-            android:id="@+id/open_messege"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="22dp"
-            android:background="@drawable/elm_view"
-            android:drawableTop="@drawable/ic_open_messages"
-            android:insetTop="3dp"
-            android:insetBottom="3dp"
-            app:backgroundTint="@color/white"
-            app:layout_constraintStart_toEndOf="@+id/editTextNumber"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:ignore="MissingConstraints" />
-
-        <Button
             android:id="@+id/messege"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/elm_view"
             android:insetTop="3dp"
             android:insetBottom="3dp"

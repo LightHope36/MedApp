@@ -71,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_info_1" />
+            app:srcCompat="@drawable/ic_sogl" />
 
         <TextView
             android:id="@+id/textView2"
@@ -90,7 +90,7 @@
     <Button
         android:id="@+id/next_btn"
         android:layout_width="140dp"
-        android:layout_height="52dp"
+        android:layout_height="56dp"
         android:layout_marginBottom="50dp"
         android:fontFamily="@font/manrope_regular"
         android:insetTop="0dp"
