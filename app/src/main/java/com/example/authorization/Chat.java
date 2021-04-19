@@ -111,7 +111,7 @@ public class Chat extends AppCompatActivity {
         Intent intent = getIntent();
         Person person = (Person) intent.getExtras().get("person");
         number = (String) intent.getExtras().get("number");
-        user = (String) intent.getExtras().get("number");
+        user = number;
 
 
         try{
@@ -139,8 +139,8 @@ public class Chat extends AppCompatActivity {
         VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
                 "(\n" +
                 "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "\tmessageSender varchar(100), \n" +
-                "\tmessageUser varchar(10), \n" +
+                "\tmessageUser varchar(100), \n" +
+                "\tmessageSender varchar(10), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
                 "\tmessageTime varchar(100) \n" +
@@ -156,14 +156,14 @@ public class Chat extends AppCompatActivity {
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
-        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageSender = ? and ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))", new String[] {user, taker, number, taker, number});
+        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))", new String[] {user, taker, number, taker, number});
         c.moveToFirst();
 
         while (!c.isAfterLast()) {
 
             int messageTextIndex = c.getColumnIndex("messageText");
             int messageTimeIndex = c.getColumnIndex("messageTime");
-            int messageUserIndex = c.getColumnIndex("messageUser");
+            int messageSenderIndex = c.getColumnIndex("messageSender");
             int messageIDIndex = c.getColumnIndex("ID");
 
 
@@ -171,7 +171,7 @@ public class Chat extends AppCompatActivity {
             String timeText = c.getString(messageTimeIndex);
             Message message = new Message();
 
-            if ((c.getString(messageUserIndex)).equals(number)) {
+            if ((c.getString(messageSenderIndex)).equals(number)) {
                 message.setMessageId(c.getLong(messageIDIndex));
                 message.setMessageUser("You");
                 message.setMessageType(1);
@@ -236,7 +236,7 @@ public class Chat extends AppCompatActivity {
                     case MotionEvent.ACTION_UP: // отпускание
                         delete_chat.setBackground(getDrawable(R.drawable.rectangular_white));
                         adapter.clear();
-                        VisibleMessagesDataBase.execSQL( "delete from VisibleMessagess where (messageSender = ? and ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))) ", new String[] {user, taker, user, taker, user});
+                        VisibleMessagesDataBase.execSQL( "delete from VisibleMessagess where (messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))) ", new String[] {user, taker, user, taker, user});
                     case MotionEvent.ACTION_CANCEL:
                         break;
                 }
@@ -355,6 +355,7 @@ public class Chat extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), Search.class);
                         intent.putExtra("person", person);
                         intent.putExtra("number", number);
+                        intent.putExtra("from", "chat");
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent);
                         overridePendingTransition(0, 0);
@@ -402,8 +403,8 @@ public class Chat extends AppCompatActivity {
                     input.getText().clear();
 
 
-                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageSender, messageUser,messageText, messageTaker, messageTime) values('"+user+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
-                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageSender, messageUser,messageText, messageTaker, messageTime) values('"+taker+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
+                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender,messageText, messageTaker, messageTime) values('"+user+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
+                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender,messageText, messageTaker, messageTime) values('"+taker+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
 
 
                     Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess", null);
