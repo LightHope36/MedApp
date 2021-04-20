@@ -222,4 +222,11 @@ public class auth4 extends AppCompatActivity{
             }
         }
     }
+    public void onBackPressed(){
+        sThread.close();
+        Intent intent = new Intent(getApplicationContext(), auth3.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
 }

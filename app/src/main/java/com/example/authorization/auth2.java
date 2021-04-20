@@ -53,5 +53,12 @@ public class auth2 extends AppCompatActivity {
                 overridePendingTransition(0,0);
             }
         });
+
+    }
+    public void onBackPressed(){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        overridePendingTransition(0,0);
     }
 }

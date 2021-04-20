@@ -322,6 +322,7 @@ public class Chat extends AppCompatActivity {
 
 
 
+
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -516,5 +517,12 @@ public class Chat extends AppCompatActivity {
                     }
                 }
         }
+    }
+    public void onBackPressed(){
+        Intent intent = new Intent(getApplicationContext(), Dialogs.class);
+        intent.putExtra("number", number);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 }
