@@ -138,6 +138,13 @@ public class Dialogs extends AppCompatActivity {
 
 
 
+
+    }
+    public void onBackPressed(){
+        Intent intent = new Intent(getApplicationContext(), auth3   .class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     private static class PersonAdapter extends ArrayAdapter<Person> {
@@ -181,4 +188,5 @@ public class Dialogs extends AppCompatActivity {
         public ImageView imageView;
         public TextView LastmessageTime;
     }
+
 }
