@@ -259,6 +259,7 @@
             android:background="@drawable/elm_view"
             android:elevation="2dp"
             android:ems="10"
+            android:inputType="textCapSentences"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/app"
             app:layout_constraintTop_toTopOf="parent" />
