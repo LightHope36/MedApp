@@ -71,7 +71,18 @@ public class Dialogs extends AppCompatActivity {
                 "\tUserPolis varchar(1000) \n" +
                 ");");
 
-        Cursor cper = usersDataBase.rawQuery("select UserPhone, UserName, UserSurname, UserBirthday from users where UserPhone!=?", new String[]{number});
+        SQLiteDatabase VisibleusersDataBase = openOrCreateDatabase("Visibleusers", MODE_PRIVATE, null);
+        VisibleusersDataBase.execSQL("create table if not exists Visibleusers\n" +
+                "(\n" +
+                "\tUser varchar(10), \n" +
+                "\tUserPhone varchar(1000), \n" +
+                "\tUserName varchar(1000), \n" +
+                "\tUserSurname varchar(1000), \n" +
+                "\tUserBirthday varchar(1000), \n" +
+                "\tUserPolis varchar(1000) \n" +
+                ");");
+
+        Cursor cper = VisibleusersDataBase.rawQuery("select * from Visibleusers where User=?", new String[]{number});
         cper.moveToFirst();
 
         while (!cper.isAfterLast()) {

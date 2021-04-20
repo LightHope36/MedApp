@@ -98,7 +98,6 @@ public class Chat extends AppCompatActivity {
         bot = findViewById(R.id.bot);
         details = findViewById(R.id.details);
         add_image = findViewById(R.id.add_image);
-        search = findViewById(R.id.search);
         search_open = findViewById(R.id.search_cs_chat_open);
         layout = findViewById(R.id.clicker);
         delete_chat = findViewById(R.id.delete_chat_cs);
@@ -155,6 +154,18 @@ public class Chat extends AppCompatActivity {
                 "\tmessageTaker varchar(1000), \n" +
                 "\tmessageTime varchar(100) \n" +
                 ");");
+
+        SQLiteDatabase VisibleusersDataBase = openOrCreateDatabase("Visibleusers", MODE_PRIVATE, null);
+        VisibleusersDataBase.execSQL("create table if not exists Visibleusers\n" +
+                "(\n" +
+                "\tUser varchar(10), \n" +
+                "\tUserPhone varchar(1000), \n" +
+                "\tUserName varchar(1000), \n" +
+                "\tUserSurname varchar(1000), \n" +
+                "\tUserBirthday varchar(1000), \n" +
+                "\tUserPolis varchar(1000) \n" +
+                ");");
+
 
         Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))", new String[] {user, taker, number, taker, number});
         c.moveToFirst();
@@ -237,6 +248,12 @@ public class Chat extends AppCompatActivity {
                         delete_chat.setBackground(getDrawable(R.drawable.rectangular_white));
                         adapter.clear();
                         VisibleMessagesDataBase.execSQL( "delete from VisibleMessagess where (messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))) ", new String[] {user, taker, user, taker, user});
+                        VisibleusersDataBase.execSQL("delete from Visibleusers where User=?", new String[]{user});
+                        Intent intent = new Intent(getApplicationContext(), Dialogs.class);
+                        intent.putExtra("number", number);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
                     case MotionEvent.ACTION_CANCEL:
                         break;
                 }
@@ -251,38 +268,36 @@ public class Chat extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: // нажатие
-                        vlojenia.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
                         break;
                     case MotionEvent.ACTION_MOVE: // движение
                         break;
                     case MotionEvent.ACTION_UP: // отпускание
-                        vlojenia.setBackground(getDrawable(R.drawable.rectangular_white));
                     case MotionEvent.ACTION_CANCEL:
                         break;
                 }
                 return true;
             }
         });
-
-        add_to_contacts.setOnTouchListener(new View.OnTouchListener(){
-
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: // нажатие
-                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
-                        break;
-                    case MotionEvent.ACTION_MOVE: // движение
-                        break;
-                    case MotionEvent.ACTION_UP: // отпускание
-                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_white));
-                    case MotionEvent.ACTION_CANCEL:
-                        break;
-                }
-                return true;
-            }
-        });
+//
+//        add_to_contacts.setOnTouchListener(new View.OnTouchListener(){
+//
+//            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN: // нажатие
+//                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
+//                        break;
+//                    case MotionEvent.ACTION_MOVE: // движение
+//                        break;
+//                    case MotionEvent.ACTION_UP: // отпускание
+//                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_white));
+//                    case MotionEvent.ACTION_CANCEL:
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
         app.setOnClickListener(new View.OnClickListener() {
             @Override
