@@ -39,5 +39,6 @@ public class Soglashenie extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         overridePendingTransition(0,0);
+
     }
 }
