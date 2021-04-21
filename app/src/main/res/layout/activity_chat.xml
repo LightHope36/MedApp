@@ -19,10 +19,14 @@
 
         <ImageView
             android:id="@+id/back_im"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="14dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="2dp"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back2" />
@@ -35,14 +39,18 @@
             android:layout_marginTop="14dp"
             app:layout_constraintStart_toEndOf="@+id/back_im"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_profile_1" />
+            app:srcCompat="@drawable/ic_profile" />
 
         <ImageView
             android:id="@+id/menu"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="6dp"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/menu" />
@@ -73,6 +81,7 @@
             android:id="@+id/clicker"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/background_chat"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -132,10 +141,13 @@
                 android:id="@+id/text_of_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="49dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="19dp"
+                android:fontFamily="@font/manrope_medium"
                 android:text="@string/Поиск"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/im_of_menu"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -158,19 +170,22 @@
                 android:id="@+id/vlojenie_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="49dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="19dp"
+                android:fontFamily="@font/manrope_medium"
                 android:text="@string/Вложения"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/file_of_menu"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/add_to_contacts_cs"
             android:layout_width="match_parent"
+            android:layout_height="54dp"
             android:clickable="true"
-            android:state_pressed="true"
-            android:layout_height="54dp">
+            android:state_pressed="true">
 
             <!--            <ImageView-->
             <!--                android:id="@+id/add_to_contacts_image"-->
@@ -186,21 +201,17 @@
                 android:id="@+id/add_to_contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="49dp"
-                android:layout_marginTop="16dp"
-                android:text="В контакты"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/delete_chat_cs"
-            android:layout_width="match_parent"
-            android:clickable="true"
-            android:layout_height="54dp">
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="19dp"
+                android:fontFamily="@font/manrope_medium"
+                android:text="@string/Удалить_чат"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:textSize="16sp" />
 
             <ImageView
-                android:id="@+id/Bin"
+                android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -209,16 +220,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_bin" />
 
-            <TextView
-                android:id="@+id/delete_chat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="49dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/Удалить_чат"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/delete_chat_cs"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:clickable="true" />
 
     </LinearLayout>
 
@@ -226,7 +235,7 @@
         android:id="@+id/bot"
         android:layout_width="fill_parent"
         android:layout_height="62dp"
-        android:background="@drawable/flow_shape_white"
+        android:background="@drawable/shadow_flow_shape"
         android:elevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -235,10 +244,14 @@
 
         <ImageView
             android:id="@+id/send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="6dp"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -246,10 +259,14 @@
 
         <ImageView
             android:id="@+id/app"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="3dp"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_attachment_1" />
@@ -258,22 +275,30 @@
             android:id="@+id/input"
             android:layout_width="242dp"
             android:layout_height="36dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/elm_view"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bottom_bar"
             android:elevation="2dp"
             android:ems="10"
-            android:maxLines="1000"
-            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_regular"
+            android:paddingStart="5dp"
+            android:text="@string/Напишите_что_нибудь"
+            android:textColor="@color/grey"
+            android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/app"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/mic"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="6dp"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_mic" />
