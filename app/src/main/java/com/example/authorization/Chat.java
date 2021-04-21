@@ -98,7 +98,6 @@ public class Chat extends AppCompatActivity {
         bot = findViewById(R.id.bot);
         details = findViewById(R.id.details);
         add_image = findViewById(R.id.add_image);
-        search = findViewById(R.id.search);
         search_open = findViewById(R.id.search_cs_chat_open);
         layout = findViewById(R.id.clicker);
         delete_chat = findViewById(R.id.delete_chat_cs);
@@ -111,7 +110,7 @@ public class Chat extends AppCompatActivity {
         Intent intent = getIntent();
         Person person = (Person) intent.getExtras().get("person");
         number = (String) intent.getExtras().get("number");
-        user = (String) intent.getExtras().get("number");
+        user = number;
 
 
         try{
@@ -139,8 +138,8 @@ public class Chat extends AppCompatActivity {
         VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
                 "(\n" +
                 "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "\tmessageSender varchar(100), \n" +
-                "\tmessageUser varchar(10), \n" +
+                "\tmessageUser varchar(100), \n" +
+                "\tmessageSender varchar(10), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
                 "\tmessageTime varchar(100) \n" +
@@ -156,14 +155,26 @@ public class Chat extends AppCompatActivity {
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
-        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageSender = ? and ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))", new String[] {user, taker, number, taker, number});
+        SQLiteDatabase VisibleusersDataBase = openOrCreateDatabase("Visibleusers", MODE_PRIVATE, null);
+        VisibleusersDataBase.execSQL("create table if not exists Visibleusers\n" +
+                "(\n" +
+                "\tUser varchar(10), \n" +
+                "\tUserPhone varchar(1000), \n" +
+                "\tUserName varchar(1000), \n" +
+                "\tUserSurname varchar(1000), \n" +
+                "\tUserBirthday varchar(1000), \n" +
+                "\tUserPolis varchar(1000) \n" +
+                ");");
+
+
+        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))", new String[] {user, taker, number, taker, number});
         c.moveToFirst();
 
         while (!c.isAfterLast()) {
 
             int messageTextIndex = c.getColumnIndex("messageText");
             int messageTimeIndex = c.getColumnIndex("messageTime");
-            int messageUserIndex = c.getColumnIndex("messageUser");
+            int messageSenderIndex = c.getColumnIndex("messageSender");
             int messageIDIndex = c.getColumnIndex("ID");
 
 
@@ -171,7 +182,7 @@ public class Chat extends AppCompatActivity {
             String timeText = c.getString(messageTimeIndex);
             Message message = new Message();
 
-            if ((c.getString(messageUserIndex)).equals(number)) {
+            if ((c.getString(messageSenderIndex)).equals(number)) {
                 message.setMessageId(c.getLong(messageIDIndex));
                 message.setMessageUser("You");
                 message.setMessageType(1);
@@ -236,7 +247,13 @@ public class Chat extends AppCompatActivity {
                     case MotionEvent.ACTION_UP: // отпускание
                         delete_chat.setBackground(getDrawable(R.drawable.rectangular_white));
                         adapter.clear();
-                        VisibleMessagesDataBase.execSQL( "delete from VisibleMessagess where (messageSender = ? and ((messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?))) ", new String[] {user, taker, user, taker, user});
+                        VisibleMessagesDataBase.execSQL( "delete from VisibleMessagess where (messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))) ", new String[] {user, taker, user, taker, user});
+                        VisibleusersDataBase.execSQL("delete from Visibleusers where User=?", new String[]{user});
+                        Intent intent = new Intent(getApplicationContext(), Dialogs.class);
+                        intent.putExtra("number", number);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
                     case MotionEvent.ACTION_CANCEL:
                         break;
                 }
@@ -251,38 +268,36 @@ public class Chat extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: // нажатие
-                        vlojenia.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
                         break;
                     case MotionEvent.ACTION_MOVE: // движение
                         break;
                     case MotionEvent.ACTION_UP: // отпускание
-                        vlojenia.setBackground(getDrawable(R.drawable.rectangular_white));
                     case MotionEvent.ACTION_CANCEL:
                         break;
                 }
                 return true;
             }
         });
-
-        add_to_contacts.setOnTouchListener(new View.OnTouchListener(){
-
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: // нажатие
-                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
-                        break;
-                    case MotionEvent.ACTION_MOVE: // движение
-                        break;
-                    case MotionEvent.ACTION_UP: // отпускание
-                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_white));
-                    case MotionEvent.ACTION_CANCEL:
-                        break;
-                }
-                return true;
-            }
-        });
+//
+//        add_to_contacts.setOnTouchListener(new View.OnTouchListener(){
+//
+//            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN: // нажатие
+//                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
+//                        break;
+//                    case MotionEvent.ACTION_MOVE: // движение
+//                        break;
+//                    case MotionEvent.ACTION_UP: // отпускание
+//                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_white));
+//                    case MotionEvent.ACTION_CANCEL:
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
         app.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -322,6 +337,7 @@ public class Chat extends AppCompatActivity {
 
 
 
+
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -355,6 +371,7 @@ public class Chat extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), Search.class);
                         intent.putExtra("person", person);
                         intent.putExtra("number", number);
+                        intent.putExtra("from", "chat");
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent);
                         overridePendingTransition(0, 0);
@@ -402,8 +419,8 @@ public class Chat extends AppCompatActivity {
                     input.getText().clear();
 
 
-                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageSender, messageUser,messageText, messageTaker, messageTime) values('"+user+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
-                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageSender, messageUser,messageText, messageTaker, messageTime) values('"+taker+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
+                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender,messageText, messageTaker, messageTime) values('"+user+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
+                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender,messageText, messageTaker, messageTime) values('"+taker+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
 
 
                     Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess", null);
@@ -516,5 +533,12 @@ public class Chat extends AppCompatActivity {
                     }
                 }
         }
+    }
+    public void onBackPressed(){
+        Intent intent = new Intent(getApplicationContext(), Dialogs.class);
+        intent.putExtra("number", number);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 }

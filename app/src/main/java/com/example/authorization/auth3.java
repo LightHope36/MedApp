@@ -25,7 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Random;
 
-public class auth3 extends AppCompatActivity {
+public class auth3 extends AppCompatActivity  {
 
     private Button next2;
     private Button back2;
@@ -88,5 +88,11 @@ public class auth3 extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
+    }
+    public void onBackPressed(){
+        Intent intent = new Intent(getApplicationContext(), auth2.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 }

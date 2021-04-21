@@ -19,14 +19,10 @@
 
         <ImageView
             android:id="@+id/back_im"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="2dp"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="10dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back2" />
@@ -35,21 +31,18 @@
             android:id="@+id/avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
             app:layout_constraintStart_toEndOf="@+id/back_im"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_profile_vasilisa_stepanova" />
+            app:srcCompat="@drawable/ic_profile_1" />
 
         <ImageView
             android:id="@+id/menu"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="6dp"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="10dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/menu" />
@@ -60,10 +53,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/manrope_regular"
+            android:fontFamily="@font/manrope_medium"
             android:text="Василиса Степанова"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textColor="#000000"
             app:layout_constraintStart_toEndOf="@+id/avatar"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -83,10 +75,8 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/list_of_messages"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintTop_toTopOf="@id/list_of_messages">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -124,11 +114,12 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_marginTop="0dp"
+            android:clickable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/search"
+                android:id="@+id/im_of_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -138,18 +129,13 @@
                 app:srcCompat="@drawable/ic_search" />
 
             <TextView
-                android:id="@+id/search_text"
+                android:id="@+id/text_of_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:fontFamily="@font/manrope_regular"
-                android:paddingTop="16dp"
-                android:paddingEnd="65dp"
-                android:paddingBottom="19sp"
+                android:layout_marginStart="49dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/Поиск"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/search"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -172,21 +158,18 @@
                 android:id="@+id/vlojenie_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="33dp"
-                android:paddingBottom="19dp"
+                android:layout_marginStart="49dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/Вложения"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/file_of_menu"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:fontFamily="@font/manrope_regular" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/add_to_contacts_cs"
             android:layout_width="match_parent"
+            android:clickable="true"
+            android:state_pressed="true"
             android:layout_height="54dp">
 
             <!--            <ImageView-->
@@ -203,31 +186,17 @@
                 android:id="@+id/add_to_contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:fontFamily="@font/manrope_regular"
-                android:paddingTop="19dp"
-                android:paddingEnd="27dp"
-                android:paddingBottom="16dp"
-                android:text="@string/В_контакты"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="49dp"
+                android:layout_marginTop="16dp"
+                android:text="В контакты"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_avatar" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/delete_chat_cs"
             android:layout_width="match_parent"
+            android:clickable="true"
             android:layout_height="54dp">
 
             <ImageView
@@ -244,15 +213,10 @@
                 android:id="@+id/delete_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:fontFamily="@font/manrope_regular"
-                android:paddingTop="19dp"
-                android:paddingEnd="21dp"
-                android:paddingBottom="16dp"
+                android:layout_marginStart="49dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/Удалить_чат"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/Bin"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -262,7 +226,7 @@
         android:id="@+id/bot"
         android:layout_width="fill_parent"
         android:layout_height="62dp"
-        android:background="@drawable/shadow_flow_shape"
+        android:background="@drawable/flow_shape_white"
         android:elevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -271,14 +235,10 @@
 
         <ImageView
             android:id="@+id/send"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
-            android:paddingStart="5dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -286,14 +246,10 @@
 
         <ImageView
             android:id="@+id/app"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="9dp"
-            android:paddingStart="8dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_attachment_1" />
@@ -302,30 +258,22 @@
             android:id="@+id/input"
             android:layout_width="242dp"
             android:layout_height="36dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/elm_view"
             android:elevation="2dp"
             android:ems="10"
-            android:fontFamily="@font/manrope_regular"
-            android:paddingStart="5dp"
-            android:text="@string/Напишите_что_нибудь"
-            android:textColor="@color/grey"
-            android:textSize="14sp"
+            android:maxLines="1000"
+            android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/app"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/mic"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="12dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
-            android:paddingStart="5dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="5dp"
-            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_mic" />
@@ -334,11 +282,7 @@
             android:id="@+id/details"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/flow_shape_white"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/add_image"

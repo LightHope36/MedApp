@@ -53,12 +53,13 @@ public class Dialogs extends AppCompatActivity {
         VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
                 "(\n" +
                 "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "\tmessageSender varchar(100), \n" +
-                "\tmessageUser varchar(10), \n" +
+                "\tmessageUser varchar(100), \n" +
+                "\tmessageSender varchar(10), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
                 "\tmessageTime varchar(100) \n" +
                 ");");
+
 
         SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
         usersDataBase.execSQL("create table if not exists users\n" +
@@ -70,7 +71,18 @@ public class Dialogs extends AppCompatActivity {
                 "\tUserPolis varchar(1000) \n" +
                 ");");
 
-        Cursor cper = usersDataBase.rawQuery("select UserPhone, UserName, UserSurname, UserBirthday from users where UserPhone!=?", new String[]{number});
+        SQLiteDatabase VisibleusersDataBase = openOrCreateDatabase("Visibleusers", MODE_PRIVATE, null);
+        VisibleusersDataBase.execSQL("create table if not exists Visibleusers\n" +
+                "(\n" +
+                "\tUser varchar(10), \n" +
+                "\tUserPhone varchar(1000), \n" +
+                "\tUserName varchar(1000), \n" +
+                "\tUserSurname varchar(1000), \n" +
+                "\tUserBirthday varchar(1000), \n" +
+                "\tUserPolis varchar(1000) \n" +
+                ");");
+
+        Cursor cper = VisibleusersDataBase.rawQuery("select * from Visibleusers where User=?", new String[]{number});
         cper.moveToFirst();
 
         while (!cper.isAfterLast()) {
@@ -82,7 +94,7 @@ public class Dialogs extends AppCompatActivity {
             String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
 
             try {
-                Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageSender = ? and (messageTaker=? and messageUser=?) or (messageUser=? and messageTaker=?)", new String[]{number, taker, number, taker, number});
+                Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and (messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?)", new String[]{number, taker, number, taker, number});
                 cmes.moveToLast();
 
                 int messageUserIndex = cmes.getColumnIndex("messageUser");
@@ -113,7 +125,8 @@ public class Dialogs extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Search.class);
-                intent.putExtra("person", "0");
+                intent.putExtra("number", number);
+                intent.putExtra("from", "dialogs");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -136,6 +149,13 @@ public class Dialogs extends AppCompatActivity {
 
 
 
+
+    }
+    public void onBackPressed(){
+        Intent intent = new Intent(getApplicationContext(), auth3   .class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     private static class PersonAdapter extends ArrayAdapter<Person> {
@@ -179,4 +199,5 @@ public class Dialogs extends AppCompatActivity {
         public ImageView imageView;
         public TextView LastmessageTime;
     }
+
 }

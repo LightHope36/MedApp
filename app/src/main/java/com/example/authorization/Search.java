@@ -30,6 +30,8 @@ public class Search extends AppCompatActivity {
     private EditText search;
     private ListView listView;
     Cursor c;
+    public int messageType;
+    MessageAdapter adapter = new MessageAdapter(this);
 
 
     @Override
@@ -43,21 +45,18 @@ public class Search extends AppCompatActivity {
         listView = findViewById(R.id.list_of_messages_in_search);
 
         Intent intent = getIntent();
-        Person person = (Person) intent.getExtras().get("person");
+        String type = (String) intent.getExtras().get("from");
         String number = (String) intent.getExtras().get("number");
-        String taker = person.getNumber();
-
+        String user = number;
         List<Message> messages = new ArrayList<>();
+        List<Person> persons = new ArrayList<>();
 
-        MessageAdapter adapter = new MessageAdapter(getApplicationContext(), R.layout.message, messages);
-
-        listView.setAdapter(adapter);
-
-        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("VisibleMessages", MODE_PRIVATE, null);
-        sqLiteDatabase.execSQL("create table if not exists VisibleMessages\n" +
+        SQLiteDatabase VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
+        VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
                 "(\n" +
                 "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "\tmessageUser varchar(1000), \n" +
+                "\tmessageUser varchar(100), \n" +
+                "\tmessageSender varchar(10), \n" +
                 "\tmessageText varchar(3000), \n" +
                 "\tmessageTaker varchar(1000), \n" +
                 "\tmessageTime varchar(100) \n" +
@@ -73,19 +72,151 @@ public class Search extends AppCompatActivity {
                 "\tUserPolis varchar(1000) \n" +
                 ");");
 
+        Cursor cper = usersDataBase.rawQuery("select UserPhone, UserName, UserSurname, UserBirthday from users where UserPhone!=?", new String[]{number});
+        cper.moveToFirst();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), Chat.class);
-                intent.putExtra("messageId", messages.get(position).getMessageId());
-                intent.putExtra("person", person);
-                intent.putExtra("number", number);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
-        });
+        if(type.equals("chat")) {
+            Person person = (Person) intent.getExtras().get("person");
+            String taker = person.getNumber();
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getApplicationContext(), Chat.class);
+                    intent.putExtra("messageId", messages.get(position).getMessageId());
+                    intent.putExtra("person", person);
+                    intent.putExtra("number", number);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
+            });
+
+            search.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    String text = search.getText().toString();
+
+
+                    if (!text.equals("")) {
+
+                        adapter.clear();
+
+                        c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser=? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?)) and (messageText like '%' || ? || '%')", new String[]{user, taker, number, taker, number, text});
+
+                        c.moveToFirst();
+
+
+                        int messageSenderIndex = c.getColumnIndex("messageSender");
+                        int messageTextIndex = c.getColumnIndex("messageText");
+                        int messageTimeIndex = c.getColumnIndex("messageTime");
+                        int messageIDIndex = c.getColumnIndex("ID");
+
+                        while (!c.isAfterLast()) {
+                            Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone=?", new String[]{c.getString(messageSenderIndex)});
+                            cper.moveToFirst();
+
+                            int UserNameIndex = cper.getColumnIndex("UserName");
+                            int UserSurnameIndex = cper.getColumnIndex("UserSurname");
+                            String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
+
+                            Message message = new Message();
+
+                            if(c.getString(messageSenderIndex).equals(user)){
+                                messageType=1;
+                                message.setMessageUser("You");
+                            }
+                            else {
+                                messageType=2;
+                                message.setMessageUser(taker_text);
+                            }
+
+                            message.setMessageId(c.getLong(messageIDIndex));
+                            message.setMessageType(messageType);
+                            message.setMessageText(c.getString(messageTextIndex));
+                            message.setMessageTime(c.getString(messageTimeIndex));
+                            adapter.add(message);
+                            c.moveToNext();
+
+                        }
+                    }
+                    else {
+                        adapter.clear();
+                    }
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+        } else{
+
+            search.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    PersonAdapter person_adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
+                    String text = search.getText().toString();
+                    listView.setAdapter(person_adapter);
+                    persons.clear();
+
+                    if (!text.equals("")) {
+
+                        person_adapter.clear();
+
+                        Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone!=? and ((UserName like '%' || ? || '%') or  (UserSurname like '%' || ? || '%'))", new String[]{number, text, text});
+                        cper.moveToFirst();
+
+                        while (!cper.isAfterLast()) {
+
+                            int UserNameIndex = cper.getColumnIndex("UserName");
+                            int UserPhoneIndex = cper.getColumnIndex("UserPhone");
+                            int UserSurnameIndex = cper.getColumnIndex("UserSurname");
+                            String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
+
+                            Person person = new Person();
+                            person.setNumber(cper.getString(UserPhoneIndex));
+                            person.setName(taker_text);
+                            person.setAvatar("ic_profile_1");
+                            persons.add(person);
+                            cper.moveToNext();
+                            }
+                        }
+                    else {
+                        person_adapter.clear();
+                    }
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getApplicationContext(), Chat.class);
+                    intent.putExtra("person", persons.get(position));
+                    intent.putExtra("number", number);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
+            });
+
+        }
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,95 +226,50 @@ public class Search extends AppCompatActivity {
         });
 
 
-        search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                String text = search.getText().toString();
-
-                if (!text.equals("")) {
-
-                    adapter.clear();
-
-                    if(!taker.equals("0")) {
-
-                        c = sqLiteDatabase.rawQuery("select * from VisibleMessages where messageText like '%' || ? || '%' and messageTaker=?", new String[]{text, taker});
-                    }
-                    else{
-                        c = sqLiteDatabase.rawQuery("select * from VisibleMessages where messageText like '%' || ? || '%' ", new String[]{text});
-
-                    }
-                    c.moveToFirst();
-
-
-                    int messageUserIndex = c.getColumnIndex("messageUser");
-                    int messageTextIndex = c.getColumnIndex("messageText");
-                    int messageTimeIndex = c.getColumnIndex("messageTime");
-                    int messageIDIndex = c.getColumnIndex("ID");
-
-                    while (!c.isAfterLast()) {
-                        Message message = new Message();
-                        message.setMessageId(c.getLong(messageIDIndex));
-                        message.setMessageUser(c.getString(messageUserIndex));
-                        message.setMessageText(c.getString(messageTextIndex));
-                        message.setMessageTime(c.getString(messageTimeIndex));
-                        adapter.add(message);
-                        c.moveToNext();
-
-                        }
-                }
-                else {
-                    adapter.clear();
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
 
     }
 
-    private static class MessageAdapter extends ArrayAdapter<Message> {
+    private static class PersonAdapter extends ArrayAdapter<Person> {
 
-        public MessageAdapter(@NonNull Context context, int resource, @NonNull List<Message> objects) {
+        public PersonAdapter(@NonNull Context context, int resource, @NonNull List<Person> objects) {
             super(context, resource, objects);
         }
 
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            Message message = getItem(position);
+            Person person = getItem(position);
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.my_message, null);
-
-
-            MessageHolder holder = new MessageHolder();
-            holder.UserName = convertView.findViewById(R.id.message_user);
-            holder.UserText = convertView.findViewById(R.id.message_text);
-            holder.Time = convertView.findViewById(R.id.message_time);
+            convertView = inflater.inflate(R.layout.person, null);
 
 
 
-            holder.UserName.setText(message.getMessageUser());
-            holder.UserText.setText(message.getMessageText());
-            holder.Time.setText(message.getMessageTime());
+            PersonHolder holder = new PersonHolder();
+            holder.UserName = convertView.findViewById(R.id.user);
+            holder.UserText = convertView.findViewById(R.id.last_message_text);
+            holder.imageView = convertView.findViewById(R.id.profile);
+            holder.LastmessageTime = convertView.findViewById(R.id.last_message_time);
+
+            int imageId = getContext().getResources().getIdentifier(person.getAvatar(), "drawable", getContext().getPackageName());
+
+            holder.imageView.setImageResource(imageId);
+            holder.UserName.setText(person.getName());
+            holder.UserText.setText(person.getLastmessage());
+            holder.LastmessageTime.setText(person.getMessageTime());
 
             convertView.setTag(holder);
+
+
             return convertView;
         }
     }
 
-    private static class MessageHolder {
+    private static class PersonHolder {
         public TextView UserName;
         public TextView UserText;
-        public TextView Time;
+        public ImageView imageView;
+        public TextView LastmessageTime;
     }
+
 
 }
