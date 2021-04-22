@@ -20,4 +20,5 @@
     <color name="grey">#64686D</color>
     <color name="grey_shadow">#1464686D</color>
     <color name="background_chat">#FCFCFC</color>
+    <color name="background_main_page">#FAFAFA</color>
 </resources>

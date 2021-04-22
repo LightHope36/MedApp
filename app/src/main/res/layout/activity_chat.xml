@@ -113,7 +113,6 @@
         android:layout_marginEnd="8dp"
         android:background="@drawable/elm_view"
         android:orientation="vertical"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top">
 
@@ -124,6 +123,7 @@
             android:layout_height="54dp"
             android:layout_marginTop="0dp"
             android:clickable="true"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -162,6 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_file_in_menu" />
@@ -176,6 +177,7 @@
                 android:text="@string/Вложения"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                android:visibility="invisible"
                 app:layout_constraintStart_toEndOf="@+id/file_of_menu"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -224,10 +226,11 @@
 
         <EditText
             android:id="@+id/input"
-            android:layout_width="242dp"
+            android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="68dp"
             android:layout_marginTop="12dp"
+            android:layout_marginEnd="68dp"
             android:background="@drawable/bottom_bar"
             android:elevation="2dp"
             android:ems="10"
@@ -235,6 +238,7 @@
             android:paddingStart="5dp"
             android:textColor="@color/grey"
             android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/send"
             app:layout_constraintStart_toEndOf="@+id/app"
             app:layout_constraintTop_toTopOf="parent" />
 
