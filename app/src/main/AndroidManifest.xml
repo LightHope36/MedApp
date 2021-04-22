@@ -11,33 +11,34 @@
         android:roundIcon="@mipmap/ic_icon2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Authorization">
-        <activity android:name=".Search"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".Soglashenie"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".Reg"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".Dialogs"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".Chat"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".auth4"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".auth3"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".auth2"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            >
+        <activity android:name=".Main_page"></activity>
+        <activity
+            android:name=".Search"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Soglashenie"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Reg"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Dialogs"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Chat"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".auth4"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".auth3"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".auth2"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
