@@ -37,7 +37,9 @@ public class Dialogs extends AppCompatActivity {
 
     private ListView listView;
     private ImageView search;
+    int i=0;
     DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +132,31 @@ public class Dialogs extends AppCompatActivity {
 
         Collections.sort(persons, new SortPersons());
         adapter.notifyDataSetChanged();
+        cper.moveToFirst();
+
+        while (!cper.isAfterLast()) {
+
+
+            try {
+
+
+
+
+
+
+                Person person = persons.get(i);
+
+                String timeText = person.getMessageTime();
+                Date timeTextDate = fullDateFormat.parse(timeText);
+                String timeTextInMessage = timeFormat.format(timeTextDate);
+
+                person.setMessageTime(timeTextInMessage);
+            }
+            catch (Exception e){
+            }
+            cper.moveToNext();
+            i++;
+        }
 
 
         search.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +201,6 @@ public class Dialogs extends AppCompatActivity {
                 timeTextDate1 = fullDateFormat.parse(o1.getMessageTime());
                 timeTextDate2 = fullDateFormat.parse(o2.getMessageTime());
             } catch (ParseException e) {
-                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
             try{
@@ -182,7 +208,6 @@ public class Dialogs extends AppCompatActivity {
                 time2 = Long.valueOf(new SimpleDateFormat("yMdHm").format(timeTextDate2));
             }
             catch (Exception e){
-                Toast.makeText(getApplicationContext(), "error2", Toast.LENGTH_SHORT).show();
             }
             return (int)(time2-time1);
         }

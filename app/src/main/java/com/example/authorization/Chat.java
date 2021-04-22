@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.TextWatcher;
+import android.util.Base64;
+import android.util.Base64InputStream;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -34,7 +37,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.IOUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,6 +85,8 @@ public class Chat extends AppCompatActivity {
     public String number;
     public String user;
     Bitmap bitmap = null;
+    public String Signature;
+    SQLiteDatabase VisibleMessagesDataBase;
     MessageAdapter adapter = new MessageAdapter (this);
     DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
@@ -141,17 +154,18 @@ public class Chat extends AppCompatActivity {
 
         String taker = person.getNumber();
 
-        SQLiteDatabase VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
+        VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
         VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
                 "(\n" +
                 "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "\tmessageUser varchar(100), \n" +
                 "\tmessageSender varchar(10), \n" +
-                "\tmessageText varchar(3000), \n" +
+                "\tmessageText text, \n" +
                 "\tmessageTaker varchar(1000), \n" +
+                "\tmessageImage text, \n" +
                 "\tmessageTime varchar(100) \n" +
                 ");");
-
+//        getApplicationContext().deleteDatabase("VisibleMessagess");
         SQLiteDatabase allmessagesDataBase = openOrCreateDatabase("AllMessages", MODE_PRIVATE, null);
         allmessagesDataBase.execSQL("create table if not exists AllMessages\n" +
                 "(\n" +
@@ -188,12 +202,14 @@ public class Chat extends AppCompatActivity {
             String dateText = "";
             String day = "";
             String month = "1";
+            String timeTextInMessage = "";
 
             try {
                 Date timeTextDate = fullDateFormat.parse(timeText);
                 dateText = dayAndMonthFormat.format(timeTextDate);
                 day = dayFormat.format(timeTextDate);
                 month = monthFormat.format(timeTextDate);
+                timeTextInMessage = timeFormat.format(timeTextDate);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -216,10 +232,9 @@ public class Chat extends AppCompatActivity {
                 message.setMessageUser("You");
                 message.setMessageType(1);
                 message.setMessageText(c.getString(messageTextIndex));
-                message.setMessageTime(timeText);
+                message.setMessageTime(timeTextInMessage);
 
 
-                messageType=1;
                 if(c.getLong(messageIDIndex)==id){
                     n=i;
                 }
@@ -229,11 +244,10 @@ public class Chat extends AppCompatActivity {
 
             }
             else{
-                messageType=2;
                 message.setMessageId(c.getLong(messageIDIndex));
                 message.setMessageUser(person.getName());
                 message.setMessageText(c.getString(messageTextIndex));
-                message.setMessageTime(timeText);
+                message.setMessageTime(timeTextInMessage);
                 message.setMessageType(2);
 
                 if(c.getLong(messageIDIndex)==id){
@@ -440,6 +454,14 @@ public class Chat extends AppCompatActivity {
 
                     Date currentDate = new Date();
                     String timeText = fullDateFormat.format(currentDate);
+                    Date timeTextDate = null;
+                    try {
+                        timeTextDate = fullDateFormat.parse(timeText);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String timeTextInMessage = timeFormat.format(timeTextDate);
+
 
                     String text = input.getText().toString();
 
@@ -464,7 +486,7 @@ public class Chat extends AppCompatActivity {
                     message.setMessageUser("You");
                     message.setMessageText(text);
                     message.setMessageType(1);
-                    message.setMessageTime(timeText);
+                    message.setMessageTime(timeTextInMessage);
                     adapter.add(message);
                     listView.setSelection(listView.getCount() - 1);
 
@@ -515,14 +537,6 @@ public class Chat extends AppCompatActivity {
 
     }
 
-    public int getViewType(int messageType) {
-        if (messageType==1) {
-            return 1;
-        } else{
-            return 2;
-        }
-    }
-
     public boolean onTouchEvent(MotionEvent event) {
         if (count%2==1) {
             count++;
@@ -540,10 +554,12 @@ public class Chat extends AppCompatActivity {
                 if(resultCode == RESULT_OK){
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
-                        Date currentDate = new Date();
+                        Intent intent = getIntent();
+                        Person person = (Person) intent.getExtras().get("person");
+                        String taker = person.getNumber();
 
-                        DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                        String timeText = timeFormat.format(currentDate);
+                        Date currentDate = new Date();
+                        String timeText = fullDateFormat.format(currentDate);
 
                         bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
 
@@ -555,12 +571,41 @@ public class Chat extends AppCompatActivity {
                         adapter.add(message);
                         listView.setSelection(listView.getCount() - 1);
 
+                        String image_str = converttoString(bitmap);
+
+                        try {
+                            VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender, messageImage, messageTaker, messageTime, messageText) values('" + user + "','" + number + "','" + image_str + "','" + taker + "','" + timeText + "', '')");
+                        }
+                        catch (Exception e){
+                            Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                        }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
         }
     }
+
+    public static Bitmap converttoBitmap(String base64Str) throws IllegalArgumentException
+    {
+        byte[] decodedBytes = Base64.decode(
+                base64Str.substring(base64Str.indexOf(",")  + 1),
+                Base64.DEFAULT
+        );
+
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
+
+    public static String converttoString(Bitmap bitmap)
+    {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+    }
+
+
     public void onBackPressed(){
         Intent intent = new Intent(getApplicationContext(), Dialogs.class);
         intent.putExtra("number", number);

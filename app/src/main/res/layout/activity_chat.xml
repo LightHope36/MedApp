@@ -282,7 +282,6 @@
             android:ems="10"
             android:fontFamily="@font/manrope_regular"
             android:paddingStart="5dp"
-            android:text="@string/Напишите_что_нибудь"
             android:textColor="@color/grey"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/app"
