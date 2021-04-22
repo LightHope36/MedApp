@@ -120,9 +120,7 @@ public class Chat extends AppCompatActivity {
         add_image = findViewById(R.id.add_image);
         search_open = findViewById(R.id.search_cs_chat_open);
         layout = findViewById(R.id.clicker);
-        delete_chat = findViewById(R.id.delete_chat_cs);
         vlojenia = findViewById(R.id.vlojenia);
-        add_to_contacts = findViewById(R.id.add_to_contacts_cs);
 
 
 
@@ -276,33 +274,6 @@ public class Chat extends AppCompatActivity {
             }
         });
 
-        delete_chat.setOnTouchListener(new View.OnTouchListener(){
-
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: // нажатие
-                        delete_chat.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
-                        break;
-                    case MotionEvent.ACTION_MOVE: // движение
-                        break;
-                    case MotionEvent.ACTION_UP: // отпускание
-                        delete_chat.setBackground(getDrawable(R.drawable.rectangular_white));
-                        adapter.clear();
-                        VisibleMessagesDataBase.execSQL( "delete from VisibleMessagess where (messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))) ", new String[] {user, taker, user, taker, user});
-                        VisibleusersDataBase.execSQL("delete from Visibleusers where User=?", new String[]{user});
-                        Intent intent = new Intent(getApplicationContext(), Dialogs.class);
-                        intent.putExtra("number", number);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
-                        overridePendingTransition(0, 0);
-                    case MotionEvent.ACTION_CANCEL:
-                        break;
-                }
-                return true;
-            }
-        });
 
         vlojenia.setOnTouchListener(new View.OnTouchListener(){
 
@@ -311,36 +282,19 @@ public class Chat extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: // нажатие
+                        vlojenia.setBackground(getDrawable(R.drawable.elm_view_grey));
                         break;
                     case MotionEvent.ACTION_MOVE: // движение
                         break;
                     case MotionEvent.ACTION_UP: // отпускание
+                        vlojenia.setBackground(getDrawable(R.drawable.elm_view));
                     case MotionEvent.ACTION_CANCEL:
                         break;
                 }
                 return true;
             }
         });
-//
-//        add_to_contacts.setOnTouchListener(new View.OnTouchListener(){
-//
-//            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN: // нажатие
-//                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
-//                        break;
-//                    case MotionEvent.ACTION_MOVE: // движение
-//                        break;
-//                    case MotionEvent.ACTION_UP: // отпускание
-//                        add_to_contacts.setBackground(getDrawable(R.drawable.rectangular_white));
-//                    case MotionEvent.ACTION_CANCEL:
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
+
 
         app.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -403,12 +357,12 @@ public class Chat extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: // нажатие
-                        search_open.setBackground(getDrawable(R.drawable.rectangular_flow_shape));
+                        search_open.setBackground(getDrawable(R.drawable.elm_view_grey));
                         break;
                     case MotionEvent.ACTION_MOVE: // движение
                         break;
                     case MotionEvent.ACTION_UP: // отпускание
-                        search_open.setBackground(getDrawable(R.drawable.rectangular_white));
+                        search_open.setBackground(getDrawable(R.drawable.elm_view));
                         count++;
                         cs.setVisibility(View.INVISIBLE);
                         Intent intent = new Intent(getApplicationContext(), Search.class);

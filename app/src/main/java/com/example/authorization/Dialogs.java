@@ -19,27 +19,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TreeSet;
 
 public class Dialogs extends AppCompatActivity {
 
     private ListView listView;
     private ImageView search;
-    int i=0;
-    DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-    DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +42,12 @@ public class Dialogs extends AppCompatActivity {
 
         String number = (String) intent.getExtras().get("number");
 
+
         List<Person> persons = new ArrayList<>();
 
         PersonAdapter adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
         listView.setAdapter(adapter);
+
 
         SQLiteDatabase VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
         VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
@@ -81,19 +71,9 @@ public class Dialogs extends AppCompatActivity {
                 "\tUserPolis varchar(1000) \n" +
                 ");");
 
-        SQLiteDatabase VisibleusersDataBase = openOrCreateDatabase("Visibleusers", MODE_PRIVATE, null);
-        VisibleusersDataBase.execSQL("create table if not exists Visibleusers\n" +
-                "(\n" +
-                "\tUser varchar(10), \n" +
-                "\tUserPhone varchar(1000), \n" +
-                "\tUserName varchar(1000), \n" +
-                "\tUserSurname varchar(1000), \n" +
-                "\tUserBirthday varchar(1000), \n" +
-                "\tUserPolis varchar(1000) \n" +
-                ");");
-
-        Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone!=?", new String[]{number});
+        Cursor cper = usersDataBase.rawQuery("select UserPhone, UserName, UserSurname, UserBirthday from users where UserPhone!=?", new String[]{number});
         cper.moveToFirst();
+
         while (!cper.isAfterLast()) {
 
             int UserNameIndex = cper.getColumnIndex("UserName");
@@ -130,35 +110,6 @@ public class Dialogs extends AppCompatActivity {
             cper.moveToNext();
         }
 
-        Collections.sort(persons, new SortPersons());
-        adapter.notifyDataSetChanged();
-        cper.moveToFirst();
-
-        while (!cper.isAfterLast()) {
-
-
-            try {
-
-
-
-
-
-
-                Person person = persons.get(i);
-
-                String timeText = person.getMessageTime();
-                Date timeTextDate = fullDateFormat.parse(timeText);
-                String timeTextInMessage = timeFormat.format(timeTextDate);
-
-                person.setMessageTime(timeTextInMessage);
-            }
-            catch (Exception e){
-            }
-            cper.moveToNext();
-            i++;
-        }
-
-
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,37 +138,6 @@ public class Dialogs extends AppCompatActivity {
 
 
 
-
-    }
-
-    private class SortPersons implements Comparator<Person> {
-        @Override
-        public int compare(Person o1, Person o2) {
-            Date timeTextDate1 = null;
-            Date timeTextDate2 = null;
-            long time1=1;
-            long time2 =0;
-            try {
-                timeTextDate1 = fullDateFormat.parse(o1.getMessageTime());
-                timeTextDate2 = fullDateFormat.parse(o2.getMessageTime());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            try{
-                time1 = Long.valueOf(new SimpleDateFormat("yMdHm").format(timeTextDate1));
-                time2 = Long.valueOf(new SimpleDateFormat("yMdHm").format(timeTextDate2));
-            }
-            catch (Exception e){
-            }
-            return (int)(time2-time1);
-        }
-    }
-
-    public void onBackPressed(){
-        Intent intent = new Intent(getApplicationContext(), auth3.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
     }
 
     private static class PersonAdapter extends ArrayAdapter<Person> {
@@ -261,5 +181,4 @@ public class Dialogs extends AppCompatActivity {
         public ImageView imageView;
         public TextView LastmessageTime;
     }
-
 }
