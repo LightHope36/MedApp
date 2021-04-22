@@ -157,6 +157,11 @@ public class Reg extends AppCompatActivity {
             setInitialDateTime();
         }
     };
-
+    public void onBackPressed(){
+        Intent intent = new Intent(getApplicationContext(), auth3.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
 
 }
