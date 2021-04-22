@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,26 +28,12 @@ public class Dialogs extends AppCompatActivity {
 
     private ListView listView;
     private ImageView search;
-    private ConstraintLayout toMain;
-    private ConstraintLayout dio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialogs);
-        dio = findViewById(R.id.constraintLayout5);
-
-        toMain = findViewById(R.id.constraintLayout4);
-       toMain.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), DoctorsList.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
-        });
 
         listView = findViewById(R.id.list_of_persons);
         search = findViewById(R.id.search_dial);
@@ -150,12 +135,9 @@ public class Dialogs extends AppCompatActivity {
             }
         });
 
-    }
-    public void onBackPressed(){
-        Intent intent = new Intent(getApplicationContext(), auth3.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
+
+
+
     }
 
     private static class PersonAdapter extends ArrayAdapter<Person> {

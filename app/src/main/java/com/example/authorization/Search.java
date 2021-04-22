@@ -21,8 +21,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Search extends AppCompatActivity {
 
@@ -32,6 +37,8 @@ public class Search extends AppCompatActivity {
     Cursor c;
     public int messageType;
     MessageAdapter adapter = new MessageAdapter(this);
+    DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
 
     @Override
@@ -129,6 +136,8 @@ public class Search extends AppCompatActivity {
 
                             Message message = new Message();
 
+
+
                             if(c.getString(messageSenderIndex).equals(user)){
                                 messageType=1;
                                 message.setMessageUser("You");
@@ -138,10 +147,20 @@ public class Search extends AppCompatActivity {
                                 message.setMessageUser(taker_text);
                             }
 
+                            String timeText = c.getString(messageTimeIndex);
+                            Date timeTextDate = null;
+                            try {
+                                timeTextDate = fullDateFormat.parse(timeText);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            String timeTextInMessage = timeFormat.format(timeTextDate);
+
+                            message.setMessageTime(timeTextInMessage);
+
                             message.setMessageId(c.getLong(messageIDIndex));
                             message.setMessageType(messageType);
                             message.setMessageText(c.getString(messageTextIndex));
-                            message.setMessageTime(c.getString(messageTimeIndex));
                             adapter.add(message);
                             c.moveToNext();
 
