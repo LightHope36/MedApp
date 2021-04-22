@@ -54,6 +54,12 @@ public class MessageAdapter extends BaseAdapter {
         int viewType = message.getMessageType();
 
         switch(viewType){
+            case 0:
+                convertView = inflater.inflate(R.layout.date, null);
+                holder.UserText = convertView.findViewById(R.id.datetext);
+                holder.UserText.setText(message.getMessageText());
+                convertView.setTag(holder);
+                break;
             case 1:
                 convertView = inflater.inflate(R.layout.my_message, null);
 

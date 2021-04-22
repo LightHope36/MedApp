@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,6 +75,12 @@ public class Chat extends AppCompatActivity {
     public String user;
     Bitmap bitmap = null;
     MessageAdapter adapter = new MessageAdapter (this);
+    DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    DateFormat dayAndMonthFormat = new SimpleDateFormat("d M", Locale.getDefault());
+    DateFormat dayFormat = new SimpleDateFormat("d", Locale.getDefault());
+    DateFormat monthFormat = new SimpleDateFormat("M", Locale.getDefault());
+    String days[] = new String[]{"Января", "Февраля", "Мара", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"};
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -166,23 +173,45 @@ public class Chat extends AppCompatActivity {
                 "\tUserPolis varchar(1000) \n" +
                 ");");
 
-
         Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))", new String[] {user, taker, number, taker, number});
         c.moveToFirst();
 
+        Date currentDate = new Date();
+        String thisdate = dayAndMonthFormat.format(currentDate);
         while (!c.isAfterLast()) {
-
             int messageTextIndex = c.getColumnIndex("messageText");
             int messageTimeIndex = c.getColumnIndex("messageTime");
             int messageSenderIndex = c.getColumnIndex("messageSender");
             int messageIDIndex = c.getColumnIndex("ID");
 
-
-
             String timeText = c.getString(messageTimeIndex);
+            String dateText = "";
+            String day = "";
+            String month = "1";
+
+            try {
+                Date timeTextDate = fullDateFormat.parse(timeText);
+                dateText = dayAndMonthFormat.format(timeTextDate);
+                day = dayFormat.format(timeTextDate);
+                month = monthFormat.format(timeTextDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if(!dateText.equals(thisdate)){
+                day += " " + days[Integer.parseInt(month)-1];
+                Message message = new Message();
+                message.setMessageType(0);
+                message.setMessageText(day);
+                adapter.add(message);
+                thisdate = dateText;
+            }
+
             Message message = new Message();
 
             if ((c.getString(messageSenderIndex)).equals(number)) {
+
+
                 message.setMessageId(c.getLong(messageIDIndex));
                 message.setMessageUser("You");
                 message.setMessageType(1);
@@ -410,9 +439,7 @@ public class Chat extends AppCompatActivity {
                 else{
 
                     Date currentDate = new Date();
-
-                    DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                    String timeText = timeFormat.format(currentDate);
+                    String timeText = fullDateFormat.format(currentDate);
 
                     String text = input.getText().toString();
 
