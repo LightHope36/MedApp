@@ -13,4 +13,7 @@ public class Doctor {
         return proffession;
     }
 
+    public String getName() {
+        return Name;
+    }
 }

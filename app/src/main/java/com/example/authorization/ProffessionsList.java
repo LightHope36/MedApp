@@ -2,6 +2,7 @@ package com.example.authorization;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,25 +15,18 @@ public class ProffessionsList extends AppCompatActivity {
 
     static String[] profs;
 
-           /* profs = new String[] {
-            "Рыжик", "Барсик", "Мурзик", "Мурка", "Васька",
-            "Томасина", "Кристина", "Пушок", "Дымка", "Кузя",
-            "Китти", "Масяня", "Симба"
-    };*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String [] d =  getResources().getStringArray(R.array.proffessions_string_array);
+        profs = d;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proffessions_list);
         getSupportActionBar().hide();
-         String [] d =  getResources().getStringArray(R.array.proffessions_string_array);
-         profs = d;
+
 
         ListView listView = findViewById(R.id.list_of_professions);
 
-// определяем строковый массив
-
-
-// используем адаптер данных
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, profs);
 
@@ -40,9 +34,14 @@ public class ProffessionsList extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
-                //TextView textView = (TextView) itemClicked;
-                Toast.makeText(getApplicationContext(), ((TextView) itemClicked).getText(),
-                        Toast.LENGTH_SHORT).show();
+               TextView textView = (TextView) itemClicked;
+                DoctorsList.profsFilter = textView.getText().toString();
+                //System.out.println(DoctorsList.profsFilter);
+                Intent intent = new Intent(getApplicationContext(), DoctorsList.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+
             }
         });
 

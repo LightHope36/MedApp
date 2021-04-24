@@ -25,6 +25,9 @@
             android:name=".Dialogs"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".DoctorsList"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Chat"
             android:screenOrientation="portrait" />
         <activity
