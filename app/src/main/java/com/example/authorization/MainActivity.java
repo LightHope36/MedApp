@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
         next = findViewById(R.id.next_btn);
         sogl = findViewById(R.id.sogl);
         cs = findViewById(R.id.sogl_cs);
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+            Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
+        }
+        catch(Exception ex){
+            Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
+        }
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override

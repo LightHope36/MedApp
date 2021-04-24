@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 public class auth2 extends AppCompatActivity {
 
@@ -28,6 +29,8 @@ public class auth2 extends AppCompatActivity {
         Button back1 = findViewById(R.id.back_btn1);
         RadioButton  rb = findViewById(R.id.radioButton1);
         RadioButton  rb1 = findViewById(R.id.radioButton2);
+
+
 
         next1.setOnClickListener(new View.OnClickListener() {
             @Override
