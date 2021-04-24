@@ -100,6 +100,11 @@
 
 
 Соглашение разработано на базе юридических документов сервиса Правилль</string>
-
+ <string-array name="proffessions_string_array">
+     <item>Окулист</item>
+     <item>Хирург</item>
+     <item>Психолог</item>
+     <item>Кардиолог</item>
+ </string-array>
 
 </resources>

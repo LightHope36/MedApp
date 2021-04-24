@@ -25,25 +25,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Dialogs extends AppCompatActivity {
+public class  Dialogs extends AppCompatActivity {
 
     private ListView listView;
     private ImageView search;
     private ConstraintLayout toMain;
-    private ConstraintLayout dio;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialogs);
-        dio = findViewById(R.id.constraintLayout5);
 
-        toMain = findViewById(R.id.constraintLayout4);
+
+       toMain = findViewById(R.id.constraintLayout4);
        toMain.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), DoctorsList.class);
+                Intent intent = new Intent(getApplicationContext(), ProffessionsList.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -56,7 +56,6 @@ public class Dialogs extends AppCompatActivity {
         Intent intent = getIntent();
 
         String number = (String) intent.getExtras().get("number");
-
 
         List<Person> persons = new ArrayList<>();
 

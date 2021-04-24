@@ -1,13 +1,16 @@
 package com.example.authorization;
 
 public class Doctor {
-    private String Text;
+    private String Name;
+    private String proffession;
 
-    public String getText() {
-        return Text;
+    public Doctor(String Name, String proffession){
+        this.Name = Name;
+        this.proffession = proffession;
     }
 
-    public void setText(String text) {
-        Text = text;
+    public String getProffession(){
+        return proffession;
     }
+
 }
