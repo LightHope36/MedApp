@@ -104,7 +104,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout4"
+            android:id="@+id/main_cs_in_dial"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="50dp"
@@ -142,13 +142,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout5"
+            android:id="@+id/cs_to_dial"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/button_menu_clicked"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout6"
-            app:layout_constraintStart_toEndOf="@+id/constraintLayout4"
+            app:layout_constraintStart_toEndOf="@+id/main_cs_in_dial"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView

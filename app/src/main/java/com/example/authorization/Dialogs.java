@@ -15,22 +15,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-public class  Dialogs extends AppCompatActivity {
+public class Dialogs extends AppCompatActivity {
 
     private ListView listView;
     private ImageView search;
-    private ConstraintLayout toMain;
-
+    int i=0;
+    DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private ConstraintLayout main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,24 +44,14 @@ public class  Dialogs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialogs);
 
-
-       toMain = findViewById(R.id.constraintLayout4);
-       toMain.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ProffessionsList.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
-        });
-
         listView = findViewById(R.id.list_of_persons);
         search = findViewById(R.id.search_dial);
+        main = findViewById(R.id.main_cs_in_dial);
 
         Intent intent = getIntent();
 
         String number = (String) intent.getExtras().get("number");
+
 
         List<Person> persons = new ArrayList<>();
 
@@ -69,8 +65,8 @@ public class  Dialogs extends AppCompatActivity {
                 "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "\tmessageUser varchar(100), \n" +
                 "\tmessageSender varchar(10), \n" +
-                "\tmessageText varchar(3000), \n" +
-                "\tmessageTaker varchar(1000), \n" +
+                "\tmessageText text, \n" +
+                "\tmessageTaker varchar(10), \n" +
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
@@ -79,8 +75,9 @@ public class  Dialogs extends AppCompatActivity {
         usersDataBase.execSQL("create table if not exists users\n" +
                 "(\n" +
                 "\tUserPhone varchar(1000), \n" +
-                "\tUserName varchar(1000), \n" +
-                "\tUserSurname varchar(1000), \n" +
+                "\tUserDopInfo text, \n" +
+                "\tUserName text, \n" +
+                "\tUserSurname text, \n" +
                 "\tUserBirthday varchar(1000), \n" +
                 "\tUserPolis varchar(1000) \n" +
                 ");");
@@ -106,7 +103,7 @@ public class  Dialogs extends AppCompatActivity {
 
                 Person person = new Person();
                 person.setNumber(cper.getString(UserPhoneIndex));
-                person.setLastmessage(cmes.getString(messageTextIndex));
+                person.setDopinfo(cmes.getString(messageTextIndex));
                 person.setName(taker_text);
                 person.setMessageTime(cmes.getString(messageTimeIndex));
                 person.setAvatar("ic_profile_1");
@@ -115,7 +112,7 @@ public class  Dialogs extends AppCompatActivity {
             catch (Exception e){
                 Person person = new Person();
                 person.setNumber(cper.getString(UserPhoneIndex));
-                person.setLastmessage("Нет сообщений");
+                person.setDopinfo("Нет сообщений");
                 person.setName(taker_text);
                 person.setMessageTime("");
                 person.setAvatar("ic_profile_1");
@@ -123,6 +120,17 @@ public class  Dialogs extends AppCompatActivity {
             }
             cper.moveToNext();
         }
+
+        main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainPage2.class);
+                intent.putExtra("number", number);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,13 +157,63 @@ public class  Dialogs extends AppCompatActivity {
             }
         });
 
+
+        Collections.sort(persons, new SortPersons());
+        adapter.notifyDataSetChanged();
+        cper.moveToFirst();
+
+        while (!cper.isAfterLast()) {
+            try {
+
+                Person person = persons.get(i);
+
+                String timeText = person.getMessageTime();
+                Date timeTextDate = fullDateFormat.parse(timeText);
+                String timeTextInMessage = timeFormat.format(timeTextDate);
+
+                person.setMessageTime(timeTextInMessage);
+            }
+            catch (Exception e){
+            }
+            cper.moveToNext();
+            i++;
+        }
+
     }
+
+
+    private class SortPersons implements Comparator<Person> {
+        @Override
+        public int compare(Person o1, Person o2) {
+            Date timeTextDate1 = null;
+            Date timeTextDate2 = null;
+            long time1=1;
+            long time2 =0;
+            try {
+                timeTextDate1 = fullDateFormat.parse(o1.getMessageTime());
+                timeTextDate2 = fullDateFormat.parse(o2.getMessageTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            try{
+                time1 = Long.valueOf(new SimpleDateFormat("yMdHm").format(timeTextDate1));
+                time2 = Long.valueOf(new SimpleDateFormat("yMdHm").format(timeTextDate2));
+            }
+            catch (Exception e){
+            }
+            return (int)(time2-time1);
+        }
+    }
+
     public void onBackPressed(){
         Intent intent = new Intent(getApplicationContext(), auth3.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         overridePendingTransition(0, 0);
     }
+
+
+
 
     private static class PersonAdapter extends ArrayAdapter<Person> {
 
@@ -174,7 +232,7 @@ public class  Dialogs extends AppCompatActivity {
 
             PersonHolder holder = new PersonHolder();
             holder.UserName = convertView.findViewById(R.id.user);
-            holder.UserText = convertView.findViewById(R.id.last_message_text);
+            holder.UserText = convertView.findViewById(R.id.dopinfo_text);
             holder.imageView = convertView.findViewById(R.id.profile);
             holder.LastmessageTime = convertView.findViewById(R.id.last_message_time);
 
@@ -182,7 +240,7 @@ public class  Dialogs extends AppCompatActivity {
 
             holder.imageView.setImageResource(imageId);
             holder.UserName.setText(person.getName());
-            holder.UserText.setText(person.getLastmessage());
+            holder.UserText.setText(person.getDopinfo());
             holder.LastmessageTime.setText(person.getMessageTime());
 
             convertView.setTag(holder);

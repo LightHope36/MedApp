@@ -73,13 +73,14 @@ public class Search extends AppCompatActivity {
         usersDataBase.execSQL("create table if not exists users\n" +
                 "(\n" +
                 "\tUserPhone varchar(1000), \n" +
-                "\tUserName varchar(1000), \n" +
-                "\tUserSurname varchar(1000), \n" +
+                "\tUserDopInfo text, \n" +
+                "\tUserName text, \n" +
+                "\tUserSurname text, \n" +
                 "\tUserBirthday varchar(1000), \n" +
                 "\tUserPolis varchar(1000) \n" +
                 ");");
 
-        Cursor cper = usersDataBase.rawQuery("select UserPhone, UserName, UserSurname, UserBirthday from users where UserPhone!=?", new String[]{number});
+        Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone!=?", new String[]{number});
         cper.moveToFirst();
 
         if(type.equals("chat")) {
@@ -265,7 +266,7 @@ public class Search extends AppCompatActivity {
 
             PersonHolder holder = new PersonHolder();
             holder.UserName = convertView.findViewById(R.id.user);
-            holder.UserText = convertView.findViewById(R.id.last_message_text);
+            holder.UserText = convertView.findViewById(R.id.dopinfo_text);
             holder.imageView = convertView.findViewById(R.id.profile);
             holder.LastmessageTime = convertView.findViewById(R.id.last_message_time);
 
@@ -273,7 +274,7 @@ public class Search extends AppCompatActivity {
 
             holder.imageView.setImageResource(imageId);
             holder.UserName.setText(person.getName());
-            holder.UserText.setText(person.getLastmessage());
+            holder.UserText.setText(person.getDopinfo());
             holder.LastmessageTime.setText(person.getMessageTime());
 
             convertView.setTag(holder);

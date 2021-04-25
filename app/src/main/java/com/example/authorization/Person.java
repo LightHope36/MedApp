@@ -7,8 +7,17 @@ public class Person implements Serializable {
     private String avatar;
     private String name;
     private String messageTime;
-    private String lastmessage;
+    private String dopinfo;
     private String number;
+    private String price;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
     public String getNumber() {
         return number;
@@ -26,12 +35,12 @@ public class Person implements Serializable {
         this.avatar = avatar;
     }
 
-    public String getLastmessage() {
-        return lastmessage;
+    public String getDopinfo() {
+        return dopinfo;
     }
 
-    public void setLastmessage(String lastmessage) {
-        this.lastmessage = lastmessage;
+    public void setDopinfo(String dopinfo) {
+        this.dopinfo = dopinfo;
     }
 
     public String getName() {

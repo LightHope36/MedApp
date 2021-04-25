@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MessageAdapter extends BaseAdapter {
 
@@ -88,9 +91,12 @@ public class MessageAdapter extends BaseAdapter {
 
                 holder.UserName = convertView.findViewById(R.id.message_user);
                 holder.Time = convertView.findViewById(R.id.message_time);
-
-                ImageView picture = convertView.findViewById(R.id.user_image);
-                picture.setImageBitmap(message.getImage());
+                try {
+                    ImageView picture = convertView.findViewById(R.id.user_image);
+                    picture.setImageBitmap(message.getImage());
+                }catch (Exception e){
+                    Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
+                }
 
                 holder.UserName.setText(message.getMessageUser());
                 holder.Time.setText(message.getMessageTime());

@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_icon2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Authorization">
-        <activity android:name=".ProffessionsList"></activity>
+        <activity android:name=".MainPage2"></activity>
+        <activity android:name=".DoctorsList" />
         <activity
             android:name=".Search"
             android:screenOrientation="portrait" />
@@ -23,9 +24,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Dialogs"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".DoctorsList"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Chat"

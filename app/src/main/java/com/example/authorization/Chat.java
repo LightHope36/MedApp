@@ -1,14 +1,11 @@
 package com.example.authorization;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,17 +16,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Base64;
-import android.util.Base64InputStream;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,15 +29,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.util.IOUtils;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -93,7 +78,7 @@ public class Chat extends AppCompatActivity {
     DateFormat dayAndMonthFormat = new SimpleDateFormat("d M", Locale.getDefault());
     DateFormat dayFormat = new SimpleDateFormat("d", Locale.getDefault());
     DateFormat monthFormat = new SimpleDateFormat("M", Locale.getDefault());
-    String days[] = new String[]{"Января", "Февраля", "Мара", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"};
+    String days[] = new String[]{"Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"};
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -152,6 +137,7 @@ public class Chat extends AppCompatActivity {
 
         String taker = person.getNumber();
 
+
         VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
         VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
                 "(\n" +
@@ -159,28 +145,19 @@ public class Chat extends AppCompatActivity {
                 "\tmessageUser varchar(100), \n" +
                 "\tmessageSender varchar(10), \n" +
                 "\tmessageText text, \n" +
-                "\tmessageTaker varchar(1000), \n" +
-                "\tmessageImage text, \n" +
+                "\tmessageImage blob, \n" +
+                "\tmessageTaker varchar(10), \n" +
                 "\tmessageTime varchar(100) \n" +
                 ");");
 //        getApplicationContext().deleteDatabase("VisibleMessagess");
-        SQLiteDatabase allmessagesDataBase = openOrCreateDatabase("AllMessages", MODE_PRIVATE, null);
-        allmessagesDataBase.execSQL("create table if not exists AllMessages\n" +
-                "(\n" +
-                "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "\tmessageUser varchar(10), \n" +
-                "\tmessageText varchar(3000), \n" +
-                "\tmessageTaker varchar(1000), \n" +
-                "\tmessageTime varchar(100) \n" +
-                ");");
 
-        SQLiteDatabase VisibleusersDataBase = openOrCreateDatabase("Visibleusers", MODE_PRIVATE, null);
-        VisibleusersDataBase.execSQL("create table if not exists Visibleusers\n" +
+        SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
+        usersDataBase.execSQL("create table if not exists users\n" +
                 "(\n" +
-                "\tUser varchar(10), \n" +
                 "\tUserPhone varchar(1000), \n" +
-                "\tUserName varchar(1000), \n" +
-                "\tUserSurname varchar(1000), \n" +
+                "\tUserDopInfo text, \n" +
+                "\tUserName text, \n" +
+                "\tUserSurname text, \n" +
                 "\tUserBirthday varchar(1000), \n" +
                 "\tUserPolis varchar(1000) \n" +
                 ");");
@@ -194,6 +171,7 @@ public class Chat extends AppCompatActivity {
             int messageTextIndex = c.getColumnIndex("messageText");
             int messageTimeIndex = c.getColumnIndex("messageTime");
             int messageSenderIndex = c.getColumnIndex("messageSender");
+            int messageImageIndex = c.getColumnIndex("messageImage");
             int messageIDIndex = c.getColumnIndex("ID");
 
             String timeText = c.getString(messageTimeIndex);
@@ -225,20 +203,29 @@ public class Chat extends AppCompatActivity {
 
             if ((c.getString(messageSenderIndex)).equals(number)) {
 
+                if (!(c.isNull(messageImageIndex))) {
+                    byte[] bytesImage = c.getBlob(messageImageIndex);
+                    Bitmap bitmapImage = BitmapFactory.decodeByteArray(bytesImage, 0, bytesImage.length);
 
-                message.setMessageId(c.getLong(messageIDIndex));
-                message.setMessageUser("You");
-                message.setMessageType(1);
-                message.setMessageText(c.getString(messageTextIndex));
-                message.setMessageTime(timeTextInMessage);
+                    message.setMessageUser("You");
+                    message.setMessageType(3);
+                    message.setImage(bitmapImage);
+                    message.setMessageTime(timeText);
+                    adapter.add(message);
+                }else {
+                    message.setMessageId(c.getLong(messageIDIndex));
+                    message.setMessageUser("You");
+                    message.setMessageType(1);
+                    message.setMessageText(c.getString(messageTextIndex));
+                    message.setMessageTime(timeTextInMessage);
+                    adapter.add(message);
+                }
 
 
                 if(c.getLong(messageIDIndex)==id){
                     n=i;
                 }
                 i++;
-
-                adapter.add(message);
 
             }
             else{
@@ -429,8 +416,6 @@ public class Chat extends AppCompatActivity {
                     Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess", null);
                     cmes.moveToLast();
 
-                    allmessagesDataBase.execSQL("insert into AllMessages(messageUser,messageText, messageTaker, messageTime) values('"+number+"','"+text+"','"+taker+"','"+timeText+"')");
-
                     int messageIDIndex = cmes.getColumnIndex("ID");
 
 
@@ -525,10 +510,19 @@ public class Chat extends AppCompatActivity {
                         adapter.add(message);
                         listView.setSelection(listView.getCount() - 1);
 
-                        String image_str = converttoString(bitmap);
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
+                        byte[] bytesImage = byteArrayOutputStream.toByteArray();
+
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put("messageUser", user);
+                        contentValues.put("messageSender", number);
+                        contentValues.put("messageImage", bytesImage);
+                        contentValues.put("messageTaker", taker);
+                        contentValues.put("messageTime", timeText);
 
                         try {
-                            VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender, messageImage, messageTaker, messageTime, messageText) values('" + user + "','" + number + "','" + image_str + "','" + taker + "','" + timeText + "', '')");
+                            VisibleMessagesDataBase.insert("VisibleMessagess", null, contentValues);
                         }
                         catch (Exception e){
                             Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
@@ -539,24 +533,6 @@ public class Chat extends AppCompatActivity {
                     }
                 }
         }
-    }
-
-    public static Bitmap converttoBitmap(String base64Str) throws IllegalArgumentException
-    {
-        byte[] decodedBytes = Base64.decode(
-                base64Str.substring(base64Str.indexOf(",")  + 1),
-                Base64.DEFAULT
-        );
-
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-    }
-
-    public static String converttoString(Bitmap bitmap)
-    {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-
-        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
     }
 
 
