@@ -11,8 +11,10 @@
         android:roundIcon="@mipmap/ic_icon2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Authorization">
-        <activity android:name=".MainPage2"></activity>
-        <activity android:name=".DoctorsList" />
+        <activity android:name=".MainPage2"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DoctorsList"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Search"
             android:screenOrientation="portrait" />
