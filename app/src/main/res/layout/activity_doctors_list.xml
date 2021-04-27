@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_doctors"
         android:layout_width="match_parent"
-        android:layout_height="98dp"
+        android:layout_height="112dp"
         android:background="@drawable/top"
         android:elevation="5dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,9 +34,9 @@
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="18dp"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/back_of_person_info"
+            android:background="@drawable/search_doctors_list"
             android:elevation="2dp"
             android:ems="10"
             android:fontFamily="@font/manrope_regular"
@@ -45,16 +45,16 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/filter"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <ImageView
             android:id="@+id/filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView14"
             app:srcCompat="@drawable/ic_filter" />
 
         <TextView
@@ -62,42 +62,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="116dp"
 
+            android:layout_marginTop="14dp"
             android:text="Результаты поиска:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/input" />
 
         <TextView
             android:id="@+id/professions_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="147dp"
-            android:paddingStart="9dp"
-            android:background="@drawable/back_text"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="9dp"
             android:alpha="0.9"
+            android:background="@drawable/back_text"
+            android:paddingStart="9dp"
             android:paddingTop="4dp"
             android:paddingEnd="8dp"
             android:paddingBottom="4dp"
             android:text="Специальности"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
         <TextView
             android:id="@+id/doctors_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="155dp"
-            android:paddingStart="9dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
             android:alpha="0.9"
+            android:paddingStart="9dp"
             android:paddingTop="4dp"
             android:paddingEnd="8dp"
             android:paddingBottom="4dp"
-            android:layout_marginTop="147dp"
             android:text="Врачи"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/professions_text"
+            app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -108,7 +108,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/bot_doctors"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
