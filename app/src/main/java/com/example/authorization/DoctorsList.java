@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,10 +41,21 @@ public class DoctorsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctors_list);
         getSupportActionBar().hide();
-
         Intent intent = getIntent();
         String number = (String) intent.getExtras().get("number");
 
+        ListView listView = findViewById(R.id.list_of_professions);
+
+        String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
+        ArrayList<Doctor> doctors = new ArrayList<>();
+        doctors.add(new Doctor("dima", proffessions_array[1]));
+        doctors.add(new Doctor("sr", proffessions_array[2]));
+        doctors.add(new Doctor("fh", proffessions_array[2]));
+        doctors.add(new Doctor("bm", proffessions_array[2]));
+        doctors.add(new Doctor("xl", proffessions_array[0]));
+        doctors.add(new Doctor("L", proffessions_array[0]));
+        ArrayList <Doctor> filtredDoctors = new ArrayList<>();
+/*
         listView = findViewById(R.id.list_of_professions);
         filter = findViewById(R.id.filter);
         top = findViewById(R.id.top_doctors);
@@ -58,14 +70,48 @@ public class DoctorsList extends AppCompatActivity {
 
         listView.setAdapter(docadapter);
 
-        for (int i=0; i<20; i++){
-            Doctor doctor = new Doctor();
-            doctor.setText("Специальность " + (i+1));
+       for (int i=0; i<20; i++){
+           Doctor doctor = new Doctor();
+           doctor.setText("Специальность " + (i+1));
             docadapter.add(doctor);
-        }
+      }
+*/
+        ProfAdapter adapterProfs = new ProfAdapter(this, R.layout.profession_card, proffessions_array);
+        DoctorAdapter adapterDoctor = new DoctorAdapter(this, R.layout.person, filtredDoctors);
+
+        listView.setAdapter(adapterProfs);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //int i = 1;
+               System.out.println(adapterProfs.getItem(position));
+
+
+               for (int d = 0; d < doctors.size();d++){
+                   System.out.println(doctors.get(d).getProffession() + "ehjfojsrhgferotjhkrjngkjurhfd");
+                   if(doctors.get(d).getProffession().equals(adapterProfs.getItem(position))){
+                       filtredDoctors.add(doctors.get(d));
+                   }
+               }
+
+                    /*while (true){
+                        if(doctors.get(i).getName().equals(adapterProfs.getItem(position))){
+                            try {
+
+                        }catch (Throwable t){
+                            break;
+                        }
+                    }
+                        i++;
+                }*/
+
+
+               listView.setAdapter(adapterDoctor);
+            }
+        });
+
 
         dialogs = findViewById(R.id.cs_to_dial);
-
         dialogs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +123,7 @@ public class DoctorsList extends AppCompatActivity {
             }
         });
 
+/*
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -159,32 +206,7 @@ public class DoctorsList extends AppCompatActivity {
         });
     }
 
-    private static class DoctorAdapter extends ArrayAdapter<Doctor> {
 
-        public DoctorAdapter(@NonNull Context context, int resource, @NonNull List<Doctor> objects) {
-            super(context, resource, objects);
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            Doctor doctor = getItem(position);
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.profession_card, null);
-
-
-            DoctorHolder holder = new DoctorHolder();
-            holder.text = convertView.findViewById(R.id.profession_text);
-
-            holder.text.setText(doctor.getText());
-
-
-            convertView.setTag(holder);
-
-
-            return convertView;
-        }
-    }
 
     private static class DoctorHolder {
         public TextView text;
@@ -230,6 +252,64 @@ public class DoctorsList extends AppCompatActivity {
         public TextView UserText;
         public ImageView imageView;
         public TextView LastmessageTime;
+   */
+
+    }
+    class DoctorAdapter extends ArrayAdapter<Doctor> {
+        public DoctorAdapter(@NonNull Context context, int resource, @NonNull List<Doctor> objects) {
+            super(context, resource, objects);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            Doctor doctor = getItem(position);
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.person, null);
+
+
+            DoctorHolder holderName = new DoctorHolder();
+            holderName.text = convertView.findViewById(R.id.user);
+            holderName.text.setText(doctor.getName());
+
+            DoctorHolder holderProf = new DoctorHolder();
+            holderProf.text = convertView.findViewById(R.id.dopinfo_text);
+            holderProf.text.setText(doctor.getProffession());
+
+            convertView.setTag(holderProf);
+            convertView.setTag(holderName);
+
+
+            return convertView;
+        }
+    }
+    class ProfAdapter extends ArrayAdapter<String> {
+
+        public ProfAdapter(@NonNull Context context, int resource, @NonNull String[] str) {
+            super(context, resource, str);
+        }
+
+        @NonNull
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            String string = getItem(position);
+
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.profession_card, null);
+
+            DoctorHolder holder = new DoctorHolder();
+            holder.text = convertView.findViewById(R.id.profession_text);
+            holder.text.setText(string);
+
+            convertView.setTag(holder);
+
+            return convertView;
+        }
+
+
+    }
+    private static class DoctorHolder {
+        public TextView text;
     }
 
 }
+
