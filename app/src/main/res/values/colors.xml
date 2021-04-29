@@ -21,4 +21,5 @@
     <color name="grey_shadow">#1464686D</color>
     <color name="background_chat">#FCFCFC</color>
     <color name="background_main_page">#FAFAFA</color>
+    <color name="Без_тени">#1A26C6DA</color>
 </resources>
