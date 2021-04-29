@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -47,35 +48,15 @@ public class DoctorsList extends AppCompatActivity {
         ListView listView = findViewById(R.id.list_of_professions);
 
         String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
+        ArrayList <Doctor> filtredDoctors = new ArrayList<>();
         ArrayList<Doctor> doctors = new ArrayList<>();
         doctors.add(new Doctor("dima", proffessions_array[1]));
-        doctors.add(new Doctor("sr", proffessions_array[2]));
-        doctors.add(new Doctor("fh", proffessions_array[2]));
-        doctors.add(new Doctor("bm", proffessions_array[2]));
-        doctors.add(new Doctor("xl", proffessions_array[0]));
-        doctors.add(new Doctor("L", proffessions_array[0]));
-        ArrayList <Doctor> filtredDoctors = new ArrayList<>();
-/*
-        listView = findViewById(R.id.list_of_professions);
-        filter = findViewById(R.id.filter);
-        top = findViewById(R.id.top_doctors);
-        professions = findViewById(R.id.professions_text);
-        doctors_tv = findViewById(R.id.doctors_text);
+        doctors.add(new Doctor("sril", proffessions_array[2]));
+        doctors.add(new Doctor("fhat", proffessions_array[2]));
+        doctors.add(new Doctor("bmat", proffessions_array[2]));
+        doctors.add(new Doctor("xlat", proffessions_array[0]));
+        doctors.add(new Doctor("Lat", proffessions_array[0]));
 
-        List<Doctor> doctors = new ArrayList<>();
-        List<Person> persons = new ArrayList<>();
-
-        DoctorAdapter docadapter = new DoctorAdapter(getApplicationContext(), R.layout.profession_card, doctors);
-        PersonAdapter personadapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
-
-        listView.setAdapter(docadapter);
-
-       for (int i=0; i<20; i++){
-           Doctor doctor = new Doctor();
-           doctor.setText("Специальность " + (i+1));
-            docadapter.add(doctor);
-      }
-*/
         ProfAdapter adapterProfs = new ProfAdapter(this, R.layout.profession_card, proffessions_array);
         DoctorAdapter adapterDoctor = new DoctorAdapter(this, R.layout.person, filtredDoctors);
 
@@ -88,25 +69,20 @@ public class DoctorsList extends AppCompatActivity {
 
 
                for (int d = 0; d < doctors.size();d++){
-                   System.out.println(doctors.get(d).getProffession() + "ehjfojsrhgferotjhkrjngkjurhfd");
+                   //System.out.println(doctors.get(d).getProffession() + "ehjfojsrhgferotjhkrjngkjurhfd");
                    if(doctors.get(d).getProffession().equals(adapterProfs.getItem(position))){
                        filtredDoctors.add(doctors.get(d));
                    }
                }
 
-                    /*while (true){
-                        if(doctors.get(i).getName().equals(adapterProfs.getItem(position))){
-                            try {
-
-                        }catch (Throwable t){
-                            break;
-                        }
-                    }
-                        i++;
-                }*/
-
-
                listView.setAdapter(adapterDoctor);
+               listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                   @Override
+                   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                       Intent intent = new Intent(getApplicationContext(), Profile.class);
+
+                   }
+               });
             }
         });
 
@@ -122,137 +98,6 @@ public class DoctorsList extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
-
-/*
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                count++;
-                if(count==1) {
-                    listView.setAdapter(personadapter);
-                    for (int i = 0; i < 5; i++) {
-                        Person person = new Person();
-                        person.setName("Имя Фамилия " + (i+1));
-                        person.setAvatar("ic_profile_1");
-                        person.setDopinfo("This is dop info");
-                        person.setPrice("price");
-                        personadapter.add(person);
-                    }
-                }
-                else{
-
-                }
-            }
-        });
-
-        professions.setOnClickListener(new View.OnClickListener() {
-
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onClick(View v) {
-                professions.setBackground(getDrawable(R.drawable.back_text));
-                doctors_tv.setBackground(getDrawable(R.drawable.flow_shape_white));
-                docadapter.clear();
-                listView.setAdapter(docadapter);
-                for (int i=0; i<20; i++){
-                    Doctor doctor = new Doctor();
-                    doctor.setText("Специальность " + (i+1));
-                    docadapter.add(doctor);
-                }
-            }
-        });
-
-        doctors_tv.setOnClickListener(new View.OnClickListener() {
-
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onClick(View v) {
-                doctors_tv.setBackground(getDrawable(R.drawable.back_text));
-                professions.setBackground(getDrawable(R.drawable.flow_shape_white));
-                personadapter.clear();
-                listView.setAdapter(personadapter);
-                for (int i = 0; i < 5; i++) {
-                    Person person = new Person();
-                    person.setName("Имя Фамилия " + (i+1));
-                    person.setAvatar("ic_profile_1");
-                    person.setDopinfo("This is dop info");
-                    person.setPrice("price");
-                    personadapter.add(person);
-                }
-            }
-        });
-
-        filter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                count2++;
-                if (count2%2==1) {
-                    int margin186inDp = (int) TypedValue.applyDimension(
-                            TypedValue.COMPLEX_UNIT_DIP, 186, getResources().getDisplayMetrics());
-                    ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
-                            (ConstraintLayout.LayoutParams.MATCH_PARENT, margin186inDp);
-                    layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-                    top.setLayoutParams(layoutParams);
-                }
-                else{
-                    int margin112inDp = (int) TypedValue.applyDimension(
-                            TypedValue.COMPLEX_UNIT_DIP, 112, getResources().getDisplayMetrics());
-                    ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
-                            (ConstraintLayout.LayoutParams.MATCH_PARENT, margin112inDp);
-                    layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-                    top.setLayoutParams(layoutParams);
-                }
-            }
-        });
-    }
-
-
-
-    private static class DoctorHolder {
-        public TextView text;
-    }
-
-    private static class PersonAdapter extends ArrayAdapter<Person> {
-
-        public PersonAdapter(@NonNull Context context, int resource, @NonNull List<Person> objects) {
-            super(context, resource, objects);
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            Person person = getItem(position);
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.person, null);
-
-
-
-            PersonHolder holder = new PersonHolder();
-            holder.UserName = convertView.findViewById(R.id.user);
-            holder.UserText = convertView.findViewById(R.id.dopinfo_text);
-            holder.imageView = convertView.findViewById(R.id.profile);
-            holder.LastmessageTime = convertView.findViewById(R.id.last_message_time);
-
-            int imageId = getContext().getResources().getIdentifier(person.getAvatar(), "drawable", getContext().getPackageName());
-
-            holder.imageView.setImageResource(imageId);
-            holder.UserName.setText(person.getName());
-            holder.UserText.setText(person.getDopinfo());
-            holder.LastmessageTime.setText(person.getMessageTime());
-
-            convertView.setTag(holder);
-
-
-            return convertView;
-        }
-    }
-
-    private static class PersonHolder {
-        public TextView UserName;
-        public TextView UserText;
-        public ImageView imageView;
-        public TextView LastmessageTime;
-   */
 
     }
     class DoctorAdapter extends ArrayAdapter<Doctor> {

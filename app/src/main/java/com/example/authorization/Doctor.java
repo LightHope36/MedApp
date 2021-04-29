@@ -1,20 +1,11 @@
 package com.example.authorization;
 
-public class Doctor {
-   /* private String Text;
-
-    public String getText() {
-        return Text;
-    }
-
-    public void setText(String text) {
-        Text = text;
-    }*/
-   private String Name;
+public class Doctor extends Person{
+    private String name;
     private String proffession;
 
     public Doctor(String Name, String proffession){
-        this.Name = Name;
+        this.name = Name;
         this.proffession = proffession;
     }
 
@@ -22,7 +13,8 @@ public class Doctor {
         return proffession;
     }
 
+    @Override
     public String getName() {
-        return Name;
+        return name;
     }
 }
