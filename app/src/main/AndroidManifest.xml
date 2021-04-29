@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Authorization">
         <activity
-            android:name=".Doctor_card"
+            android:name=".MainPage2"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainPage2"
+            android:name=".Profile"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DoctorsList"

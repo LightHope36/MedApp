@@ -27,7 +27,7 @@ import java.util.List;
 
 public class DoctorsList extends AppCompatActivity {
 
-    private ListView listView;
+    //private ListView listView;
     int count = 0;
     int count2 = 0;
     private ImageView filter;
@@ -35,7 +35,7 @@ public class DoctorsList extends AppCompatActivity {
     private TextView professions;
     private TextView doctors_tv;
     private ConstraintLayout dialogs;
-
+    private boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,7 @@ public class DoctorsList extends AppCompatActivity {
         String number = (String) intent.getExtras().get("number");
 
         ListView listView = findViewById(R.id.list_of_professions);
+        flag = true;
 
         String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
         ArrayList <Doctor> filtredDoctors = new ArrayList<>();
@@ -64,22 +65,25 @@ public class DoctorsList extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //int i = 1;
                System.out.println(adapterProfs.getItem(position));
 
 
                for (int d = 0; d < doctors.size();d++){
-                   //System.out.println(doctors.get(d).getProffession() + "ehjfojsrhgferotjhkrjngkjurhfd");
                    if(doctors.get(d).getProffession().equals(adapterProfs.getItem(position))){
                        filtredDoctors.add(doctors.get(d));
                    }
                }
 
                listView.setAdapter(adapterDoctor);
+               flag = false;
                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                    @Override
                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                        Intent intent = new Intent(getApplicationContext(), Profile.class);
+                       intent.putExtra("doctor", filtredDoctors.get(position));
+                       intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                       startActivity(intent);
+                       overridePendingTransition(0, 0);
 
                    }
                });
@@ -154,6 +158,33 @@ public class DoctorsList extends AppCompatActivity {
     }
     private static class DoctorHolder {
         public TextView text;
+    }
+
+    public void onBackPressed(){
+        if(flag==true){
+        Intent intent = new Intent(getApplicationContext(), MainPage2.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        }else {
+            /*ListView listView = findViewById(R.id.list_of_professions);
+            String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
+            ArrayList<Doctor> doctors = new ArrayList<>();
+            doctors.add(new Doctor("dima", proffessions_array[1]));
+            doctors.add(new Doctor("sril", proffessions_array[2]));
+            doctors.add(new Doctor("fhat", proffessions_array[2]));
+            doctors.add(new Doctor("bmat", proffessions_array[2]));
+            doctors.add(new Doctor("xlat", proffessions_array[0]));
+            doctors.add(new Doctor("Lat", proffessions_array[0]));
+            ProfAdapter adapterProfs = new ProfAdapter(this, R.layout.profession_card, proffessions_array);
+
+            listView.setAdapter(adapterProfs);
+            flag = true;*/
+            Intent intent = new Intent(getApplicationContext(), DoctorsList.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        }
     }
 
 }
