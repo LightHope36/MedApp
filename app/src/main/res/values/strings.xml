@@ -53,6 +53,9 @@
     <!-- Чат -->
     <string name="В_контакты">В контакты</string>
 
+    <!-- Карточка доктора -->
+    <string name="Рыбаков_Александр_Витальевич">Рыбаков Александр Витальевич</string>
+
     <!-- Главная -->
     <string name="Главная">Главная</string>
     <string name="Подбор_специалиста">Нажмите, чтобы подобрать специалиста</string>
@@ -105,11 +108,11 @@
 
 
 Соглашение разработано на базе юридических документов сервиса Правилль</string>
- <string-array name="proffessions_string_array">
-     <item>Окулист</item>
-     <item>Хирург</item>
-     <item>Психолог</item>
-     <item>Кардиолог</item>
- </string-array>
+    <string-array name="proffessions_string_array">
+        <item>Окулист</item>
+        <item>Хирург</item>
+        <item>Психолог</item>
+        <item>Кардиолог</item>
+    </string-array>
 
 </resources>
