@@ -36,27 +36,34 @@ public class DoctorsList extends AppCompatActivity {
     private TextView doctors_tv;
     private ConstraintLayout dialogs;
     private boolean flag;
+    private ArrayList<Doctor> doctors(){
+        String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
+        ArrayList <Doctor> doctorsT = new ArrayList<>();
+        doctorsT.add(new Doctor("dima", proffessions_array[1]));
+        doctorsT.add(new Doctor("sril", proffessions_array[2]));
+        doctorsT.add(new Doctor("fhat", proffessions_array[2]));
+        doctorsT.add(new Doctor("bmat", proffessions_array[2]));
+        doctorsT.add(new Doctor("xlat", proffessions_array[0]));
+        doctorsT.add(new Doctor("Lat", proffessions_array[0]));
+        return doctorsT;
+    }
+    private String number(){
+        Intent intent = getIntent();
+        return (String) intent.getExtras().get("number");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctors_list);
         getSupportActionBar().hide();
-        Intent intent = getIntent();
-        String number = (String) intent.getExtras().get("number");
+
 
         ListView listView = findViewById(R.id.list_of_professions);
         flag = true;
 
-        String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
         ArrayList <Doctor> filtredDoctors = new ArrayList<>();
-        ArrayList<Doctor> doctors = new ArrayList<>();
-        doctors.add(new Doctor("dima", proffessions_array[1]));
-        doctors.add(new Doctor("sril", proffessions_array[2]));
-        doctors.add(new Doctor("fhat", proffessions_array[2]));
-        doctors.add(new Doctor("bmat", proffessions_array[2]));
-        doctors.add(new Doctor("xlat", proffessions_array[0]));
-        doctors.add(new Doctor("Lat", proffessions_array[0]));
+        String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
 
         ProfAdapter adapterProfs = new ProfAdapter(this, R.layout.profession_card, proffessions_array);
         DoctorAdapter adapterDoctor = new DoctorAdapter(this, R.layout.person, filtredDoctors);
@@ -65,28 +72,24 @@ public class DoctorsList extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               System.out.println(adapterProfs.getItem(position));
+                System.out.println(adapterProfs.getItem(position));
+                if (flag == true) {
+                          for (int d = 0; d < doctors().size(); d++) {
+                              if (doctors().get(d).getProffession().equals(adapterProfs.getItem(position))) {
+                                  filtredDoctors.add(doctors().get(d));
+                              }
+                          }
 
-
-               for (int d = 0; d < doctors.size();d++){
-                   if(doctors.get(d).getProffession().equals(adapterProfs.getItem(position))){
-                       filtredDoctors.add(doctors.get(d));
-                   }
-               }
-
-               listView.setAdapter(adapterDoctor);
-               flag = false;
-               listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                   @Override
-                   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                       Intent intent = new Intent(getApplicationContext(), Profile.class);
-                       intent.putExtra("doctor", filtredDoctors.get(position));
-                       intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                       startActivity(intent);
-                       overridePendingTransition(0, 0);
-
-                   }
-               });
+                    listView.setAdapter(adapterDoctor);
+                    flag = false;
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), Profile.class);
+                    intent.putExtra("doctor", filtredDoctors.get(position));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                    //flag = true;
+                }
             }
         });
 
@@ -96,7 +99,7 @@ public class DoctorsList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Dialogs.class);
-                intent.putExtra("number", number);
+                intent.putExtra("number", number());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -162,12 +165,18 @@ public class DoctorsList extends AppCompatActivity {
 
     public void onBackPressed(){
         if(flag==true){
-        Intent intent = new Intent(getApplicationContext(), MainPage2.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
+            Intent intent = new Intent(getApplicationContext(), MainPage2.class);
+            intent.putExtra("number", number());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
         }else {
-            /*ListView listView = findViewById(R.id.list_of_professions);
+            Intent intent1 = getIntent();
+            Intent intent2 = new Intent(getApplicationContext(), DoctorsList.class);
+            String number = (String) intent1.getExtras().get("number");
+            intent2.putExtra("number", number);
+
+            ListView listView = findViewById(R.id.list_of_professions);
             String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
             ArrayList<Doctor> doctors = new ArrayList<>();
             doctors.add(new Doctor("dima", proffessions_array[1]));
@@ -179,11 +188,11 @@ public class DoctorsList extends AppCompatActivity {
             ProfAdapter adapterProfs = new ProfAdapter(this, R.layout.profession_card, proffessions_array);
 
             listView.setAdapter(adapterProfs);
-            flag = true;*/
-            Intent intent = new Intent(getApplicationContext(), DoctorsList.class);
+            flag = true;
+            /*Intent intent = new Intent(getApplicationContext(), MainPage2.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
-            overridePendingTransition(0, 0);
+            overridePendingTransition(0, 0);*/
         }
     }
 
