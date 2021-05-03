@@ -34,6 +34,8 @@ public class Dialogs extends AppCompatActivity {
     private ListView listView;
     private ImageView search;
     int i=0;
+    private ImageView coffee;
+    private TextView empty;
     DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private ConstraintLayout main;
@@ -47,6 +49,8 @@ public class Dialogs extends AppCompatActivity {
         listView = findViewById(R.id.list_of_persons);
         search = findViewById(R.id.search_dial);
         main = findViewById(R.id.main_cs_in_dial);
+        coffee = findViewById(R.id.coffee_in_dial);
+        empty = findViewById(R.id.empty_in_dial);
 
         Intent intent = getIntent();
 
@@ -119,6 +123,14 @@ public class Dialogs extends AppCompatActivity {
                 persons.add(person);
             }
             cper.moveToNext();
+        }
+        if(adapter.isEmpty()){
+            coffee.setVisibility(View.VISIBLE);
+            empty.setVisibility(View.VISIBLE);
+        }
+        else{
+            coffee.setVisibility(View.INVISIBLE);
+            empty.setVisibility(View.INVISIBLE);
         }
 
         main.setOnClickListener(new View.OnClickListener() {

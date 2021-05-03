@@ -27,7 +27,7 @@ import java.util.List;
 
 public class DoctorsList extends AppCompatActivity {
 
-    //private ListView listView;
+    private ListView listView;
     int count = 0;
     int count2 = 0;
     private ImageView filter;
@@ -59,7 +59,13 @@ public class DoctorsList extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
-        ListView listView = findViewById(R.id.list_of_professions);
+        listView = findViewById(R.id.list_of_professions);
+        dialogs = findViewById(R.id.cs_to_dial);
+        filter = findViewById(R.id.filter);
+        top = findViewById(R.id.top_doctors);
+        professions = findViewById(R.id.professions_text);
+        doctors_tv = findViewById(R.id.doctors_text);
+
         flag = true;
 
         ArrayList <Doctor> filtredDoctors = new ArrayList<>();
@@ -74,6 +80,7 @@ public class DoctorsList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println(adapterProfs.getItem(position));
                 if (flag == true) {
+                    filtredDoctors.clear();
                           for (int d = 0; d < doctors().size(); d++) {
                               if (doctors().get(d).getProffession().equals(adapterProfs.getItem(position))) {
                                   filtredDoctors.add(doctors().get(d));
@@ -86,15 +93,15 @@ public class DoctorsList extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), Profile.class);
                     intent.putExtra("doctor", filtredDoctors.get(position));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);
+//                    startActivity(intent);
                     overridePendingTransition(0, 0);
-                    //flag = true;
+//                    flag = true;
                 }
             }
         });
 
 
-        dialogs = findViewById(R.id.cs_to_dial);
+
         dialogs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +110,55 @@ public class DoctorsList extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
+            }
+        });
+
+        professions.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View v) {
+                professions.setBackground(getDrawable(R.drawable.back_text));
+                doctors_tv.setBackground(getDrawable(R.drawable.flow_shape_white));
+                listView.setAdapter(adapterProfs);
+                flag = false;
+            }
+        });
+
+        doctors_tv.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View v) {
+                filtredDoctors.clear();
+                doctors_tv.setBackground(getDrawable(R.drawable.back_text));
+                professions.setBackground(getDrawable(R.drawable.flow_shape_white));
+                for (int i=0; i<doctors().size(); i++) {
+                    filtredDoctors.add(doctors().get(i));
+                }
+                listView.setAdapter(adapterDoctor);
+                flag = true;
+            }
+        });
+
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                count2++;
+                if (count2%2==1) {
+                    int margin186inDp = (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 186, getResources().getDisplayMetrics());
+                    ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
+                            (ConstraintLayout.LayoutParams.MATCH_PARENT, margin186inDp);
+                    layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+                    top.setLayoutParams(layoutParams);
+                }
+                else{
+                    int margin112inDp = (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 112, getResources().getDisplayMetrics());
+                    ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
+                            (ConstraintLayout.LayoutParams.MATCH_PARENT, margin112inDp);
+                    layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+                    top.setLayoutParams(layoutParams);
+                }
             }
         });
 

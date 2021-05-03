@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -64,8 +65,9 @@ public class Search extends AppCompatActivity {
                 "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "\tmessageUser varchar(100), \n" +
                 "\tmessageSender varchar(10), \n" +
-                "\tmessageText varchar(3000), \n" +
-                "\tmessageTaker varchar(1000), \n" +
+                "\tmessageText text, \n" +
+                "\tmessageImage blob, \n" +
+                "\tmessageTaker varchar(10), \n" +
                 "\tmessageTime varchar(100) \n" +
                 ");");
 
@@ -116,6 +118,7 @@ public class Search extends AppCompatActivity {
                     if (!text.equals("")) {
 
                         adapter.clear();
+                        messages.clear();
 
                         c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser=? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?)) and (messageText like '%' || ? || '%')", new String[]{user, taker, number, taker, number, text});
 
@@ -163,6 +166,7 @@ public class Search extends AppCompatActivity {
                             message.setMessageType(messageType);
                             message.setMessageText(c.getString(messageTextIndex));
                             adapter.add(message);
+                            messages.add(message);
                             c.moveToNext();
 
                         }

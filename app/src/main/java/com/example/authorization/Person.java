@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class Person implements Serializable {
 
-    private String avatar;
     private String name;
+    private String avatar;
     private String messageTime;
     private String dopinfo;
     private String number;

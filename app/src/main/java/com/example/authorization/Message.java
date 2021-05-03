@@ -14,8 +14,8 @@ public class Message implements Serializable {
     private String messageUser;
     private String messageTime;
     private Long messageId;
-    private int messageType;
     private Bitmap image;
+    private int messageType;
 
     public Message(String messageText, String messageUser, String messageTime) {
         this.messageText = messageText;

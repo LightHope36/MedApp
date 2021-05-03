@@ -66,22 +66,18 @@ public class MessageAdapter extends BaseAdapter {
             case 1:
                 convertView = inflater.inflate(R.layout.my_message, null);
 
-                holder.UserName = convertView.findViewById(R.id.message_user);
                 holder.UserText = convertView.findViewById(R.id.message_text);
                 holder.Time = convertView.findViewById(R.id.message_time);
 
-                holder.UserName.setText(message.getMessageUser());
                 holder.UserText.setText(message.getMessageText());
                 holder.Time.setText(message.getMessageTime());
                 convertView.setTag(holder);
                 break;
             case 2:
                 convertView = inflater.inflate(R.layout.message, null);
-                holder.UserName = convertView.findViewById(R.id.message_user);
                 holder.UserText = convertView.findViewById(R.id.message_text);
                 holder.Time = convertView.findViewById(R.id.message_time);
 
-                holder.UserName.setText(message.getMessageUser());
                 holder.UserText.setText(message.getMessageText());
                 holder.Time.setText(message.getMessageTime());
                 convertView.setTag(holder);

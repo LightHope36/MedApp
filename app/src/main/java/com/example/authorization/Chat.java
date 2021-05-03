@@ -72,8 +72,10 @@ public class Chat extends AppCompatActivity {
     private long id=0;
     private int i=0;
     private int n=0;
-    public String number;
-    public String user;
+    private String number;
+    private String user;
+    private ImageView coffee;
+    private TextView empty;
     Bitmap bitmap = null;
     public String Signature;
     SQLiteDatabase VisibleMessagesDataBase;
@@ -115,7 +117,9 @@ public class Chat extends AppCompatActivity {
         search_open = findViewById(R.id.search_cs_chat_open);
         layout = findViewById(R.id.clicker);
         vlojenia = findViewById(R.id.vlojenia);
-        String url = "jdbc:https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69";
+        coffee = findViewById(R.id.coffee_in_chat);
+        empty = findViewById(R.id.empty_in_chat);
+        String url = "jdbc:mysql://server23.hosting.reg.ru/phpmyadmin/u0597423_medclick.kvantorium69";
         String username = "u0597423_medclic";
         String password = "kvantoriummagda";
         //Connection conn;
@@ -123,12 +127,18 @@ public class Chat extends AppCompatActivity {
 
             //conn = DriverManager.getConnection("https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69","u0597423_medclic","kvantoriummagda");
           //  Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
-            try (Connection conn = DriverManager.getConnection(url, username, password)){
-                Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-               Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
-            } catch (Exception e){
-                Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
-            }
+//        try {
+////            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+//            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+//            try (Connection conn = DriverManager.getConnection(url, username, password)) {
+//                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
+//            } catch (Exception e) {
+////                Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//        }catch (Exception e){
+//
+//        }
 
 
 
@@ -189,6 +199,7 @@ public class Chat extends AppCompatActivity {
 
         Date currentDate = new Date();
         String thisdate = dayAndMonthFormat.format(currentDate);
+        String today = dayAndMonthFormat.format(currentDate);
         while (!c.isAfterLast()) {
             int messageTextIndex = c.getColumnIndex("messageText");
             int messageTimeIndex = c.getColumnIndex("messageTime");
@@ -211,12 +222,15 @@ public class Chat extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
             if(!dateText.equals(thisdate)){
-                day += " " + days[Integer.parseInt(month)-1];
                 Message message = new Message();
+                if(!dateText.equals(today)) {
+                    day += " " + days[Integer.parseInt(month) - 1];
+                    message.setMessageText(day);
+                } else{
+                    message.setMessageText("Сегодня");
+                }
                 message.setMessageType(0);
-                message.setMessageText(day);
                 adapter.add(message);
                 thisdate = dateText;
             }
@@ -271,7 +285,14 @@ public class Chat extends AppCompatActivity {
             n=i;
         }
         listView.smoothScrollToPosition(n);
-
+        if(adapter.isEmpty()){
+            coffee.setVisibility(View.VISIBLE);
+            empty.setVisibility(View.VISIBLE);
+        }
+        else{
+            coffee.setVisibility(View.INVISIBLE);
+            empty.setVisibility(View.INVISIBLE);
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -282,7 +303,6 @@ public class Chat extends AppCompatActivity {
                 }
             }
         });
-
 
         vlojenia.setOnTouchListener(new View.OnTouchListener(){
 
@@ -389,19 +409,6 @@ public class Chat extends AppCompatActivity {
         });
 
 
-        search_open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                count++;
-                cs.setVisibility(View.INVISIBLE);
-                Intent intent = new Intent(getApplicationContext(), Search.class);
-                intent.putExtra("person", person);
-                intent.putExtra("number", number);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
-        });
 
 
 
@@ -444,7 +451,6 @@ public class Chat extends AppCompatActivity {
                     messageType=1;
                     Message message = new Message();
                     message.setMessageId(cmes.getLong(messageIDIndex));
-                    message.setMessageUser("You");
                     message.setMessageText(text);
                     message.setMessageType(1);
                     message.setMessageTime(timeTextInMessage);
