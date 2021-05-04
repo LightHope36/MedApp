@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_min"
     tools:context=".DoctorsList">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -109,6 +110,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bot_doctors"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

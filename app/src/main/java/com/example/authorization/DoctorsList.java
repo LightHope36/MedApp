@@ -8,7 +8,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,6 +34,7 @@ public class DoctorsList extends AppCompatActivity {
     private TextView doctors_tv;
     private ConstraintLayout dialogs;
     private boolean flag;
+    private String number;
     private ArrayList<Doctor> doctors(){
         String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
         ArrayList <Doctor> doctorsT = new ArrayList<>();
@@ -47,10 +46,7 @@ public class DoctorsList extends AppCompatActivity {
         doctorsT.add(new Doctor("Lat", proffessions_array[0]));
         return doctorsT;
     }
-    private String number(){
-        Intent intent = getIntent();
-        return (String) intent.getExtras().get("number");
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +62,13 @@ public class DoctorsList extends AppCompatActivity {
         professions = findViewById(R.id.professions_text);
         doctors_tv = findViewById(R.id.doctors_text);
 
-        flag = true;
+        Intent intent = getIntent();
+        number = (String) intent.getExtras().get("number");
+
+
+        try{
+            flag = (boolean) intent.getExtras().get("flag");
+        } catch(Exception e){flag = true;}
 
         ArrayList <Doctor> filtredDoctors = new ArrayList<>();
         String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
@@ -84,17 +86,19 @@ public class DoctorsList extends AppCompatActivity {
                         filtredDoctors.clear();
                     }catch (Throwable t){}
 
-                          for (int d = 0; d < doctors().size(); d++) {
-                              if (doctors().get(d).getProffession().equals(adapterProfs.getItem(position))) {
-                                  filtredDoctors.add(doctors().get(d));
-                              }
-                          }
+                    for (int d = 0; d < doctors().size(); d++) {
+                        if (doctors().get(d).getProffession().equals(adapterProfs.getItem(position))) {
+                            filtredDoctors.add(doctors().get(d));
+                        }
+                    }
 
                     listView.setAdapter(adapterDoctor);
                     flag = false;
                 }else {
-                    Intent intent = new Intent(getApplicationContext(), Profile.class);
+                    Intent intent = new Intent(getApplicationContext(), DoctorProfile.class);
                     intent.putExtra("doctor", filtredDoctors.get(position));
+                    intent.putExtra("number", number);
+                    intent.putExtra("flag", flag);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
@@ -109,7 +113,7 @@ public class DoctorsList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Dialogs.class);
-                intent.putExtra("number", number());
+                intent.putExtra("number", number);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -225,7 +229,7 @@ public class DoctorsList extends AppCompatActivity {
     public void onBackPressed(){
         if(flag==true){
             Intent intent = new Intent(getApplicationContext(), MainPage2.class);
-            intent.putExtra("number", number());
+            intent.putExtra("number", number);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
             overridePendingTransition(0, 0);
