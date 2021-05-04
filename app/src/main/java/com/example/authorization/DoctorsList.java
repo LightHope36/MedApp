@@ -78,9 +78,12 @@ public class DoctorsList extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(adapterProfs.getItem(position));
+
                 if (flag == true) {
-                    filtredDoctors.clear();
+                    try {
+                        filtredDoctors.clear();
+                    }catch (Throwable t){}
+
                           for (int d = 0; d < doctors().size(); d++) {
                               if (doctors().get(d).getProffession().equals(adapterProfs.getItem(position))) {
                                   filtredDoctors.add(doctors().get(d));
@@ -93,9 +96,9 @@ public class DoctorsList extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), Profile.class);
                     intent.putExtra("doctor", filtredDoctors.get(position));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//                    startActivity(intent);
+                    startActivity(intent);
                     overridePendingTransition(0, 0);
-//                    flag = true;
+                    flag = true;
                 }
             }
         });
