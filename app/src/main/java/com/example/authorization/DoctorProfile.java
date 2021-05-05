@@ -22,12 +22,17 @@ public class DoctorProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_profile);
         getSupportActionBar().hide();
-        Intent intent = getIntent();
         back = findViewById(R.id.back_doctor_card);
 
+        Intent intent = getIntent();
         Doctor doctor = (Doctor) intent.getExtras().get("doctor");
         number = (String) intent.getExtras().get("number");
-        flag = (boolean) intent.getExtras().get("flag");
+
+        try {
+            flag = (boolean) intent.getExtras().get("flag");
+        } catch (Exception e){
+            Toast.makeText(getApplicationContext(), e.getMessage(), LENGTH_SHORT).show();
+        }
 
         TextView textViewName = findViewById(R.id.doctor_card_name);
         textViewName.setText(doctor.getName());
@@ -41,6 +46,7 @@ public class DoctorProfile extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), DoctorsList.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("number", number);
+                intent.putExtra("doctor", doctor);
                 intent.putExtra("flag", flag);
                 startActivity(intent);
                 overridePendingTransition(0, 0);

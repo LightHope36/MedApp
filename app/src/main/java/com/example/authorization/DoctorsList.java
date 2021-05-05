@@ -19,9 +19,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 public class DoctorsList extends AppCompatActivity {
 
@@ -48,6 +51,7 @@ public class DoctorsList extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +68,13 @@ public class DoctorsList extends AppCompatActivity {
 
         Intent intent = getIntent();
         number = (String) intent.getExtras().get("number");
-
+        flag = true;
+        Doctor doctor = null;
 
         try{
             flag = (boolean) intent.getExtras().get("flag");
-        } catch(Exception e){flag = true;}
+            doctor = (Doctor) intent.getExtras().get("doctor");
+        } catch(Exception e){}
 
         ArrayList <Doctor> filtredDoctors = new ArrayList<>();
         String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
@@ -76,16 +82,26 @@ public class DoctorsList extends AppCompatActivity {
         ProfAdapter adapterProfs = new ProfAdapter(this, R.layout.profession_card, proffessions_array);
         DoctorAdapter adapterDoctor = new DoctorAdapter(this, R.layout.person, filtredDoctors);
 
-        listView.setAdapter(adapterProfs);
+        if(flag == true){
+            listView.setAdapter(adapterProfs);
+        }
+        else{
+            for (int d = 0; d < doctors().size(); d++) {
+                if (doctors().get(d).getProffession().equals(doctor.getProffession())) {
+                    filtredDoctors.add(doctors().get(d));
+                }
+            }
+            listView.setAdapter(adapterDoctor);
+            professions.setBackground(getDrawable(R.drawable.flow_shape_white));
+            doctors_tv.setBackground(getDrawable(R.drawable.flow_shape_white));
+        }
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 if (flag == true) {
-                    try {
-                        filtredDoctors.clear();
-                    }catch (Throwable t){}
-
+                    filtredDoctors.clear();
                     for (int d = 0; d < doctors().size(); d++) {
                         if (doctors().get(d).getProffession().equals(adapterProfs.getItem(position))) {
                             filtredDoctors.add(doctors().get(d));
@@ -95,13 +111,17 @@ public class DoctorsList extends AppCompatActivity {
                     listView.setAdapter(adapterDoctor);
                     flag = false;
                 }else {
-                    Intent intent = new Intent(getApplicationContext(), DoctorProfile.class);
-                    intent.putExtra("doctor", filtredDoctors.get(position));
-                    intent.putExtra("number", number);
-                    intent.putExtra("flag", flag);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
+                    try {
+                        Intent intent = new Intent(getApplicationContext(), DoctorProfile.class);
+                        intent.putExtra("doctor", filtredDoctors.get(position));
+                        intent.putExtra("number", number);
+                        intent.putExtra("flag", flag);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                    } catch (Exception e){
+                        Toast.makeText(getApplicationContext(), e.getMessage(), LENGTH_SHORT).show();
+                    }
                     flag = true;
                 }
             }
@@ -127,7 +147,7 @@ public class DoctorsList extends AppCompatActivity {
                 professions.setBackground(getDrawable(R.drawable.back_text));
                 doctors_tv.setBackground(getDrawable(R.drawable.flow_shape_white));
                 listView.setAdapter(adapterProfs);
-                flag = false;
+                flag = true;
             }
         });
 
@@ -142,7 +162,7 @@ public class DoctorsList extends AppCompatActivity {
                     filtredDoctors.add(doctors().get(i));
                 }
                 listView.setAdapter(adapterDoctor);
-                flag = true;
+                flag = false;
             }
         });
 
