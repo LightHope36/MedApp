@@ -74,7 +74,8 @@ public class Search extends AppCompatActivity {
         SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
         usersDataBase.execSQL("create table if not exists users\n" +
                 "(\n" +
-                "\tUserPhone varchar(1000), \n" +
+                "\tUserPhone varchar(10), \n" +
+                "\tUserMiddlename text, \n" +
                 "\tUserDopInfo text, \n" +
                 "\tUserName text, \n" +
                 "\tUserSurname text, \n" +

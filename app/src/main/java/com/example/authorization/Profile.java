@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +31,12 @@ public class Profile extends AppCompatActivity {
         Intent intent = getIntent();
         number = (String) intent.getExtras().get("number");
 
+        SQLiteDatabase lastuser = openOrCreateDatabase("lastuser", MODE_PRIVATE, null);
+        lastuser.execSQL("create table if not exists lastuser\n" +
+                "(\n" +
+                "\tUserPhone varchar(10) \n" +
+                ");");
+
         data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,6 +51,7 @@ public class Profile extends AppCompatActivity {
         leave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getApplicationContext().deleteDatabase("lastuser");
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("number", number);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

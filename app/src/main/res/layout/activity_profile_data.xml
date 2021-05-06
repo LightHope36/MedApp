@@ -20,7 +20,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="78dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,6 +60,25 @@
                         android:layout_marginTop="0dp"
                         android:layout_marginEnd="30dp"
                         android:layout_marginBottom="0dp">
+
+                        <EditText
+                            android:id="@+id/Polis_OMC"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="30dp"
+                            android:background="@drawable/back_of_person_info"
+                            android:fontFamily="@font/manrope_light"
+                            android:gravity="center_vertical"
+                            android:inputType="textCapSentences"
+                            android:paddingStart="18dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toTopOf="@+id/back_btn5"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintTop_toBottomOf="@+id/textView21"
+                            mask:layout_constraintEnd_toEndOf="parent"
+                            mask:layout_constraintStart_toStartOf="parent" />
 
                         <TextView
                             android:id="@+id/textView3"
@@ -172,7 +191,7 @@
                             android:id="@+id/middle_name"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginTop="8dp"
                             android:background="@drawable/back_of_person_info"
                             android:fontFamily="@font/manrope_light"
                             android:gravity="center_vertical"
@@ -189,7 +208,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginTop="8dp"
-                            android:layout_marginBottom="30dp"
                             android:background="@drawable/back_of_person_info"
                             android:drawableStart="@drawable/ic_event_black_24dp_1"
                             android:elevation="2dp"
@@ -201,7 +219,6 @@
                             android:text="Укажите вашу дату рождения"
                             android:textColor="@color/black"
                             android:textSize="18sp"
-                            app:layout_constraintBottom_toTopOf="@+id/Save_data"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView12"
@@ -249,6 +266,15 @@
                             app:backgroundTintMode="src_in"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView21"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Полис ОМС:"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/date" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
             </ScrollView>

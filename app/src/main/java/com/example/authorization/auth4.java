@@ -2,6 +2,7 @@
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -45,15 +46,22 @@ public class auth4 extends AppCompatActivity{
         TextView text = findViewById(R.id.textView5);
 
         Intent intent = getIntent();
-        final String number = (String) intent.getExtras().get("number");
+        String number = (String) intent.getExtras().get("number");
 
+        SQLiteDatabase lastuser = openOrCreateDatabase("lastuser", MODE_PRIVATE, null);
+        lastuser.execSQL("create table if not exists lastuser\n" +
+                "(\n" +
+                "\tUserPhone varchar(10) \n" +
+                ");");
 
         SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
         usersDataBase.execSQL("create table if not exists users\n" +
                 "(\n" +
                 "\tUserPhone varchar(10), \n" +
-                "\tUserName varchar(1000), \n" +
-                "\tUserSurname varchar(1000), \n" +
+                "\tUserMiddlename text, \n" +
+                "\tUserDopInfo text, \n" +
+                "\tUserName text, \n" +
+                "\tUserSurname text, \n" +
                 "\tUserBirthday varchar(1000), \n" +
                 "\tUserPolis varchar(1000) \n" +
                 ");");
@@ -78,6 +86,8 @@ public class auth4 extends AppCompatActivity{
             public void onClick(View v) {
                 System.out.println(ranStr);
                 if((editText.getText().toString()).equals(ranStr)) {
+                    lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
+
                     if(cper.moveToFirst()){
                         sThread.close();
                         Intent intent_dial = new Intent(getApplicationContext(), Dialogs.class);

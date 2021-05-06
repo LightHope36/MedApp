@@ -11,8 +11,10 @@
         android:roundIcon="@mipmap/ic_icon2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Authorization">
-        <activity android:name=".Profile_data"></activity>
-        <activity android:name=".Profile" />
+        <activity android:name=".Profile_data"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Profile"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainPage2"
             android:screenOrientation="portrait" />

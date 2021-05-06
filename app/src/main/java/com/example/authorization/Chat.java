@@ -3,6 +3,7 @@ package com.example.authorization;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -186,7 +187,8 @@ public class Chat extends AppCompatActivity {
         SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
         usersDataBase.execSQL("create table if not exists users\n" +
                 "(\n" +
-                "\tUserPhone varchar(1000), \n" +
+                "\tUserPhone varchar(10), \n" +
+                "\tUserMiddlename text, \n" +
                 "\tUserDopInfo text, \n" +
                 "\tUserName text, \n" +
                 "\tUserSurname text, \n" +
@@ -306,17 +308,16 @@ public class Chat extends AppCompatActivity {
 
         vlojenia.setOnTouchListener(new View.OnTouchListener(){
 
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: // нажатие
-                        vlojenia.setBackground(getDrawable(R.drawable.elm_view_grey));
+                        vlojenia.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.elm_view_grey));
                         break;
                     case MotionEvent.ACTION_MOVE: // движение
                         break;
                     case MotionEvent.ACTION_UP: // отпускание
-                        vlojenia.setBackground(getDrawable(R.drawable.elm_view));
+                        vlojenia.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.elm_view));
                     case MotionEvent.ACTION_CANCEL:
                         break;
                 }
@@ -337,6 +338,7 @@ public class Chat extends AppCompatActivity {
                     layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
                     bot.setLayoutParams(layoutParams);
                     details.setVisibility(View.VISIBLE);
+                    app.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_attachment_2));
                 }
                 else{
                     int margin62inDp = (int) TypedValue.applyDimension(
@@ -346,6 +348,7 @@ public class Chat extends AppCompatActivity {
                     layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
                     bot.setLayoutParams(layoutParams);
                     details.setVisibility(View.INVISIBLE);
+                    app.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_attachment_1));
                 }
             }
         });
@@ -362,8 +365,6 @@ public class Chat extends AppCompatActivity {
         });
 
 
-
-
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -378,20 +379,17 @@ public class Chat extends AppCompatActivity {
         });
 
 
-
         search_open.setOnTouchListener(new View.OnTouchListener(){
-
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: // нажатие
-                        search_open.setBackground(getDrawable(R.drawable.elm_view_grey));
+                        search_open.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.elm_view_grey));
                         break;
                     case MotionEvent.ACTION_MOVE: // движение
                         break;
                     case MotionEvent.ACTION_UP: // отпускание
-                        search_open.setBackground(getDrawable(R.drawable.elm_view));
+                        search_open.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.elm_view));
                         count++;
                         cs.setVisibility(View.INVISIBLE);
                         Intent intent = new Intent(getApplicationContext(), Search.class);
@@ -407,10 +405,6 @@ public class Chat extends AppCompatActivity {
                 return true;
             }
         });
-
-
-
-
 
 
         send.setOnClickListener(new View.OnClickListener() {
@@ -447,6 +441,8 @@ public class Chat extends AppCompatActivity {
 
                     int messageIDIndex = cmes.getColumnIndex("ID");
 
+                    coffee.setVisibility(View.INVISIBLE);
+                    empty.setVisibility(View.INVISIBLE);
 
                     messageType=1;
                     Message message = new Message();

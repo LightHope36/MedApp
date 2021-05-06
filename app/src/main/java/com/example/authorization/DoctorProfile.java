@@ -43,7 +43,6 @@ public class DoctorProfile extends AppCompatActivity {
         textViewName.setText(doctor.getName());
         TextView textViewProf = findViewById(R.id.doctor_card_proffessions);
         textViewProf.setText(doctor.getProffession());
-        Toast.makeText(getApplicationContext(), ""+flag, LENGTH_SHORT).show();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

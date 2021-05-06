@@ -33,6 +33,7 @@
             android:id="@+id/coffee_in_dial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="31dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +54,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_dial"
         android:layout_width="match_parent"
-        android:layout_height="98dp"
+        android:layout_height="60dp"
         android:background="@drawable/top"
         android:elevation="5dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,45 +73,6 @@
             android:textSize="21sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/all_messages_in_dialogs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="14dp"
-            android:alpha="0.9"
-            android:background="@drawable/back_text"
-            android:fontFamily="@font/manrope_regular"
-            android:gravity="center"
-            android:paddingStart="10dp"
-            android:paddingTop="3dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="4dp"
-            android:text="@string/Все_сообщения"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14" />
-
-        <TextView
-            android:id="@+id/contact_in_dialogs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="14dp"
-            android:alpha="0.9"
-            android:gravity="center"
-            android:paddingStart="5dp"
-            android:paddingTop="3dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="4dp"
-            android:text="@string/Контакты"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/all_messages_in_dialogs"
-            app:layout_constraintTop_toBottomOf="@+id/textView14"
-            tools:fontFamily="@font/manrope_regular" />
 
         <ImageView
             android:id="@+id/search_dial"

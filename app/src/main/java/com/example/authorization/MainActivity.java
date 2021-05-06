@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 
@@ -40,17 +42,31 @@ public class MainActivity extends AppCompatActivity {
 
         //conn = DriverManager.getConnection("https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69","u0597423_medclic","kvantoriummagda");
         //  Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-//            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            try (Connection conn = DriverManager.getConnection(url, username, password)) {
-                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-//                Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }catch (Exception e){
+//        try {
+//            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+////            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+//            try (Connection conn = DriverManager.getConnection(url, username, password)) {
+//                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
+//            } catch (Exception e) {
+////                Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//        }catch (Exception e){}
 
+        SQLiteDatabase lastuser = openOrCreateDatabase("lastuser", MODE_PRIVATE, null);
+        lastuser.execSQL("create table if not exists lastuser\n" +
+                "(\n" +
+                "\tUserPhone varchar(10) \n" +
+                ");");
+
+        Cursor c = lastuser.rawQuery("select * from lastuser", null);
+        int id = c.getColumnIndex("UserPhone");
+        if(c.moveToFirst()){
+            Intent intent_dial = new Intent(getApplicationContext(), Dialogs.class);
+            intent_dial.putExtra("number", c.getString(id));
+            intent_dial.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent_dial);
+            overridePendingTransition(0, 0);
         }
 
         next.setOnClickListener(new View.OnClickListener() {

@@ -55,12 +55,14 @@ public class Reg extends AppCompatActivity {
         Intent intent = getIntent();
         String number = (String) intent.getExtras().get("number");
 
-        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("users", MODE_PRIVATE, null);
-        sqLiteDatabase.execSQL("create table if not exists users\n" +
+        SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
+        usersDataBase.execSQL("create table if not exists users\n" +
                 "(\n" +
                 "\tUserPhone varchar(10), \n" +
-                "\tUserName varchar(1000), \n" +
-                "\tUserSurname varchar(1000), \n" +
+                "\tUserMiddlename text, \n" +
+                "\tUserDopInfo text, \n" +
+                "\tUserName text, \n" +
+                "\tUserSurname text, \n" +
                 "\tUserBirthday varchar(1000), \n" +
                 "\tUserPolis varchar(1000) \n" +
                 ");");
@@ -74,7 +76,7 @@ public class Reg extends AppCompatActivity {
                     Userbithday = birth.getText().toString();
                     Userpolis = polis.getText().toString();
 
-                    sqLiteDatabase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"','"+Userpolis+"')");
+                    usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"','"+Userpolis+"')");
 
 
                     Intent intent = new Intent(getApplicationContext(), Dialogs.class);
@@ -94,8 +96,9 @@ public class Reg extends AppCompatActivity {
                     Username = name.getText().toString();
                     Usersurname = surname.getText().toString();
                     Userbithday = birth.getText().toString();
+                    String zero ="";
 
-                    sqLiteDatabase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"', null)");
+                    usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"', null)");
 
                     Intent intent = new Intent(getApplicationContext(), Dialogs.class);
 
@@ -128,9 +131,6 @@ public class Reg extends AppCompatActivity {
                 setDate(birth);
             }
         });
-
-
-
 
     }
 

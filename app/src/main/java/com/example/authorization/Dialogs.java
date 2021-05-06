@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -58,7 +59,8 @@ public class Dialogs extends AppCompatActivity {
 
         String number = (String) intent.getExtras().get("number");
 
-
+//        getApplicationContext().deleteDatabase("users");
+//        getApplicationContext().deleteDatabase("lastuser");
         List<Person> persons = new ArrayList<>();
 
         PersonAdapter adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
@@ -80,7 +82,8 @@ public class Dialogs extends AppCompatActivity {
         SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
         usersDataBase.execSQL("create table if not exists users\n" +
                 "(\n" +
-                "\tUserPhone varchar(1000), \n" +
+                "\tUserPhone varchar(10), \n" +
+                "\tUserMiddlename text, \n" +
                 "\tUserDopInfo text, \n" +
                 "\tUserName text, \n" +
                 "\tUserSurname text, \n" +
