@@ -38,6 +38,7 @@ public class DoctorsList extends AppCompatActivity {
     private ConstraintLayout dialogs;
     private boolean flag;
     private String number;
+    private ConstraintLayout profile;
     private ArrayList<Doctor> doctors(){
         String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
         ArrayList <Doctor> doctorsT = new ArrayList<>();
@@ -65,6 +66,7 @@ public class DoctorsList extends AppCompatActivity {
         top = findViewById(R.id.top_doctors);
         professions = findViewById(R.id.professions_text);
         doctors_tv = findViewById(R.id.doctors_text);
+        profile = findViewById(R.id.profile_in_doctorlist);
 
         Intent intent = getIntent();
         number = (String) intent.getExtras().get("number");
@@ -133,6 +135,17 @@ public class DoctorsList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Dialogs.class);
+                intent.putExtra("number", number);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Profile.class);
                 intent.putExtra("number", number);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);

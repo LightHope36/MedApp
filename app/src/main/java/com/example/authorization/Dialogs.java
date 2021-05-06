@@ -36,6 +36,7 @@ public class Dialogs extends AppCompatActivity {
     int i=0;
     private ImageView coffee;
     private TextView empty;
+    private ConstraintLayout profile;
     DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private ConstraintLayout main;
@@ -51,6 +52,7 @@ public class Dialogs extends AppCompatActivity {
         main = findViewById(R.id.main_cs_in_dial);
         coffee = findViewById(R.id.coffee_in_dial);
         empty = findViewById(R.id.empty_in_dial);
+        profile = findViewById(R.id.profile_in_dialogs);
 
         Intent intent = getIntent();
 
@@ -86,7 +88,7 @@ public class Dialogs extends AppCompatActivity {
                 "\tUserPolis varchar(1000) \n" +
                 ");");
 
-        Cursor cper = usersDataBase.rawQuery("select UserPhone, UserName, UserSurname, UserBirthday from users where UserPhone!=?", new String[]{number});
+        Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone!=?", new String[]{number});
         cper.moveToFirst();
 
         while (!cper.isAfterLast()) {
@@ -137,6 +139,17 @@ public class Dialogs extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainPage2.class);
+                intent.putExtra("number", number);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Profile.class);
                 intent.putExtra("number", number);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);

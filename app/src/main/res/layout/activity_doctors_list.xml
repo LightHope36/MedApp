@@ -170,7 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/constraintLayout6"
+            app:layout_constraintEnd_toStartOf="@+id/profile_in_doctorlist"
             app:layout_constraintStart_toEndOf="@+id/main_cs_in_doct"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -204,7 +204,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout6"
+            android:id="@+id/profile_in_doctorlist"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="50dp"

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -17,16 +18,20 @@ public class DoctorProfile extends AppCompatActivity {
     String number;
     private ImageView back;
     private boolean flag;
+    private Doctor doctor;
+    private ConstraintLayout profile;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_profile);
         getSupportActionBar().hide();
         back = findViewById(R.id.back_doctor_card);
+        profile = findViewById(R.id.profile_in_doctorprofile);
 
         Intent intent = getIntent();
-        Doctor doctor = (Doctor) intent.getExtras().get("doctor");
+        doctor = (Doctor) intent.getExtras().get("doctor");
         number = (String) intent.getExtras().get("number");
+
 
         try {
             flag = (boolean) intent.getExtras().get("flag");
@@ -52,6 +57,17 @@ public class DoctorProfile extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Profile.class);
+                intent.putExtra("number", number);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
     }
 
 
@@ -59,6 +75,7 @@ public class DoctorProfile extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), DoctorsList.class);
         intent.putExtra("number", number);
         intent.putExtra("flag", flag);
+        intent.putExtra("doctor", doctor);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         overridePendingTransition(0, 0);
