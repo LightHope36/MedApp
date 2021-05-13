@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         Cursor c = lastuser.rawQuery("select * from lastuser", null);
         int id = c.getColumnIndex("UserPhone");
         if(c.moveToFirst()){
-            Intent intent_dial = new Intent(getApplicationContext(), Dialogs.class);
+            Intent intent_dial = new Intent(getApplicationContext(), MainPage2.class);
             intent_dial.putExtra("number", c.getString(id));
             intent_dial.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent_dial);

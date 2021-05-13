@@ -90,7 +90,7 @@ public class auth4 extends AppCompatActivity{
 
                     if(cper.moveToFirst()){
                         sThread.close();
-                        Intent intent_dial = new Intent(getApplicationContext(), Dialogs.class);
+                        Intent intent_dial = new Intent(getApplicationContext(), MainPage2.class);
                         intent_dial.putExtra("number", number);
                         intent_dial.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent_dial);

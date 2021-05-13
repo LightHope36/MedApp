@@ -132,10 +132,12 @@ public class Dialogs extends AppCompatActivity {
         if(adapter.isEmpty()){
             coffee.setVisibility(View.VISIBLE);
             empty.setVisibility(View.VISIBLE);
+            search.setVisibility(View.INVISIBLE);
         }
         else{
             coffee.setVisibility(View.INVISIBLE);
             empty.setVisibility(View.INVISIBLE);
+            search.setVisibility(View.VISIBLE);
         }
 
         main.setOnClickListener(new View.OnClickListener() {

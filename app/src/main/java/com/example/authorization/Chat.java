@@ -120,7 +120,7 @@ public class Chat extends AppCompatActivity {
         vlojenia = findViewById(R.id.vlojenia);
         coffee = findViewById(R.id.coffee_in_chat);
         empty = findViewById(R.id.empty_in_chat);
-        String url = "jdbc:mysql://server23.hosting.reg.ru/phpmyadmin/u0597423_medclick.kvantorium69";
+        String url = "jdbc:mysql://server23.hosting.reg.ru:8080/u0597423_medclick.kvantorium69";
         String username = "u0597423_medclic";
         String password = "kvantoriummagda";
         //Connection conn;
@@ -128,18 +128,18 @@ public class Chat extends AppCompatActivity {
 
             //conn = DriverManager.getConnection("https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69","u0597423_medclic","kvantoriummagda");
           //  Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
-//        try {
-////            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 //            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-//            try (Connection conn = DriverManager.getConnection(url, username, password)) {
-//                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
-//            } catch (Exception e) {
-////                Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
-//                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        }catch (Exception e){
-//
-//        }
+            try (Connection conn = DriverManager.getConnection(url, username, password)) {
+                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+//                Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }catch (Exception e){
+
+        }
 
 
 

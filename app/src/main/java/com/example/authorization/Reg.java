@@ -79,7 +79,7 @@ public class Reg extends AppCompatActivity {
                     usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"','"+Userpolis+"')");
 
 
-                    Intent intent = new Intent(getApplicationContext(), Dialogs.class);
+                    Intent intent = new Intent(getApplicationContext(), MainPage2.class);
 
                     intent.putExtra("number", number);
                     intent.putExtra("Username", Username);
@@ -100,7 +100,7 @@ public class Reg extends AppCompatActivity {
 
                     usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"', null)");
 
-                    Intent intent = new Intent(getApplicationContext(), Dialogs.class);
+                    Intent intent = new Intent(getApplicationContext(), MainPage2.class);
 
                     intent.putExtra("number", number);
 
