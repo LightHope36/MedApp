@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/start_background"
+    android:background="@color/white_min"
     tools:context=".MainActivity">
 
 
@@ -53,6 +53,7 @@
             android:id="@+id/sogl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/elm_view_10"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -81,9 +82,9 @@
         android:insetTop="0dp"
         android:text="@string/Начнём"
         android:textAllCaps="false"
-        android:textColor="@color/btn_text"
+        android:textColor="@color/white"
         android:textSize="15sp"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="@color/Main_lighter"
         app:backgroundTintMode="src_in"
         app:cornerRadius="30dp"
         app:elevation="6dp"
@@ -91,14 +92,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="155dp"
         android:layout_height="155dp"
         android:layout_marginTop="55dp"
+        android:background="@drawable/elm_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon" />
+        app:srcCompat="@drawable/ic_appicon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

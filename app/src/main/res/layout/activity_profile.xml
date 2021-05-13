@@ -8,12 +8,13 @@
     tools:context=".Profile">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout4"
         android:layout_width="140dp"
         android:layout_height="155dp"
         android:layout_marginEnd="30dp"
-        android:elevation="2dp"
         android:background="@drawable/elm_view"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
@@ -31,51 +32,15 @@
             android:id="@+id/textView20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_regular"
             android:gravity="center"
             android:text="История лечений"
             android:textColor="@color/black"
-            android:fontFamily="@font/manrope_regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <Button
-        android:id="@+id/leave"
-        android:layout_width="140dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="22dp"
-        android:background="@drawable/btn1"
-        android:drawableLeft="@drawable/ic_layer_1"
-        android:fontFamily="@font/manrope_regular"
-        android:text="Выйти"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:backgroundTint="@color/white"
-        app:backgroundTintMode="src_over"
-        app:layout_constraintBottom_toTopOf="@+id/bot_profile"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="140dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="78dp"
-        android:background="@drawable/btn1"
-        android:drawableLeft="@drawable/ic_vector"
-        android:fontFamily="@font/manrope_regular"
-        android:text="Поддержка"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:backgroundTint="@color/white"
-        app:backgroundTintMode="src_over"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
@@ -105,10 +70,10 @@
         android:id="@+id/persondata"
         android:layout_width="140dp"
         android:layout_height="155dp"
-        android:elevation="2dp"
-        android:background="@drawable/elm_view"
         android:layout_marginStart="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        android:background="@drawable/elm_view"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
@@ -261,5 +226,49 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView10" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="18dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/bot_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="150dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/elm_view_15"
+            android:drawableLeft="@drawable/ic_vector"
+            android:fontFamily="@font/manrope_regular"
+            android:text="Поддержка"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:backgroundTint="@color/white"
+            app:backgroundTintMode="src_over" />
+
+        <Button
+            android:id="@+id/leave"
+            android:layout_width="150dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/elm_view_15"
+            android:drawableLeft="@drawable/ic_layer_1"
+            android:fontFamily="@font/manrope_regular"
+            android:text="Выйти"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:backgroundTint="@color/white"
+            app:backgroundTintMode="src_over" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

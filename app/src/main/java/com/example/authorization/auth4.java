@@ -227,7 +227,6 @@ public class auth4 extends AppCompatActivity{
 
                     }
                 }catch(Throwable t){
-                    //text.setText("не повезло");
                 }
             }
         }
