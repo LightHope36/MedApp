@@ -92,15 +92,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:layout_width="165dp"
-        android:layout_height="165dp"
-        android:background="@drawable/bg_rnd30_shadow"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"></LinearLayout>
-
 
     <ImageView
         android:id="@+id/imageView3"
