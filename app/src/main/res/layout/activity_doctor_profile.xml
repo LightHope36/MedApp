@@ -267,7 +267,7 @@
         android:id="@+id/top_doctor_card"
         android:layout_width="match_parent"
         android:layout_height="186dp"
-        android:background="@drawable/top"
+        android:background="@drawable/top_30"
         android:elevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

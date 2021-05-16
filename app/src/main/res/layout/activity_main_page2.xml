@@ -22,26 +22,31 @@
             android:id="@+id/main_in_main_page"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:fontFamily="@font/manrope_medium"
             android:text="@string/Главная"
             android:textColor="@color/black"
+            android:textSize="21sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:textSize="21sp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/center_button_videochat"
-        android:layout_width="277dp"
-        android:layout_height="247dp"
-        android:background="@drawable/button_for_videochat"
+        android:layout_width="242dp"
+        android:layout_height="257dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/elm_view"
         app:layout_constraintBottom_toTopOf="@+id/bottom_bar_in_main_page"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_in_search">
+        app:layout_constraintTop_toBottomOf="@+id/top_in_search"
+        app:layout_constraintVertical_bias="0.41000003">
 
         <ImageView
             android:id="@+id/imageView4"
@@ -68,9 +73,11 @@
 
         <TextView
             android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="40dp"
             android:fontFamily="@font/manrope_medium"
             android:gravity="center"
             android:text="@string/Подбор_специалиста"

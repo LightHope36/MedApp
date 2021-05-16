@@ -41,7 +41,7 @@ public class DoctorProfile extends AppCompatActivity {
 
         TextView textViewName = findViewById(R.id.doctor_card_name);
         textViewName.setText(doctor.getName());
-        TextView textViewProf = findViewById(R.id.doctor_card_proffessions);
+        TextView textViewProf = findViewById(R.id.doctor_card_proffession_title);
         textViewProf.setText(doctor.getProffession());
 
         back.setOnClickListener(new View.OnClickListener() {
