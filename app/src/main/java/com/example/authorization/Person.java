@@ -9,15 +9,6 @@ public class Person implements Serializable {
     private String messageTime;
     private String dopinfo;
     private String number;
-    private String price;
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
 
     public String getNumber() {
         return number;

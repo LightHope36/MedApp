@@ -162,7 +162,7 @@ public class auth4 extends AppCompatActivity{
                          });
                      }
                  }, strings).start();
-//                sendSMSMessage();
+                sendSMSMessage();
             }
         });
     }
@@ -195,7 +195,7 @@ public class auth4 extends AppCompatActivity{
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(number, null, ranStr, null, null);
+                    smsManager.sendTextMessage(number, "+71234567890", ranStr, null, null);
                     Toast.makeText(getApplicationContext(), "SMS sent.",
                             Toast.LENGTH_LONG).show();
                 } else {

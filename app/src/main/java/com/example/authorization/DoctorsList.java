@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -42,17 +44,8 @@ public class DoctorsList extends AppCompatActivity {
     private String number;
     private ConstraintLayout profile;
     private EditText input;
-    private ArrayList<Doctor> doctors(){
-        String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
-        ArrayList <Doctor> doctorsT = new ArrayList<>();
-        doctorsT.add(new Doctor("dima", proffessions_array[1]));
-        doctorsT.add(new Doctor("sril", proffessions_array[2]));
-        doctorsT.add(new Doctor("fhat", proffessions_array[2]));
-        doctorsT.add(new Doctor("bmat", proffessions_array[2]));
-        doctorsT.add(new Doctor("xlat", proffessions_array[0]));
-        doctorsT.add(new Doctor("Lat", proffessions_array[0]));
-        return doctorsT;
-    }
+    private List<String> proffessions_array = new ArrayList<>();
+    private List<Doctor> filtredDoctors = new ArrayList<>();
 
 
     @Override
@@ -76,26 +69,33 @@ public class DoctorsList extends AppCompatActivity {
         flag = true;
         Doctor doctor = null;
 
+        SQLiteDatabase doctorsDataBase = openOrCreateDatabase("doctors", MODE_PRIVATE, null);
+        doctorsDataBase.execSQL("create table if not exists doctors\n" +
+                "(\n" +
+                "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
+                "\tDoctorName text, \n" +
+                "\tDoctorProfession text, \n" +
+                "\tDoctorPrice int, \n" +
+                "\tDoctorPhone text, \n" +
+                "\tDoctorStaj int \n" +
+                ");");
+
         try{
             flag = (boolean) intent.getExtras().get("flag");
             doctor = (Doctor) intent.getExtras().get("doctor");
         } catch(Exception e){}
 
-        ArrayList <Doctor> filtredDoctors = new ArrayList<>();
-        String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
 
         ProfAdapter adapterProfs = new ProfAdapter(this, R.layout.profession_card, proffessions_array);
         DoctorAdapter adapterDoctor = new DoctorAdapter(this, R.layout.person, filtredDoctors);
 
         if(flag == true){
-            listView.setAdapter(adapterProfs);
+
+                listView.setAdapter(adapterProfs);
+
         }
         else{
-            for (int d = 0; d < doctors().size(); d++) {
-                if (doctors().get(d).getProffession().equals(doctor.getProffession())) {
-                    filtredDoctors.add(doctors().get(d));
-                }
-            }
+
             listView.setAdapter(adapterDoctor);
             professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
             doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
@@ -107,11 +107,21 @@ public class DoctorsList extends AppCompatActivity {
 
                 if (flag == true) {
                     filtredDoctors.clear();
-                    for (int d = 0; d < doctors().size(); d++) {
-                        if (doctors().get(d).getProffession().equals(adapterProfs.getItem(position))) {
-                            filtredDoctors.add(doctors().get(d));
-                        }
+
+                    Cursor cprof = doctorsDataBase.rawQuery("select * from users where DoctorProfession=?", new String[]{proffessions_array.get(position)});
+                    cprof.moveToFirst();
+                    while(!cprof.isAfterLast()){
+
+                        int DoctorProfIndex = cprof.getColumnIndex("DoctorProfession");
+                        int DoctorNameIndex = cprof.getColumnIndex("DoctorName");
+                        int DoctorPriceIndex = cprof.getColumnIndex("DoctorPrice");
+                        int DoctorStajIndex = cprof.getColumnIndex("DoctorStaj");
+
+                        Doctor doctor = new Doctor(cprof.getString(DoctorNameIndex), cprof.getString(DoctorProfIndex), cprof.getInt(DoctorPriceIndex), cprof.getInt(DoctorStajIndex));
+                        filtredDoctors.add(doctor);
+                        cprof.moveToNext();
                     }
+
                     professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
                     doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
 
@@ -175,9 +185,7 @@ public class DoctorsList extends AppCompatActivity {
                 filtredDoctors.clear();
                 doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_text));
                 professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
-                for (int i=0; i<doctors().size(); i++) {
-                    filtredDoctors.add(doctors().get(i));
-                }
+
                 listView.setAdapter(adapterDoctor);
                 flag = false;
                 input.setHint("Поиск среди врачей");
@@ -240,7 +248,7 @@ public class DoctorsList extends AppCompatActivity {
     }
     class ProfAdapter extends ArrayAdapter<String> {
 
-        public ProfAdapter(@NonNull Context context, int resource, @NonNull String[] str) {
+        public ProfAdapter(@NonNull Context context, int resource, @NonNull List<String> str) {
             super(context, resource, str);
         }
 
@@ -280,14 +288,6 @@ public class DoctorsList extends AppCompatActivity {
             intent2.putExtra("number", number);
 
             ListView listView = findViewById(R.id.list_of_professions);
-            String [] proffessions_array =  getResources().getStringArray(R.array.proffessions_string_array);
-            ArrayList<Doctor> doctors = new ArrayList<>();
-            doctors.add(new Doctor("dima", proffessions_array[1]));
-            doctors.add(new Doctor("sril", proffessions_array[2]));
-            doctors.add(new Doctor("fhat", proffessions_array[2]));
-            doctors.add(new Doctor("bmat", proffessions_array[2]));
-            doctors.add(new Doctor("xlat", proffessions_array[0]));
-            doctors.add(new Doctor("Lat", proffessions_array[0]));
             ProfAdapter adapterProfs = new ProfAdapter(this, R.layout.profession_card, proffessions_array);
 
             listView.setAdapter(adapterProfs);
