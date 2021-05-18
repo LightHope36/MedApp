@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_doctors"
         android:layout_width="match_parent"
-        android:layout_height="112dp"
+        android:layout_height="250dp"
         android:background="@drawable/top"
         android:elevation="5dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,6 +68,7 @@
 
             android:layout_marginTop="14dp"
             android:text="Результаты поиска:"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input" />
 
@@ -84,6 +85,7 @@
             android:paddingEnd="8dp"
             android:paddingBottom="4dp"
             android:text="Специальности"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -99,6 +101,7 @@
             android:paddingEnd="8dp"
             android:paddingBottom="4dp"
             android:text="Врачи"
+            android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/professions_text"
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
