@@ -1,14 +1,19 @@
  package com.example.authorization;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +33,9 @@ public class auth4 extends AppCompatActivity{
     private Button next3;
     private EditText editText;
     private TextView text;
-    String ranStr = "";
+    private String ranStr = "";
+    private String number;
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
 
 
     @Override
@@ -39,20 +46,22 @@ public class auth4 extends AppCompatActivity{
 
         setRanStr();
 
-        Button back3 = findViewById(R.id.back_btn3);
-        Button next3 = findViewById(R.id.next_btn3);
-        EditText editText = findViewById(R.id.editTextNumber);
-        Button messege = findViewById(R.id.messege);
-        TextView text = findViewById(R.id.textView5);
+        back3 = findViewById(R.id.back_btn3);
+        next3 = findViewById(R.id.next_btn3);
+        editText = findViewById(R.id.editTextNumber);
+        messege = findViewById(R.id.messege);
+        text = findViewById(R.id.textView5);
 
         Intent intent = getIntent();
-        String number = (String) intent.getExtras().get("number");
+        number = (String) intent.getExtras().get("number");
 
         SQLiteDatabase lastuser = openOrCreateDatabase("lastuser", MODE_PRIVATE, null);
         lastuser.execSQL("create table if not exists lastuser\n" +
                 "(\n" +
                 "\tUserPhone varchar(10) \n" +
                 ");");
+
+
 
         SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
         usersDataBase.execSQL("create table if not exists users\n" +
@@ -65,6 +74,7 @@ public class auth4 extends AppCompatActivity{
                 "\tUserBirthday varchar(1000), \n" +
                 "\tUserPolis varchar(1000) \n" +
                 ");");
+
 
         Cursor cper = usersDataBase.rawQuery("select UserPhone from users where UserPhone=?", new String[]{number});
 
@@ -86,10 +96,9 @@ public class auth4 extends AppCompatActivity{
             public void onClick(View v) {
                 System.out.println(ranStr);
                 if((editText.getText().toString()).equals(ranStr)) {
-                    lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
-
                     if(cper.moveToFirst()){
                         sThread.close();
+                        lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
                         Intent intent_dial = new Intent(getApplicationContext(), MainPage2.class);
                         intent_dial.putExtra("number", number);
                         intent_dial.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -111,6 +120,7 @@ public class auth4 extends AppCompatActivity{
         messege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String [] strings = new String[]{getString(R.string.Время_на_подтверждение1),
                                                  getString(R.string.Время_на_подтверждение2),
                                                  getString(R.string.Отправить_повторно)};
@@ -118,6 +128,7 @@ public class auth4 extends AppCompatActivity{
                  snackBarView(v,editText);
                  messege.setClickable(false);
                  messege.setVisibility(View.GONE);
+
                  new sThread("s", new In() {
                      @Override
                      public void act(String s) {
@@ -151,10 +162,49 @@ public class auth4 extends AppCompatActivity{
                          });
                      }
                  }, strings).start();
-
+//                sendSMSMessage();
             }
         });
+    }
 
+    protected void sendSMSMessage() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.SEND_SMS)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.SEND_SMS},
+                        MY_PERMISSIONS_REQUEST_SEND_SMS);
+            }
+        }
+        else{
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.SEND_SMS},
+                    MY_PERMISSIONS_REQUEST_SEND_SMS);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(number, null, ranStr, null, null);
+                    Toast.makeText(getApplicationContext(), "SMS sent.",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+        }
 
     }
 

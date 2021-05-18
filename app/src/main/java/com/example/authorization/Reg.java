@@ -67,6 +67,12 @@ public class Reg extends AppCompatActivity {
                 "\tUserPolis varchar(1000) \n" +
                 ");");
 
+        SQLiteDatabase lastuser = openOrCreateDatabase("lastuser", MODE_PRIVATE, null);
+        lastuser.execSQL("create table if not exists lastuser\n" +
+                "(\n" +
+                "\tUserPhone varchar(10) \n" +
+                ");");
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +83,7 @@ public class Reg extends AppCompatActivity {
                     Userpolis = polis.getText().toString();
 
                     usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"','"+Userpolis+"')");
-
+                    lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
 
                     Intent intent = new Intent(getApplicationContext(), MainPage2.class);
 
@@ -99,6 +105,7 @@ public class Reg extends AppCompatActivity {
                     String zero ="";
 
                     usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"', null)");
+                    lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
 
                     Intent intent = new Intent(getApplicationContext(), MainPage2.class);
 

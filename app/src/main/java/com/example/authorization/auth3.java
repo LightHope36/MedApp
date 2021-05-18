@@ -59,7 +59,7 @@ public class auth3 extends AppCompatActivity  {
                 }else {
                     if (reg.getText().length() <= 4 & reg.getText().charAt(0) == '+') {
                         if (phone.length() == 10) {
-                            String number = phone.getText().toString();
+                            String number = reg.getText().toString() + phone.getText().toString();
 
                             Intent intent_dialogs = new Intent(getApplicationContext(), Dialogs.class);
                             intent_dialogs.putExtra("number", number);
