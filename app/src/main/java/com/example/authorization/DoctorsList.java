@@ -80,6 +80,8 @@ public class DoctorsList extends AppCompatActivity {
                 "\tDoctorStaj int \n" +
                 ");");
 
+        doctorsDataBase.execSQL("insert into doctors (DoctorName, DoctorProfession, DoctorPrice, DoctorPhone, DoctorStaj) values ('Ivan Ivanov', 'Хирург', 1000, '1234567890', 7)");
+
         try{
             flag = (boolean) intent.getExtras().get("flag");
             doctor = (Doctor) intent.getExtras().get("doctor");
@@ -89,13 +91,33 @@ public class DoctorsList extends AppCompatActivity {
         ProfAdapter adapterProfs = new ProfAdapter(this, R.layout.profession_card, proffessions_array);
         DoctorAdapter adapterDoctor = new DoctorAdapter(this, R.layout.person, filtredDoctors);
 
+        proffessions_array.add("Окулист");
+        proffessions_array.add("Хирург");
+        proffessions_array.add("Психолог");
+        proffessions_array.add("Кардиолог");
+
         if(flag == true){
 
                 listView.setAdapter(adapterProfs);
 
         }
         else{
+            filtredDoctors.clear();
 
+            Cursor cprof = doctorsDataBase.rawQuery("select * from doctors where DoctorProfession=?", new String[]{doctor.getProffession()});
+            cprof.moveToFirst();
+            while(!cprof.isAfterLast()){
+
+                int DoctorProfIndex = cprof.getColumnIndex("DoctorProfession");
+                int DoctorNameIndex = cprof.getColumnIndex("DoctorName");
+                int DoctorPriceIndex = cprof.getColumnIndex("DoctorPrice");
+                int DoctorStajIndex = cprof.getColumnIndex("DoctorStaj");
+                int DoctorPhoneIndex = cprof.getColumnIndex("DoctorPhone");
+
+                Doctor doctor1 = new Doctor(cprof.getString(DoctorNameIndex), cprof.getString(DoctorProfIndex), cprof.getInt(DoctorPriceIndex), cprof.getInt(DoctorStajIndex), cprof.getString(DoctorPhoneIndex));
+                filtredDoctors.add(doctor);
+                cprof.moveToNext();
+            }
             listView.setAdapter(adapterDoctor);
             professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
             doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
@@ -107,8 +129,7 @@ public class DoctorsList extends AppCompatActivity {
 
                 if (flag == true) {
                     filtredDoctors.clear();
-
-                    Cursor cprof = doctorsDataBase.rawQuery("select * from users where DoctorProfession=?", new String[]{proffessions_array.get(position)});
+                    Cursor cprof = doctorsDataBase.rawQuery("select * from doctors where DoctorProfession=?", new String[]{proffessions_array.get(position)});
                     cprof.moveToFirst();
                     while(!cprof.isAfterLast()){
 
@@ -116,8 +137,9 @@ public class DoctorsList extends AppCompatActivity {
                         int DoctorNameIndex = cprof.getColumnIndex("DoctorName");
                         int DoctorPriceIndex = cprof.getColumnIndex("DoctorPrice");
                         int DoctorStajIndex = cprof.getColumnIndex("DoctorStaj");
+                        int DoctorPhoneIndex = cprof.getColumnIndex("DoctorPhone");
 
-                        Doctor doctor = new Doctor(cprof.getString(DoctorNameIndex), cprof.getString(DoctorProfIndex), cprof.getInt(DoctorPriceIndex), cprof.getInt(DoctorStajIndex));
+                        Doctor doctor = new Doctor(cprof.getString(DoctorNameIndex), cprof.getString(DoctorProfIndex), cprof.getInt(DoctorPriceIndex), cprof.getInt(DoctorStajIndex), cprof.getString(DoctorPhoneIndex));
                         filtredDoctors.add(doctor);
                         cprof.moveToNext();
                     }

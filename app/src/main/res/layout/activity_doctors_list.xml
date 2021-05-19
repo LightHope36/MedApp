@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_doctors"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="112dp"
         android:background="@drawable/top"
         android:elevation="5dp"
         app:layout_constraintStart_toStartOf="parent"

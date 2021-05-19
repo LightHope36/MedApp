@@ -5,12 +5,14 @@ public class Doctor extends Person{
     private String proffession;
     private int price;
     private int staj;
+    private String phone;
 
-    public Doctor(String name, String proffession, int price, int staj){
+    public Doctor(String name, String proffession, int price, int staj, String phone){
         this.name = name;
         this.proffession = proffession;
         this.price= price;
         this.staj = staj;
+        this.phone = phone;
     }
 
     public String getProffession(){
@@ -48,4 +50,11 @@ public class Doctor extends Person{
         return name;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

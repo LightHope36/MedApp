@@ -33,10 +33,7 @@ public class Reg extends AppCompatActivity {
     public String Userpolis;
     public TextView error;
 
-
     Calendar dateAndTime=Calendar.getInstance();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
