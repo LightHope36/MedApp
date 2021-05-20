@@ -1,13 +1,17 @@
 package com.example.authorization;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -73,12 +77,14 @@ public class Chat extends AppCompatActivity {
     private long id=0;
     private int i=0;
     private int n=0;
+    private static final int REQUEST_TAKE_PHOTO = 2;
     private String number;
     private String user;
     private ImageView coffee;
     private TextView empty;
     Bitmap bitmap = null;
     public String Signature;
+    private ImageView add_image_with_camera;
     SQLiteDatabase VisibleMessagesDataBase;
     MessageAdapter adapter = new MessageAdapter (this);
     DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -120,6 +126,7 @@ public class Chat extends AppCompatActivity {
         vlojenia = findViewById(R.id.vlojenia);
         coffee = findViewById(R.id.coffee_in_chat);
         empty = findViewById(R.id.empty_in_chat);
+        add_image_with_camera = findViewById(R.id.add_image_with_camera);
         String url = "jdbc:mysql://server23.hosting.reg.ru:8080/u0597423_medclick.kvantorium69";
         String username = "u0597423_medclic";
         String password = "kvantoriummagda";
@@ -282,6 +289,8 @@ public class Chat extends AppCompatActivity {
             }
             c.moveToNext();
         }
+
+
 
         if (n == 0) {
             n=i;
@@ -491,13 +500,35 @@ public class Chat extends AppCompatActivity {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
-
-
-
             }
         });
 
 
+        add_image_with_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getImage();
+            }
+        });
+
+    }
+    private void getImage(){
+        String permission = Manifest.permission.CAMERA;
+        int grant = ContextCompat.checkSelfPermission(this, permission);
+        if (grant != PackageManager.PERMISSION_GRANTED) {
+            String[] permission_list = new String[1];
+            permission_list[0] = permission;
+            ActivityCompat.requestPermissions(this, permission_list, 1);
+        }
+
+
+        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try{
+            startActivityForResult(takePhotoIntent, REQUEST_TAKE_PHOTO);
+            Toast.makeText(getApplicationContext(), "gg", Toast.LENGTH_LONG).show();
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -508,9 +539,38 @@ public class Chat extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // perform your action here
+
+            } else {
+            }
+        }
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            // Фотка сделана, извлекаем миниатюру картинки
+            Bundle extras = imageReturnedIntent.getExtras();
+            Bitmap thumbnailBitmap = (Bitmap) extras.get("data");
+
+            Date currentDate = new Date();
+            String timeText = timeFormat.format(currentDate);
+
+            Message message = new Message();
+            message.setMessageType(3);
+            message.setImage(thumbnailBitmap);
+            message.setMessageTime(timeText);
+            adapter.add(message);
+        }
 
         switch(requestCode) {
             case GALLERY_REQUEST:
@@ -522,40 +582,40 @@ public class Chat extends AppCompatActivity {
                         String taker = person.getNumber();
 
                         Date currentDate = new Date();
-                        String timeText = fullDateFormat.format(currentDate);
+                        String timeText = timeFormat.format(currentDate);
 
                         bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
 
                         Message message = new Message();
-                        message.setMessageUser("You");
                         message.setMessageType(3);
                         message.setImage(bitmap);
                         message.setMessageTime(timeText);
                         adapter.add(message);
                         listView.setSelection(listView.getCount() - 1);
 
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
-                        byte[] bytesImage = byteArrayOutputStream.toByteArray();
-
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put("messageUser", user);
-                        contentValues.put("messageSender", number);
-                        contentValues.put("messageImage", bytesImage);
-                        contentValues.put("messageTaker", taker);
-                        contentValues.put("messageTime", timeText);
-
-                        try {
-                            VisibleMessagesDataBase.insert("VisibleMessagess", null, contentValues);
-                        }
-                        catch (Exception e){
-                            Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-                        }
+//                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
+//                        byte[] bytesImage = byteArrayOutputStream.toByteArray();
+//
+//                        ContentValues contentValues = new ContentValues();
+//                        contentValues.put("messageUser", user);
+//                        contentValues.put("messageSender", number);
+//                        contentValues.put("messageImage", bytesImage);
+//                        contentValues.put("messageTaker", taker);
+//                        contentValues.put("messageTime", timeText);
+//
+//                        try {
+//                            VisibleMessagesDataBase.insert("VisibleMessagess", null, contentValues);
+//                        }
+//                        catch (Exception e){
+//                            Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+//                        }
 
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
+            case REQUEST_TAKE_PHOTO:
         }
     }
 

@@ -10,12 +10,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +43,8 @@ public class Dialogs extends AppCompatActivity {
     DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private ConstraintLayout main;
+    private TextView dialogs;
+    private ConstraintLayout dial_cs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,8 @@ public class Dialogs extends AppCompatActivity {
         coffee = findViewById(R.id.coffee_in_dial);
         empty = findViewById(R.id.empty_in_dial);
         profile = findViewById(R.id.profile_in_dialogs);
+        dialogs = findViewById(R.id.textView23);
+        dial_cs = findViewById(R.id.constraintLayout5);
 
         Intent intent = getIntent();
 
@@ -130,14 +136,19 @@ public class Dialogs extends AppCompatActivity {
             cper.moveToNext();
         }
         if(adapter.isEmpty()){
+
             coffee.setVisibility(View.VISIBLE);
             empty.setVisibility(View.VISIBLE);
             search.setVisibility(View.INVISIBLE);
+            dialogs.setVisibility(View.VISIBLE);
+            dial_cs.setVisibility(View.INVISIBLE);
         }
         else{
             coffee.setVisibility(View.INVISIBLE);
             empty.setVisibility(View.INVISIBLE);
             search.setVisibility(View.VISIBLE);
+            dialogs.setVisibility(View.INVISIBLE);
+            dial_cs.setVisibility(View.VISIBLE);
         }
 
         main.setOnClickListener(new View.OnClickListener() {

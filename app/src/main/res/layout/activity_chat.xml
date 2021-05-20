@@ -288,7 +288,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
                 app:layout_constraintEnd_toStartOf="@+id/add_file"
-                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                app:layout_constraintStart_toEndOf="@+id/add_image_with_camera"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_image" />
 
@@ -325,7 +325,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/add_file" />
 
             <ImageView
-                android:id="@+id/imageView7"
+                android:id="@+id/add_image_with_camera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="64dp"
@@ -341,9 +341,9 @@
                 android:layout_marginTop="4dp"
                 android:text="Камера"
                 android:textSize="11sp"
-                app:layout_constraintEnd_toEndOf="@+id/imageView7"
-                app:layout_constraintStart_toStartOf="@+id/imageView7"
-                app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+                app:layout_constraintEnd_toEndOf="@+id/add_image_with_camera"
+                app:layout_constraintStart_toStartOf="@+id/add_image_with_camera"
+                app:layout_constraintTop_toBottomOf="@+id/add_image_with_camera" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
