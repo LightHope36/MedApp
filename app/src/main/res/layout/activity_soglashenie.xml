@@ -25,8 +25,8 @@
         android:layout_marginTop="107dp"
         android:fillViewport="true"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-30dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                 android:fontFamily="@font/manrope_medium"
                 android:text="@string/Соглашение_текст"
                 android:textSize="12dp"
-                tools:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp" />
         </LinearLayout>
     </ScrollView>
 
