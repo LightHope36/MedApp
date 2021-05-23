@@ -84,24 +84,30 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:layout_marginBottom="18dp"
                         android:fontFamily="@font/manrope_regular"
                         android:textColor="@color/black"
                         android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/textView31"
                         app:layout_constraintStart_toStartOf="@+id/textView31"
-                        app:layout_constraintTop_toBottomOf="@+id/textView31" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView31"
+                        app:layout_constraintVertical_bias="0.0" />
 
                     <TextView
                         android:id="@+id/price_doctor_profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:layout_marginBottom="18dp"
                         android:fontFamily="@font/manrope_regular"
                         android:textColor="@color/black"
                         android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/textView32"
                         app:layout_constraintStart_toStartOf="@+id/textView32"
-                        app:layout_constraintTop_toBottomOf="@+id/textView32" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView32"
+                        app:layout_constraintVertical_bias="0.0" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -133,11 +139,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:layout_marginBottom="16dp"
                         android:textColor="@color/black"
                         android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView35"
+                        app:layout_constraintVertical_bias="0.0"
                         tools:fontFamily="@font/manrope_light" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -169,14 +178,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:layout_marginBottom="16dp"
                         android:fontFamily="@font/manrope_light"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
                         android:textColor="@color/black"
                         android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView37" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView37"
+                        app:layout_constraintVertical_bias="0.0" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -209,15 +221,18 @@
                         android:id="@+id/education"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="12dp"
+                        android:layout_marginBottom="16dp"
                         android:fontFamily="@font/manrope_regular"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView33" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView33"
+                        app:layout_constraintVertical_bias="0.0" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -248,13 +263,15 @@
                         android:id="@+id/text_with_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="12dp"
+                        android:layout_marginBottom="16dp"
                         android:fontFamily="@font/manrope_light"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView36" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -304,9 +321,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/manrope_medium"
             android:textColor="@color/black"
             android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView6" />
