@@ -16,7 +16,7 @@ android {
         android.defaultConfig.vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         applicationId "com.example.authorization"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -38,6 +38,8 @@ android {
 
 dependencies {
 
+
+    implementation('org.jitsi.react:jitsi-meet-sdk:2.9.0') { transitive = true }
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.google.firebase:firebase-messaging:21.0.1'
     implementation 'com.google.firebase:firebase-auth:20.0.3'

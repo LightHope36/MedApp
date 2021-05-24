@@ -84,7 +84,7 @@ public class Profile_data extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( !name.getText().toString().equals("") && !surname.getText().toString().equals("") && !date.getText().toString().equals("")) {
+                if( !name.getText().toString().equals("") && !surname.getText().toString().equals("") && !date.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
                     ContentValues values = new ContentValues();
                     values.put("UserName", name.getText().toString());
                     values.put("UserSurname", surname.getText().toString());

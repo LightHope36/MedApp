@@ -61,6 +61,25 @@
                         android:layout_marginEnd="30dp"
                         android:layout_marginBottom="0dp">
 
+                        <EditText
+                            android:id="@+id/middle_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/back_of_person_info"
+                            android:elevation="2dp"
+                            android:ems="10"
+                            android:fontFamily="@font/manrope_light"
+                            android:inputType="textCapSentences"
+                            android:paddingStart="18dp"
+                            android:singleLine="false"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            app:layout_constraintTop_toBottomOf="@+id/textView24"
+                            mask:layout_constraintEnd_toEndOf="parent"
+                            mask:layout_constraintStart_toStartOf="parent"
+                            tools:targetApi="lollipop" />
+
                         <TextView
                             android:id="@+id/textView3"
                             android:layout_width="wrap_content"
@@ -135,7 +154,7 @@
                             android:text="@string/Дата_рождения"
                             android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/Surname" />
+                            app:layout_constraintTop_toBottomOf="@+id/middle_name" />
 
                         <TextView
                             android:id="@+id/textView12"
@@ -167,6 +186,17 @@
                             app:layout_constraintTop_toBottomOf="@+id/textView10"
                             tools:targetApi="lollipop" />
 
+
+                        <TextView
+                            android:id="@+id/textView24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:fontFamily="@font/manrope_regular"
+                            android:textColor="@color/black"
+                            android:text="Отчество"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Surname" />
 
                         <TextView
                             android:id="@+id/birthday"

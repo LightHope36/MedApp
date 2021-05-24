@@ -34,10 +34,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jitsi.meet.sdk.JitsiMeetActivity;
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -83,7 +88,11 @@ public class Chat extends AppCompatActivity {
     private ImageView coffee;
     private TextView empty;
     Bitmap bitmap = null;
+    JitsiMeetConferenceOptions videooptions;
+    JitsiMeetConferenceOptions audiooptions;
     public String Signature;
+    private ConstraintLayout videocall;
+    private ConstraintLayout call;
     private ImageView add_image_with_camera;
     SQLiteDatabase VisibleMessagesDataBase;
     MessageAdapter adapter = new MessageAdapter (this);
@@ -127,7 +136,9 @@ public class Chat extends AppCompatActivity {
         coffee = findViewById(R.id.coffee_in_chat);
         empty = findViewById(R.id.empty_in_chat);
         add_image_with_camera = findViewById(R.id.add_image_with_camera);
-        String url = "jdbc:mysql://server23.hosting.reg.ru:8080/u0597423_medclick.kvantorium69";
+        videocall= findViewById(R.id.videozvonok);
+        call = findViewById(R.id.zvonok);
+        String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69";
         String username = "u0597423_medclic";
         String password = "kvantoriummagda";
         //Connection conn;
@@ -147,8 +158,6 @@ public class Chat extends AppCompatActivity {
         }catch (Exception e){
 
         }
-
-
 
         Intent intent = getIntent();
         Person person = (Person) intent.getExtras().get("person");
@@ -304,6 +313,61 @@ public class Chat extends AppCompatActivity {
             coffee.setVisibility(View.INVISIBLE);
             empty.setVisibility(View.INVISIBLE);
         }
+
+        try {
+            // object creation of JitsiMeetConferenceOptions
+            // class by the name of options
+            videooptions = new JitsiMeetConferenceOptions.Builder()
+                    .setServerURL(new URL("server23.hosting.reg.ru:10000"))
+                    .setWelcomePageEnabled(false)
+                    .build();
+        } catch (MalformedURLException e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        try {
+            // object creation of JitsiMeetConferenceOptions
+            // class by the name of options
+            audiooptions = new JitsiMeetConferenceOptions.Builder()
+                    .setServerURL(new URL("server23.hosting.reg.ru:10000"))
+                    .setWelcomePageEnabled(false)
+                    .setAudioOnly(true)
+                    .build();
+        } catch (MalformedURLException e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        videocall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    JitsiMeetConferenceOptions videooptions
+                            = new JitsiMeetConferenceOptions.Builder()
+                            .setRoom(person.getNumber())
+                            .build();
+                    JitsiMeetActivity.launch(getApplicationContext(), videooptions);
+                } catch (Exception e){
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    JitsiMeetConferenceOptions audiooptions
+                            = new JitsiMeetConferenceOptions.Builder()
+                            .setRoom(person.getNumber())
+                            .build();
+                    JitsiMeetActivity.launch(getApplicationContext(), audiooptions);
+                } catch (Exception e){
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -512,6 +576,9 @@ public class Chat extends AppCompatActivity {
         });
 
     }
+
+
+
     private void getImage(){
         String permission = Manifest.permission.CAMERA;
         int grant = ContextCompat.checkSelfPermission(this, permission);
@@ -592,6 +659,9 @@ public class Chat extends AppCompatActivity {
                         message.setMessageTime(timeText);
                         adapter.add(message);
                         listView.setSelection(listView.getCount() - 1);
+
+                        coffee.setVisibility(View.INVISIBLE);
+                        empty.setVisibility(View.INVISIBLE);
 
 //                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 //                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);

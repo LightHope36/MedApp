@@ -31,7 +31,9 @@ public class Reg extends AppCompatActivity {
     public String Usersurname;
     public String Userbithday;
     public String Userpolis;
+    private String Usermiddlename;
     public TextView error;
+    private EditText middlename;
 
     Calendar dateAndTime=Calendar.getInstance();
 
@@ -48,6 +50,7 @@ public class Reg extends AppCompatActivity {
         surname = findViewById(R.id.Surname);
         polis = findViewById(R.id.Polis);
         error = findViewById(R.id.error);
+        middlename = findViewById(R.id.middle_name);
 
         Intent intent = getIntent();
         String number = (String) intent.getExtras().get("number");
@@ -73,13 +76,15 @@ public class Reg extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !polis.getText().toString().equals("")) {
+                if(!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !polis.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
                     Username = name.getText().toString();
                     Usersurname = surname.getText().toString();
                     Userbithday = birth.getText().toString();
                     Userpolis = polis.getText().toString();
+                    Usermiddlename = middlename.getText().toString();
 
-                    usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"','"+Userpolis+"')");
+
+                    usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis, UserMiddlename) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"','"+Userpolis+"', '"+Usermiddlename+"')");
                     lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
 
                     Intent intent = new Intent(getApplicationContext(), MainPage2.class);
@@ -94,14 +99,15 @@ public class Reg extends AppCompatActivity {
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                 }
-                else if(!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("")){
+                else if(!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !middlename.getText().toString().equals("")){
 
                     Username = name.getText().toString();
                     Usersurname = surname.getText().toString();
                     Userbithday = birth.getText().toString();
+                    Usermiddlename = middlename.getText().toString();
                     String zero ="";
 
-                    usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"', null)");
+                    usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis, UserMiddlename) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"', null, '"+Usermiddlename+"')");
                     lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
 
                     Intent intent = new Intent(getApplicationContext(), MainPage2.class);

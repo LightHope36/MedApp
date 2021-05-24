@@ -14,8 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private Button next;
     private ImageView sogl;
     private ConstraintLayout cs;
+    public List<Map.Entry<String, String>> list;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,24 +40,7 @@ public class MainActivity extends AppCompatActivity {
         sogl = findViewById(R.id.sogl);
         cs = findViewById(R.id.sogl_cs);
 
-        String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69?db=u0597423_medclick.kvantorium69:3306";
-        String username = "u0597423_medclic";
-        String password = "kvantoriummagda";
-        //Connection conn;
-
-
-        //conn = DriverManager.getConnection("https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69","u0597423_medclic","kvantoriummagda");
-        //  Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
-//        try {
-//            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-////            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-//            try (Connection conn = DriverManager.getConnection(url, username, password)) {
-//                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
-//            } catch (Exception e) {
-////                Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
-//                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        }catch (Exception e){}
+        list = new LinkedList<>();
 
         SQLiteDatabase lastuser = openOrCreateDatabase("lastuser", MODE_PRIVATE, null);
         lastuser.execSQL("create table if not exists lastuser\n" +
