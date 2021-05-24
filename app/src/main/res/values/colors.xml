@@ -22,4 +22,5 @@
     <color name="background_chat">#FCFCFC</color>
     <color name="background_main_page">#FAFAFA</color>
     <color name="Без_тени">#1A26C6DA</color>
+    <color name="red_videochat">#FF4646</color>
 </resources>
