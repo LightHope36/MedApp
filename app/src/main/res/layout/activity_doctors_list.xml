@@ -10,9 +10,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_doctors"
         android:layout_width="match_parent"
-        android:layout_height="112dp"
+        android:layout_height="118dp"
         android:background="@drawable/top"
         android:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -41,9 +42,9 @@
             android:drawableStart="@drawable/ic_search"
             android:elevation="2dp"
             android:ems="10"
-            android:inputType="textCapSentences"
             android:fontFamily="@font/manrope_regular"
             android:hint="Поиск по специальностям"
+            android:inputType="textCapSentences"
             android:paddingStart="16dp"
             android:textColor="@color/grey"
             android:textSize="14sp"
@@ -62,49 +63,37 @@
             app:srcCompat="@drawable/ic_filter" />
 
         <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-
-            android:layout_marginTop="14dp"
-            android:text="Результаты поиска:"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input" />
-
-        <TextView
             android:id="@+id/professions_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="21dp"
             android:alpha="0.9"
-            android:background="@drawable/back_text"
+            android:background="@drawable/back_of_my_message"
             android:paddingStart="9dp"
             android:paddingTop="4dp"
             android:paddingEnd="8dp"
             android:paddingBottom="4dp"
-            android:text="Специальности"
+            android:text="@string/По_специальностям"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+            app:layout_constraintTop_toBottomOf="@+id/input" />
 
         <TextView
             android:id="@+id/doctors_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="21dp"
             android:alpha="0.9"
             android:paddingStart="9dp"
             android:paddingTop="4dp"
             android:paddingEnd="8dp"
             android:paddingBottom="4dp"
-            android:text="Врачи"
+            android:text="@string/По_врачам"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/professions_text"
-            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+            app:layout_constraintTop_toBottomOf="@+id/input" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
