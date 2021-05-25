@@ -18,9 +18,10 @@
         app:layout_constraintTop_toBottomOf="@+id/top_doctor_card">
 
         <ScrollView
+            android:id="@+id/scrollView3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/button_consultation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -253,9 +254,9 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="76dp"
                     android:background="@drawable/flow_direction"
-                    android:elevation="5dp"
-                    tools:layout_marginBottom="10dp">
+                    android:elevation="5dp">
 
                     <TextView
                         android:id="@+id/textView36"
@@ -292,6 +293,26 @@
 
             </LinearLayout>
         </ScrollView>
+
+        <Button
+            android:id="@+id/button_consultation"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="18dp"
+            android:fontFamily="@font/manrope_regular"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/Получить_консультацию"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:backgroundTint="@color/Main_appcolor"
+            app:backgroundTintMode="src_in"
+            app:cornerRadius="30dp"
+            app:elevation="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -473,32 +494,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView10" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/button_consultation"
-        android:layout_width="220dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="27dp"
-        android:background="@drawable/button_consultation"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/manrope_regular"
-            android:text="@string/Получить_консультацию"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
