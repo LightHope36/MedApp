@@ -15,7 +15,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-
 public class DoctorProfile extends AppCompatActivity {
     String number;
     private ImageView back;
