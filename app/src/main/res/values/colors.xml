@@ -23,4 +23,6 @@
     <color name="background_main_page">#FAFAFA</color>
     <color name="Без_тени">#1A26C6DA</color>
     <color name="red_videochat">#FF4646</color>
+    <color name="Фон">#B3000000</color>
+    <color name="В_консультации">#0EA2B5</color>
 </resources>
