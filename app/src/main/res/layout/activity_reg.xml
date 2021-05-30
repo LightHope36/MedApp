@@ -113,7 +113,7 @@
                             android:text="@string/Имя"
                             android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView" />
+                            app:layout_constraintTop_toBottomOf="@+id/Surname" />
 
                         <EditText
                             android:id="@+id/Name"
@@ -129,8 +129,6 @@
                             android:singleLine="false"
                             android:textColor="@color/black"
                             android:textSize="18sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView8"
                             tools:targetApi="lollipop" />
 
@@ -143,7 +141,7 @@
                             android:text="@string/Фамилия"
                             android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/Name" />
+                            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                         <TextView
                             android:id="@+id/textView11"
@@ -165,7 +163,7 @@
                             android:text="@string/Полис"
                             android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/error" />
+                            app:layout_constraintTop_toBottomOf="@+id/birthday" />
 
                         <EditText
                             android:id="@+id/Surname"
@@ -181,8 +179,6 @@
                             android:singleLine="false"
                             android:textColor="@color/black"
                             android:textSize="18sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView10"
                             tools:targetApi="lollipop" />
 
@@ -193,21 +189,23 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:fontFamily="@font/manrope_regular"
-                            android:textColor="@color/black"
                             android:text="Отчество"
+                            android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/Surname" />
+                            app:layout_constraintTop_toBottomOf="@+id/Name" />
 
                         <TextView
                             android:id="@+id/birthday"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginTop="8dp"
                             android:background="@drawable/back_of_person_info"
+                            android:drawableStart="@drawable/ic_event_black_24dp_1"
                             android:fontFamily="@font/manrope_light"
                             android:gravity="center_vertical"
                             android:inputType="textCapSentences"
                             android:paddingStart="18dp"
+                            android:text="Укажите вашу дату рождения"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -225,6 +223,7 @@
                             android:ems="10"
                             android:fontFamily="@font/manrope_light"
                             android:paddingStart="18dp"
+                            android:hint="16 цифр"
                             android:singleLine="false"
                             android:textColor="@color/black"
                             android:textSize="18sp"

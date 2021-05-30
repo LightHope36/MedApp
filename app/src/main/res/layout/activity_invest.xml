@@ -21,7 +21,7 @@
             android:id="@+id/back_btn_in_invest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="6dp"
             android:paddingStart="16dp"
             android:paddingTop="10dp"
             android:paddingEnd="16dp"
@@ -93,7 +93,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="10dp"
-        android:background="@color/white"
+        android:background="@drawable/shape_consultation"
+        android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -117,9 +118,9 @@
                     android:id="@+id/docs_photos_in_invest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp" />
             </LinearLayout>
         </ScrollView>
 

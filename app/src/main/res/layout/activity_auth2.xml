@@ -19,6 +19,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="fill_parent"
         android:layout_height="400dp"
+        android:elevation="4dp"
         android:background="@drawable/flow_shape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -167,7 +168,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/btn1"
-            android:drawableLeft="@drawable/ic_back"
+            android:drawableLeft="@drawable/ic_back_new"
             android:fontFamily="@font/manrope_regular"
             android:text="@string/Назад"
             android:textAllCaps="false"

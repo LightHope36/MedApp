@@ -77,7 +77,7 @@
     <Button
         android:id="@+id/next_btn"
         android:layout_width="140dp"
-        android:layout_height="56dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="50dp"
         android:fontFamily="@font/manrope_regular"
         android:insetTop="0dp"
@@ -85,7 +85,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="15sp"
-        app:backgroundTint="@color/Main_lighter"
+        app:backgroundTint="@color/btnStartColor"
         app:backgroundTintMode="src_in"
         app:cornerRadius="30dp"
         app:elevation="6dp"
