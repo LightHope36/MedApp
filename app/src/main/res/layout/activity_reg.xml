@@ -158,12 +158,12 @@
                             android:id="@+id/textView12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="24dp"
                             android:fontFamily="@font/manrope_regular"
                             android:text="@string/Полис"
                             android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/birthday" />
+                            app:layout_constraintTop_toTopOf="@+id/error" />
 
                         <EditText
                             android:id="@+id/Surname"
@@ -238,7 +238,7 @@
                             android:id="@+id/error"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16sp"
+                            android:layout_marginTop="12dp"
                             android:enabled="false"
                             android:fontFamily="@font/manrope_regular"
                             android:textColor="@color/red"
