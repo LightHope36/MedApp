@@ -46,6 +46,9 @@ public class DoctorsList extends AppCompatActivity {
     private EditText input;
     private List<String> proffessions_array = new ArrayList<>();
     private List<Doctor> filtredDoctors = new ArrayList<>();
+    private ImageView back;
+    private TextView text;
+    private ConstraintLayout main;
 
 
     @Override
@@ -63,6 +66,9 @@ public class DoctorsList extends AppCompatActivity {
         doctors_tv = findViewById(R.id.doctors_text);
         profile = findViewById(R.id.profile_in_doctorlist);
         input = findViewById(R.id.input);
+        back = findViewById(R.id.back_in_doctorlist);
+        text = findViewById(R.id.textView14);
+        main = findViewById(R.id.main_cs_in_doct);
 
         Intent intent = getIntent();
         number = (String) intent.getExtras().get("number");
@@ -98,7 +104,9 @@ public class DoctorsList extends AppCompatActivity {
 
         if(flag == true){
 
-                listView.setAdapter(adapterProfs);
+            listView.setAdapter(adapterProfs);
+            text.setText("Получить консультацию");
+            back.setVisibility(View.INVISIBLE);
 
         }
         else{
@@ -118,6 +126,7 @@ public class DoctorsList extends AppCompatActivity {
                 filtredDoctors.add(doctor);
                 cprof.moveToNext();
             }
+            text.setText(doctor.getProffession());
             listView.setAdapter(adapterDoctor);
             professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
             doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
@@ -146,6 +155,9 @@ public class DoctorsList extends AppCompatActivity {
 
                     professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
                     doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+                    filter.setVisibility(View.INVISIBLE);
+                    text.setText(proffessions_array.get(position));
+                    back.setVisibility(View.VISIBLE);
 
                     listView.setAdapter(adapterDoctor);
                     flag = false;
@@ -179,6 +191,46 @@ public class DoctorsList extends AppCompatActivity {
             }
         });
 
+        main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainPage2.class);
+                intent.putExtra("number", number);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filter.setVisibility(View.VISIBLE);
+                text.setText("Получить консультацию");
+
+                Intent intent2 = new Intent(getApplicationContext(), DoctorsList.class);
+                intent2.putExtra("number", number);
+                filter.setVisibility(View.VISIBLE);
+                text.setText("Получить консультацию");
+
+                ListView listView = findViewById(R.id.list_of_professions);
+                listView.setAdapter(adapterProfs);
+                flag = true;
+                professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
+                doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+
+                int margin112inDp = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 112, getResources().getDisplayMetrics());
+                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
+                        (ConstraintLayout.LayoutParams.MATCH_PARENT, margin112inDp);
+                layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+                top.setLayoutParams(layoutParams);
+                filter.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_filter));
+
+                back.setVisibility(View.INVISIBLE);
+            }
+        });
+
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,7 +245,7 @@ public class DoctorsList extends AppCompatActivity {
         professions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_text));
+                professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
                 doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
                 listView.setAdapter(adapterProfs);
                 flag = true;
@@ -205,7 +257,7 @@ public class DoctorsList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 filtredDoctors.clear();
-                doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_text));
+                doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
                 professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
 
                 listView.setAdapter(adapterDoctor);
@@ -219,10 +271,10 @@ public class DoctorsList extends AppCompatActivity {
             public void onClick(View v) {
                 count2++;
                 if (count2%2==1) {
-                    int margin186inDp = (int) TypedValue.applyDimension(
-                            TypedValue.COMPLEX_UNIT_DIP, 186, getResources().getDisplayMetrics());
+                    int margin164inDp = (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 164, getResources().getDisplayMetrics());
                     ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
-                            (ConstraintLayout.LayoutParams.MATCH_PARENT, margin186inDp);
+                            (ConstraintLayout.LayoutParams.MATCH_PARENT, margin164inDp);
                     layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
                     top.setLayoutParams(layoutParams);
                     filter.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_filter_used));
@@ -308,13 +360,15 @@ public class DoctorsList extends AppCompatActivity {
             Intent intent2 = new Intent(getApplicationContext(), DoctorsList.class);
             String number = (String) intent1.getExtras().get("number");
             intent2.putExtra("number", number);
+            filter.setVisibility(View.VISIBLE);
+            text.setText("Получить консультацию");
 
             ListView listView = findViewById(R.id.list_of_professions);
             ProfAdapter adapterProfs = new ProfAdapter(this, R.layout.profession_card, proffessions_array);
 
             listView.setAdapter(adapterProfs);
             flag = true;
-            professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_text));
+            professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
             doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
             /*Intent intent = new Intent(getApplicationContext(), MainPage2.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

@@ -391,6 +391,8 @@ public class Chat extends AppCompatActivity {
             }
         });
 
+
+
         vlojenia.setOnTouchListener(new View.OnTouchListener(){
 
             @Override
