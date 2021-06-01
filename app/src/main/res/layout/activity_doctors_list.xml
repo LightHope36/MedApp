@@ -70,7 +70,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="21dp"
             android:alpha="0.9"
-            android:background="@drawable/back_of_my_message"
+            android:background="@drawable/back_color_10"
             android:paddingStart="16dp"
             android:paddingTop="5dp"
             android:paddingEnd="16dp"

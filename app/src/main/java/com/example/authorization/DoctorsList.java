@@ -193,7 +193,7 @@ public class DoctorsList extends AppCompatActivity {
         professions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_text));
+                professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
                 doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
                 listView.setAdapter(adapterProfs);
                 flag = true;
@@ -205,7 +205,7 @@ public class DoctorsList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 filtredDoctors.clear();
-                doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_text));
+                doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
                 professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
 
                 listView.setAdapter(adapterDoctor);
@@ -219,10 +219,10 @@ public class DoctorsList extends AppCompatActivity {
             public void onClick(View v) {
                 count2++;
                 if (count2%2==1) {
-                    int margin186inDp = (int) TypedValue.applyDimension(
-                            TypedValue.COMPLEX_UNIT_DIP, 186, getResources().getDisplayMetrics());
+                    int margin164inDp = (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 164, getResources().getDisplayMetrics());
                     ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
-                            (ConstraintLayout.LayoutParams.MATCH_PARENT, margin186inDp);
+                            (ConstraintLayout.LayoutParams.MATCH_PARENT, margin164inDp);
                     layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
                     top.setLayoutParams(layoutParams);
                     filter.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_filter_used));
@@ -314,7 +314,7 @@ public class DoctorsList extends AppCompatActivity {
 
             listView.setAdapter(adapterProfs);
             flag = true;
-            professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_text));
+            professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
             doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
             /*Intent intent = new Intent(getApplicationContext(), MainPage2.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
