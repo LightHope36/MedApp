@@ -22,6 +22,8 @@ public class DoctorProfile extends AppCompatActivity {
     private Doctor doctor;
     private ConstraintLayout profile;
     private ConstraintLayout dialogs;
+    private ConstraintLayout main;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,7 @@ public class DoctorProfile extends AppCompatActivity {
         back = findViewById(R.id.back_doctor_card);
         profile = findViewById(R.id.profile_in_doctorprofile);
         dialogs = findViewById(R.id.cs_to_dial);
+        main = findViewById(R.id.main_cs_in_doct);
 
         Intent intent = getIntent();
         doctor = (Doctor) intent.getExtras().get("doctor");
@@ -104,6 +107,17 @@ public class DoctorProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Dialogs.class);
+                intent.putExtra("number", number);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
+
+        main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainPage2.class);
                 intent.putExtra("number", number);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
