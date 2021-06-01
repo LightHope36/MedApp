@@ -1,7 +1,6 @@
 package com.example.authorization;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -9,7 +8,6 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -17,12 +15,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,13 +35,11 @@ import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -105,6 +99,7 @@ public class Chat extends AppCompatActivity {
   //  String url = "https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69";
     //String username = "u0597423_medclic";
    // String password = "kvantoriummagda";
+    List<Message> messages = new ArrayList<>();
 
 
 
@@ -150,10 +145,10 @@ public class Chat extends AppCompatActivity {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 //            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             try (Connection conn = DriverManager.getConnection(url, username, password)) {
-                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
             } catch (Exception e) {
 //                Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }catch (Exception e){
 
@@ -180,7 +175,7 @@ public class Chat extends AppCompatActivity {
         }
 
 
-        List<Message> messages = new ArrayList<>();
+
 
         listView.setAdapter(adapter);
 
@@ -322,7 +317,7 @@ public class Chat extends AppCompatActivity {
                     .setWelcomePageEnabled(false)
                     .build();
         } catch (MalformedURLException e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         try {
@@ -334,7 +329,7 @@ public class Chat extends AppCompatActivity {
                     .setAudioOnly(true)
                     .build();
         } catch (MalformedURLException e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         videocall.setOnClickListener(new View.OnClickListener() {
@@ -376,6 +371,23 @@ public class Chat extends AppCompatActivity {
                     count++;
                     cs.setVisibility(View.INVISIBLE);
                 }
+                Message message = messages.get(position);
+                if(message.getMessageType()==3 || message.getMessageType()==4){
+                    try {
+                        Intent intent = new Intent(getApplicationContext(), Big_photo.class);
+
+                        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+                        message.getImage().compress(Bitmap.CompressFormat.JPEG, 50, bs);
+                        intent.putExtra("byteArray", bs.toByteArray());
+
+                        intent.putExtra("number", number);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                    } catch (Exception e){
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         });
 
@@ -391,6 +403,11 @@ public class Chat extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_UP: // отпускание
                         vlojenia.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.elm_view));
+                        Intent intent = new Intent(getApplicationContext(), Invest.class);
+                        intent.putExtra("number", number);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
                     case MotionEvent.ACTION_CANCEL:
                         break;
                 }
@@ -592,9 +609,9 @@ public class Chat extends AppCompatActivity {
         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try{
             startActivityForResult(takePhotoIntent, REQUEST_TAKE_PHOTO);
-            Toast.makeText(getApplicationContext(), "gg", Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), "gg", Toast.LENGTH_LONG).show();
         }catch (Exception e){
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -614,6 +631,9 @@ public class Chat extends AppCompatActivity {
                 // perform your action here
 
             } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        GALLERY_REQUEST);
             }
         }
 
@@ -636,6 +656,7 @@ public class Chat extends AppCompatActivity {
             message.setMessageType(3);
             message.setImage(thumbnailBitmap);
             message.setMessageTime(timeText);
+            messages.add(message);
             adapter.add(message);
         }
 
@@ -657,6 +678,7 @@ public class Chat extends AppCompatActivity {
                         message.setMessageType(3);
                         message.setImage(bitmap);
                         message.setMessageTime(timeText);
+                        messages.add(message);
                         adapter.add(message);
                         listView.setSelection(listView.getCount() - 1);
 
@@ -682,10 +704,9 @@ public class Chat extends AppCompatActivity {
 //                        }
 
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
-            case REQUEST_TAKE_PHOTO:
         }
     }
 

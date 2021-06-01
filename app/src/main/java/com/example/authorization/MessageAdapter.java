@@ -85,7 +85,6 @@ public class MessageAdapter extends BaseAdapter {
             case 3:
                 convertView = inflater.inflate(R.layout.my_message_image, null);
 
-                holder.UserName = convertView.findViewById(R.id.message_user);
                 holder.Time = convertView.findViewById(R.id.message_time);
                 try {
                     ImageView picture = convertView.findViewById(R.id.user_image);
@@ -94,7 +93,6 @@ public class MessageAdapter extends BaseAdapter {
                     Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
                 }
 
-                holder.UserName.setText(message.getMessageUser());
                 holder.Time.setText(message.getMessageTime());
 
                 convertView.setTag(holder);

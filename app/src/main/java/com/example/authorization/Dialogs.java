@@ -67,6 +67,8 @@ public class Dialogs extends AppCompatActivity {
 
 //        getApplicationContext().deleteDatabase("users");
 //        getApplicationContext().deleteDatabase("lastuser");
+//        getApplicationContext().deleteDatabase("VisibleMessagess");
+//        getApplicationContext().deleteDatabase("doctors");
         List<Person> persons = new ArrayList<>();
 
         PersonAdapter adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);

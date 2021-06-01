@@ -162,7 +162,7 @@ public class auth4 extends AppCompatActivity{
                          });
                      }
                  }, strings).start();
-                sendSMSMessage();
+//                sendSMSMessage();
             }
         });
     }
