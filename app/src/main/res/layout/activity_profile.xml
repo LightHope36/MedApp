@@ -252,7 +252,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout4"
+            android:id="@+id/history_in_profile"
             android:layout_width="140dp"
             android:layout_height="155dp"
             android:layout_marginStart="10dp"

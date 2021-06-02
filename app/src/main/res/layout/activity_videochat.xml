@@ -29,8 +29,8 @@
 
         <ImageView
             android:id="@+id/back_videochat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/back_videochat"
@@ -143,5 +143,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/call_end_videochat"
             app:srcCompat="@drawable/ic_mic_black_24dp_1__1_" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

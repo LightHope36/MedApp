@@ -22,8 +22,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Authorization"
         tools:replace="android:theme">
-        <activity android:name=".Big_photo"></activity>
-        <activity android:name=".Go_consultation"></activity>
+        <activity android:name=".profile_doc_data"></activity>
+        <activity android:name=".profile_doc" />
+        <activity android:name=".History" />
+        <activity android:name=".Big_photo" />
+        <activity android:name=".Go_consultation" />
         <activity android:name=".Invest" />
         <activity
             android:name=".videochat"

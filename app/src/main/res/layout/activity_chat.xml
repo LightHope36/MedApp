@@ -19,23 +19,24 @@
 
         <ImageView
             android:id="@+id/back_im"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="2dp"
-            android:paddingStart="14dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="14dp"
+            android:background="@drawable/back_chat"
+            android:paddingStart="10dp"
             android:paddingTop="10dp"
-            android:paddingEnd="2dp"
+            android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back2" />
+            app:srcCompat="@drawable/ic_left_arrow_1" />
 
         <ImageView
             android:id="@+id/avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:paddingStart="4dp"
             android:paddingTop="10dp"
             android:paddingEnd="8dp"
@@ -47,16 +48,18 @@
 
         <ImageView
             android:id="@+id/menu"
-            android:layout_width="57dp"
-            android:layout_height="57dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="14dp"
+            android:background="@drawable/back_chat"
             android:paddingStart="10dp"
             android:paddingTop="10dp"
-            android:paddingEnd="16dp"
+            android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/menu" />
+            app:srcCompat="@drawable/ic_3_tochki" />
 
         <TextView
             android:id="@+id/UserName"
@@ -275,8 +278,8 @@
             android:id="@+id/app"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:paddingStart="8dp"
             android:paddingTop="8dp"
             android:paddingEnd="8dp"
