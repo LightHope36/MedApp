@@ -145,10 +145,10 @@ public class Chat extends AppCompatActivity {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 //            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             try (Connection conn = DriverManager.getConnection(url, username, password)) {
-//                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
             } catch (Exception e) {
 //                Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
-//                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }catch (Exception e){
 

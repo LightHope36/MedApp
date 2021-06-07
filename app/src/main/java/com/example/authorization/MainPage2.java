@@ -38,8 +38,8 @@ public class MainPage2 extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Dialogs.class);
                 intent.putExtra("number", number);
-                constraintLayout1.startAnimation(an1);
-                constraintLayout2.startAnimation(an2);
+//                constraintLayout1.startAnimation(an1);
+//                constraintLayout2.startAnimation(an2);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
             }

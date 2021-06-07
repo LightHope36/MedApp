@@ -1,19 +1,25 @@
 package com.example.authorization;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.gridlayout.widget.GridLayout;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class Invest extends AppCompatActivity {
 
     private String number;
     private ImageView back;
+    private GridLayout gridlayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,19 +30,31 @@ public class Invest extends AppCompatActivity {
         Intent intent = getIntent();
         number = (String) intent.getExtras().get("number");
         back = findViewById(R.id.back_btn_in_invest);
+        gridlayout = findViewById(R.id.Grid_layout);
 
-//        settings();
-
-
-//        LinearLayout mainLayout = (LinearLayout)findViewById(R.id.mainlayout);
+//        Display display = getWindowManager().getDefaultDisplay();
+//        Point size = new Point();
+//        display.getSize(size);
+//        int width = size.x;
+//        int height = size.y;
 //
-//        // Добавляем новый ImageView
-//        ImageView imageView = new ImageView(Invest.this);
-//        imageView.setImageResource(R.drawable.ic_profile);
-//        LinearLayout.LayoutParams imageViewLayoutParams = new LinearLayout.LayoutParams(100, 100);
-//        imageView.setLayoutParams(imageViewLayoutParams);
+//        int width_display = (int) TypedValue.applyDimension(
+//                TypedValue.COMPLEX_UNIT_DIP, width, getResources().getDisplayMetrics());
 //
-//        mainLayout.addView(imageView);
+//        int height_display = (int) TypedValue.applyDimension(
+//                TypedValue.COMPLEX_UNIT_DIP, height, getResources().getDisplayMetrics());
+
+
+//        for (int i = 0; i<25; i++){
+//            ImageView imageView = new ImageView(Invest.this);
+//            imageView.setImageResource(R.drawable.ic_profile);
+//            RelativeLayout.LayoutParams imageViewLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//            imageView.setLayoutParams(imageViewLayoutParams);
+//
+//            gridlayout.addView(imageView);
+//        }
+
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,35 +67,6 @@ public class Invest extends AppCompatActivity {
             }
         });
 
-
-//        final ViewGroup parentView = findViewById(R.id.parentView);
-//        final View childView = parentView.findViewById(R.id.childView);
-//
-//        parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                float parentHeight = parentView.getHeight();
-//
-//                ViewGroup.LayoutParams params = childView.getLayoutParams();
-//                params.height = (int)(parentHeight * 5);
-//
-//                childView.setLayoutParams(params);
-//                //We want the listener to be called only the first time(in case it is initialized in onCreate())
-//                parentView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//            }
-//        });
     }
 
-    private void settings(){
-
-//        LinearLayout mainLayout = (LinearLayout)findViewById(R.id.mainlayout);
-//
-//        // Добавляем новый ImageView
-//        ImageView imageView = new ImageView(Invest.this);
-//        imageView.setImageResource(R.drawable.ic_profile);
-//        LinearLayout.LayoutParams imageViewLayoutParams = new LinearLayout.LayoutParams(100, 100);
-//        imageView.setLayoutParams(imageViewLayoutParams);
-//
-//        mainLayout.addView(imageView);
-    }
 }

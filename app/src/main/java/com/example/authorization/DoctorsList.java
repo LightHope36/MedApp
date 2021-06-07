@@ -22,12 +22,14 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class DoctorsList extends AppCompatActivity {
@@ -159,6 +161,26 @@ public class DoctorsList extends AppCompatActivity {
                     text.setText(proffessions_array.get(position));
                     back.setVisibility(View.VISIBLE);
 
+                    int margin112inDp = (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 112, getResources().getDisplayMetrics());
+                    ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
+                            (ConstraintLayout.LayoutParams.MATCH_PARENT, margin112inDp);
+                    layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+                    top.setLayoutParams(layoutParams);
+
+                    try {
+                        int width16inDp = (int) TypedValue.applyDimension(
+                                TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
+
+                        ConstraintLayout.LayoutParams long_input = (ConstraintLayout.LayoutParams) input.getLayoutParams();
+                        long_input.rightMargin = width16inDp;
+                        input.setLayoutParams(long_input);
+                    } catch (Exception e){
+                        Toast.makeText(getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
+                    }
+
+                    filter.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_filter));
+
                     listView.setAdapter(adapterDoctor);
                     flag = false;
                 }else {
@@ -206,12 +228,18 @@ public class DoctorsList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 filter.setVisibility(View.VISIBLE);
-                text.setText("Получить консультацию");
 
                 Intent intent2 = new Intent(getApplicationContext(), DoctorsList.class);
                 intent2.putExtra("number", number);
                 filter.setVisibility(View.VISIBLE);
                 text.setText("Получить консультацию");
+
+                int width68inDp = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 68, getResources().getDisplayMetrics());
+
+                ConstraintLayout.LayoutParams long_input= (ConstraintLayout.LayoutParams) input.getLayoutParams();
+                long_input.rightMargin = width68inDp;
+                input.setLayoutParams(long_input);
 
                 ListView listView = findViewById(R.id.list_of_professions);
                 listView.setAdapter(adapterProfs);
@@ -363,8 +391,15 @@ public class DoctorsList extends AppCompatActivity {
             filter.setVisibility(View.VISIBLE);
             text.setText("Получить консультацию");
 
+            int width68inDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 68, getResources().getDisplayMetrics());
+
             ListView listView = findViewById(R.id.list_of_professions);
             ProfAdapter adapterProfs = new ProfAdapter(this, R.layout.profession_card, proffessions_array);
+
+            ConstraintLayout.LayoutParams long_input= (ConstraintLayout.LayoutParams) input.getLayoutParams();
+            long_input.rightMargin = width68inDp;
+            input.setLayoutParams(long_input);
 
             listView.setAdapter(adapterProfs);
             flag = true;
