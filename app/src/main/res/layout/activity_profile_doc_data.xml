@@ -115,8 +115,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:elevation="5dp"
-                    android:background="@drawable/flow_direction">
+                    android:background="@drawable/flow_direction"
+                    android:elevation="5dp">
 
                     <EditText
                         android:id="@+id/price_doctor_data"
@@ -203,8 +203,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:elevation="5dp"
-                    android:background="@drawable/flow_direction">
+                    android:background="@drawable/flow_direction"
+                    android:elevation="5dp">
 
                     <EditText
                         android:id="@+id/service_format_doc_data"
@@ -244,9 +244,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:elevation="5dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/flow_direction">
+                    android:background="@drawable/flow_direction"
+                    android:elevation="5dp">
 
                     <EditText
                         android:id="@+id/service_format_doc_data2"
@@ -286,9 +286,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:elevation="5dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/flow_direction">
+                    android:background="@drawable/flow_direction"
+                    android:elevation="5dp">
 
                     <EditText
                         android:id="@+id/education_doc_data"
@@ -330,9 +330,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:elevation="5dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/flow_direction">
+                    android:background="@drawable/flow_direction"
+                    android:elevation="5dp">
 
                     <EditText
                         android:id="@+id/text_with_info_doc_data"
@@ -379,7 +379,7 @@
                         android:layout_height="48dp"
                         android:layout_marginTop="24dp"
                         android:layout_marginEnd="30dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_marginBottom="30dp"
                         android:background="@drawable/btn1"
                         android:fontFamily="@font/manrope_regular"
                         android:text="@string/Сохранить"
@@ -397,7 +397,7 @@
                         android:layout_height="48dp"
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="24dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_marginBottom="30dp"
                         android:background="@drawable/btn1"
                         android:drawableLeft="@drawable/ic_back_new"
                         android:fontFamily="@font/manrope_regular"
