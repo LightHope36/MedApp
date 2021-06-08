@@ -79,10 +79,7 @@
                         android:id="@+id/name_doc_data"
                         android:layout_width="202dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
-                        android:layout_marginTop="33dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="33dp"
                         android:background="@drawable/bottom_bar"
                         android:ems="10"
                         android:fontFamily="@font/manrope_medium"
@@ -91,7 +88,6 @@
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
@@ -115,7 +111,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/flow_direction"
+                    android:background="@drawable/flow_direction_middle"
                     android:elevation="5dp">
 
                     <EditText
@@ -203,7 +199,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/flow_direction"
+                    android:background="@drawable/flow_direction_middle"
                     android:elevation="5dp">
 
                     <EditText
@@ -245,7 +241,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/flow_direction"
+                    android:background="@drawable/flow_direction_middle"
                     android:elevation="5dp">
 
                     <EditText
@@ -287,7 +283,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/flow_direction"
+                    android:background="@drawable/flow_direction_middle"
                     android:elevation="5dp">
 
                     <EditText
@@ -331,7 +327,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/flow_direction"
+                    android:background="@drawable/flow_directoin_bottom"
                     android:elevation="5dp">
 
                     <EditText
