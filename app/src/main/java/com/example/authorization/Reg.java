@@ -3,6 +3,7 @@ package com.example.authorization;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -54,6 +55,7 @@ public class Reg extends AppCompatActivity {
 
         Intent intent = getIntent();
         String number = (String) intent.getExtras().get("number");
+        String from = (String) intent.getExtras().get("from");
 
         SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
         usersDataBase.execSQL("create table if not exists users\n" +
@@ -67,73 +69,138 @@ public class Reg extends AppCompatActivity {
                 "\tUserPolis varchar(1000) \n" +
                 ");");
 
-        SQLiteDatabase lastuser = openOrCreateDatabase("lastuser", MODE_PRIVATE, null);
-        lastuser.execSQL("create table if not exists lastuser\n" +
-                "(\n" +
-                "\tUserPhone varchar(10) \n" +
-                ");");
+        Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone=?", new String[]{number});
+        cper.moveToFirst();
 
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !polis.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
-                    Username = name.getText().toString();
-                    Usersurname = surname.getText().toString();
-                    Userbithday = birth.getText().toString();
-                    Userpolis = polis.getText().toString();
-                    Usermiddlename = middlename.getText().toString();
+        if(from.equals("auth4")) {
+
+            next.setText("Далее");
+            next.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_next, 0);
+
+            SQLiteDatabase lastuser = openOrCreateDatabase("lastuser", MODE_PRIVATE, null);
+            lastuser.execSQL("create table if not exists lastuser\n" +
+                    "(\n" +
+                    "\tUserPhone varchar(10) \n" +
+                    ");");
+
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !polis.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
+                        Username = name.getText().toString();
+                        Usersurname = surname.getText().toString();
+                        Userbithday = birth.getText().toString();
+                        Userpolis = polis.getText().toString();
+                        Usermiddlename = middlename.getText().toString();
 
 
-                    usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis, UserMiddlename) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"','"+Userpolis+"', '"+Usermiddlename+"')");
-                    lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
+                        usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis, UserMiddlename) values('" + number + "', '" + Username + "','" + Usersurname + "','" + Userbithday + "','" + Userpolis + "', '" + Usermiddlename + "')");
+                        lastuser.execSQL("insert into lastuser (UserPhone) values ('" + number + "')");
 
-                    Intent intent = new Intent(getApplicationContext(), MainPage2.class);
+                        Intent intent = new Intent(getApplicationContext(), MainPage2.class);
 
-                    intent.putExtra("number", number);
-                    intent.putExtra("Username", Username);
-                    intent.putExtra("Usersurname", Usersurname);
-                    intent.putExtra("Userbithday", Userbithday);
-                    intent.putExtra("Userpolis", Userpolis);
+                        intent.putExtra("number", number);
+                        intent.putExtra("Username", Username);
+                        intent.putExtra("Usersurname", Usersurname);
+                        intent.putExtra("Userbithday", Userbithday);
+                        intent.putExtra("Userpolis", Userpolis);
 
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                    } else if (!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
+
+                        Username = name.getText().toString();
+                        Usersurname = surname.getText().toString();
+                        Userbithday = birth.getText().toString();
+                        Usermiddlename = middlename.getText().toString();
+                        String zero = "";
+
+                        usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis, UserMiddlename) values('" + number + "', '" + Username + "','" + Usersurname + "','" + Userbithday + "', null, '" + Usermiddlename + "')");
+                        lastuser.execSQL("insert into lastuser (UserPhone) values ('" + number + "')");
+
+                        Intent intent = new Intent(getApplicationContext(), MainPage2.class);
+
+                        intent.putExtra("number", number);
+
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                    } else {
+                        error.setText(getString(R.string.Не_все_поля));
+                        //Toast.makeText(getApplicationContext(), "Введены не все обязательные данные", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), auth3.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                 }
-                else if(!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !middlename.getText().toString().equals("")){
+            });
 
-                    Username = name.getText().toString();
-                    Usersurname = surname.getText().toString();
-                    Userbithday = birth.getText().toString();
-                    Usermiddlename = middlename.getText().toString();
-                    String zero ="";
+        } else {
 
-                    usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis, UserMiddlename) values('"+ number +"', '"+ Username +"','"+Usersurname+"','"+Userbithday+"', null, '"+Usermiddlename+"')");
-                    lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
+            next.setText("Сохранить");
+            next.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
 
-                    Intent intent = new Intent(getApplicationContext(), MainPage2.class);
+            try {
+                int UserNameIndex = cper.getColumnIndex("UserName");
+                int UserBirthdayIndex = cper.getColumnIndex("UserBirthday");
+                int UserSurnameIndex = cper.getColumnIndex("UserSurname");
+                int UserMiddlenameIndex = cper.getColumnIndex("UserMiddlename");
+                int UserPolisIndex = cper.getColumnIndex("UserPolis");
 
+                name.setText(cper.getString(UserNameIndex));
+                surname.setText(cper.getString(UserSurnameIndex));
+                birth.setText(cper.getString(UserBirthdayIndex));
+                middlename.setText(cper.getString(UserMiddlenameIndex));
+                polis.setText(cper.getString(UserPolisIndex));
+            } catch (Exception e){
+                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+
+            }
+
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if( !name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
+                        ContentValues values = new ContentValues();
+                        values.put("UserName", name.getText().toString());
+                        values.put("UserSurname", surname.getText().toString());
+                        values.put("UserBirthday", birth.getText().toString());
+                        values.put("UserMiddlename", middlename.getText().toString());
+                        values.put("UserPolis", polis.getText().toString());
+                        usersDataBase.update("users", values, "UserPhone=?", new String[]{number});
+
+                        Intent intent = new Intent(getApplicationContext(), Profile.class);
+                        intent.putExtra("number", number);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                    }
+                    else{
+                        error.setText(getString(R.string.Не_все_поля));
+                    }
+                }
+            });
+
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), Profile.class);
                     intent.putExtra("number", number);
-
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                 }
-                else{
-                    error.setText(getString(R.string.Не_все_поля));
-                    //Toast.makeText(getApplicationContext(), "Введены не все обязательные данные", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+            });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), auth3.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                overridePendingTransition(0,0);
-            }
-        });
+        }
 
         birth.setOnClickListener(new View.OnClickListener() {
             @Override

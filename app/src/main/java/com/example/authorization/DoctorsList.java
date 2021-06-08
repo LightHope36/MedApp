@@ -132,6 +132,8 @@ public class DoctorsList extends AppCompatActivity {
             listView.setAdapter(adapterDoctor);
             professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
             doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+            doctors_tv.setTextColor(getResources().getColor(R.color.black));
+            professions.setTextColor(getResources().getColor(R.color.black));
         }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -157,6 +159,8 @@ public class DoctorsList extends AppCompatActivity {
 
                     professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
                     doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+                    doctors_tv.setTextColor(getResources().getColor(R.color.black));
+                    professions.setTextColor(getResources().getColor(R.color.black));
                     filter.setVisibility(View.INVISIBLE);
                     text.setText(proffessions_array.get(position));
                     back.setVisibility(View.VISIBLE);
@@ -245,7 +249,9 @@ public class DoctorsList extends AppCompatActivity {
                 listView.setAdapter(adapterProfs);
                 flag = true;
                 professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
+                professions.setTextColor(getResources().getColor(R.color.menu_text));
                 doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+                doctors_tv.setTextColor(getResources().getColor(R.color.black));
 
                 int margin112inDp = (int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 112, getResources().getDisplayMetrics());
@@ -275,6 +281,9 @@ public class DoctorsList extends AppCompatActivity {
             public void onClick(View v) {
                 professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
                 doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+                doctors_tv.setTextColor(getResources().getColor(R.color.black));
+                professions.setTextColor(getResources().getColor(R.color.menu_text));
+
                 listView.setAdapter(adapterProfs);
                 flag = true;
                 input.setHint("Поиск по специальностям");
@@ -286,7 +295,9 @@ public class DoctorsList extends AppCompatActivity {
             public void onClick(View v) {
                 filtredDoctors.clear();
                 doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
+                doctors_tv.setTextColor(getResources().getColor(R.color.menu_text));
                 professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+                professions.setTextColor(getResources().getColor(R.color.black));
 
                 listView.setAdapter(adapterDoctor);
                 flag = false;
@@ -404,7 +415,9 @@ public class DoctorsList extends AppCompatActivity {
             listView.setAdapter(adapterProfs);
             flag = true;
             professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
+            professions.setTextColor(getResources().getColor(R.color.menu_text));
             doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+            doctors_tv.setTextColor(getResources().getColor(R.color.black));
             /*Intent intent = new Intent(getApplicationContext(), MainPage2.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);

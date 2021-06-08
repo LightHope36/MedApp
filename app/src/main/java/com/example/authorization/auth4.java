@@ -108,6 +108,7 @@ public class auth4 extends AppCompatActivity{
                     else {
                         sThread.close();
                         Intent intent_reg = new Intent(getApplicationContext(), Reg.class);
+                        intent_reg.putExtra("from", "auth4");
                         intent_reg.putExtra("number", number);
                         intent_reg.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent_reg);
