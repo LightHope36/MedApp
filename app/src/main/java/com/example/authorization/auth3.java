@@ -2,6 +2,7 @@ package com.example.authorization;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -21,9 +22,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Response;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONObject;
+
+import java.io.CharArrayWriter;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Random;
+
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 public class auth3 extends AppCompatActivity  {
 
@@ -32,7 +43,7 @@ public class auth3 extends AppCompatActivity  {
     private EditText reg;
     private TextView errortext;
     private EditText input;
-
+    private StringWriter buffer;
 
 
     @SuppressLint("WrongViewCast")
@@ -50,6 +61,27 @@ public class auth3 extends AppCompatActivity  {
         phone.setText("9999999999");
         TextView errortext = findViewById(R.id.errortext);
 
+        try {
+            HttpURLConnection con = (HttpURLConnection) (new URL("localhost:8000/api/")).openConnection();
+            con.setRequestMethod("POST");
+            con.setDoInput(true);
+            con.setDoOutput(true);
+            con.connect();
+
+            con.getOutputStream().write( ("name=" + "name").getBytes());
+
+            InputStream is = con.getInputStream();
+            byte[] b = new byte[1024];
+            while ( is.read(b) != -1)
+                buffer.append(new String(b));
+            con.disconnect();
+
+        } catch (Exception e){
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+
+
 
         next2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +92,58 @@ public class auth3 extends AppCompatActivity  {
                     if (reg.getText().length() <= 4 & reg.getText().charAt(0) == '+') {
                         if (phone.length() == 10) {
                             String number = reg.getText().toString() + phone.getText().toString();
+
+//                            String data = sendHttpRequest(url, name);
+//                            try {
+//                                HttpURLConnection
+//                                RequestQueue requestQueue = Volley.newRequestQueue(this);
+//                                String URL = "http://...";
+//                                JSONObject jsonBody = new JSONObject();
+//                                jsonBody.put("phone", phone);
+//                                final String requestBody = jsonBody.toString();
+//
+//                                StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+//                                    @Override
+//                                    public void onResponse(String response) {
+//                                        Log.i("VOLLEY", response);
+//                                    }
+//                                }, new Response.ErrorListener() {
+//                                    @Override
+//                                    public void onErrorResponse(VolleyError error) {
+//                                        Log.e("VOLLEY", error.toString());
+//                                    }
+//                                }) {
+//                                    @Override
+//                                    public String getBodyContentType() {
+//                                        return "application/json; charset=utf-8";
+//                                    }
+//
+//                                    @Override
+//                                    public byte[] getBody() throws AuthFailureError {
+//                                        try {
+//                                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+//                                        } catch (UnsupportedEncodingException uee) {
+//                                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+//                                            return null;
+//                                        }
+//                                    }
+//
+//                                    @Override
+//                                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
+//                                        String responseString = "";
+//                                        if (response != null) {
+//                                            responseString = String.valueOf(response.statusCode);
+//                                            // can get more details such as response.headers
+//                                        }
+//                                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+//                                    }
+//                                };
+//
+//                                requestQueue.add(stringRequest);
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+
 
                             Intent intent_dialogs = new Intent(getApplicationContext(), Dialogs.class);
                             intent_dialogs.putExtra("number", number);
@@ -95,4 +179,51 @@ public class auth3 extends AppCompatActivity  {
         startActivity(intent);
         overridePendingTransition(0, 0);
     }
+
+//    public class SendPostRequest extends AsyncTask<String, Void, String> {
+//        protected void onPreExecute(){}
+//        protected String doInBackground(String... arg0) {
+//            try {
+//                URL url = new URL("https://studytutorial.in/post.php");
+//                JSONObject postDataParams = new JSONObject();
+//                postDataParams.put("phone", "abc");
+//                postDataParams.put("email", "abc@gmail.com");
+//                Log.e("params",postDataParams.toString());
+//
+//                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//                conn.setReadTimeout(15000 /* milliseconds */);
+//                conn.setConnectTimeout(15000 /* milliseconds */);
+//                conn.setRequestMethod("POST");
+//                conn.setDoInput(true);
+//                conn.setDoOutput(true);
+//            }
+//            catch(Exception e){
+//                return new String("Exception: " + e.getMessage());
+//            }
+//
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {}
+//    }
+
+
+//    private class SendHttpRequestTask extends AsyncTask<String, Void, String>{
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            String url = params[0];
+//            String name = params[1];
+//            String data = sendHttpRequest(url, name);
+//            return data;
+//        }
+//
+//        @Override
+////        protected void onPostExecute(String result) {
+////            edtResp.setText(result);
+////            item.setActionView(null);
+//        }
+//    }
+
 }
+
