@@ -61,28 +61,6 @@ public class auth3 extends AppCompatActivity  {
         phone.setText("9999999999");
         TextView errortext = findViewById(R.id.errortext);
 
-        try {
-            HttpURLConnection con = (HttpURLConnection) (new URL("localhost:8000/api/")).openConnection();
-            con.setRequestMethod("POST");
-            con.setDoInput(true);
-            con.setDoOutput(true);
-            con.connect();
-
-            con.getOutputStream().write( ("name=" + "name").getBytes());
-
-            InputStream is = con.getInputStream();
-            byte[] b = new byte[1024];
-            while ( is.read(b) != -1)
-                buffer.append(new String(b));
-            con.disconnect();
-
-        } catch (Exception e){
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-
-
-
-
         next2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

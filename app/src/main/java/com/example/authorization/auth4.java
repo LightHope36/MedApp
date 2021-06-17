@@ -21,12 +21,32 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dropbox.core.DbxRequestUtil;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class auth4 extends AppCompatActivity{
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+ public class auth4 extends AppCompatActivity{
 
     private Button messege;
     private Button back3;
@@ -35,6 +55,7 @@ public class auth4 extends AppCompatActivity{
     private TextView text;
     private String ranStr = "";
     private String number;
+    String answerHTTP;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
 
 
@@ -122,51 +143,113 @@ public class auth4 extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                String [] strings = new String[]{getString(R.string.Время_на_подтверждение1),
-                                                 getString(R.string.Время_на_подтверждение2),
-                                                 getString(R.string.Отправить_повторно)};
-                setRanStr();
-                 snackBarView(v,editText);
-                 messege.setClickable(false);
-                 messege.setVisibility(View.GONE);
+//                try {
+//                    new SendPhone().execute("http://localhost:8000/");
+//                } catch (Exception e){
+//                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//                }
 
-                 new sThread("s", new In() {
-                     @Override
-                     public void act(String s) {
-                         text.setText(s);
-                     }
-                     @Override
-                     public void anact(String s){
-                         text.setText(s);
-                         text.setOnClickListener(new View.OnClickListener() {
-                             @Override
-                             public void onClick(View v) {
+                try {
+                    DefaultHttpClient hc = new DefaultHttpClient();
+                    ResponseHandler<String> res = new BasicResponseHandler();
+                    HttpPost postMethod = new HttpPost("http://localhost:8000/");
+                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                    // ключ - "json", параметр - json в виде строки
+                    nameValuePairs.add(new BasicNameValuePair("json", getJSON()));
+                    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
+                    postMethod.setEntity(entity);
+                    answerHTTP = hc.execute(postMethod, res);
 
-                                 setRanStr();
-                                 snackBarView(v,editText);
-                                 text.setClickable(false);
-                                 new sThread("s", new In() {
-
-                                     @Override
-                                     public void act(String s) {
-                                         text.setText(s);
-                                     }
-                                     @Override
-                                     public void anact(String s){
-                                         text.setText(s);
-                                         text.setClickable(true);
-                                     }
-                                 }, strings).start();
+                    Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
 
 
-                             }
-                         });
-                     }
-                 }, strings).start();
-//                sendSMSMessage();
+
+//                String [] strings = new String[]{getString(R.string.Время_на_подтверждение1),
+//                                                 getString(R.string.Время_на_подтверждение2),
+//                                                 getString(R.string.Отправить_повторно)};
+//                setRanStr();
+//                 snackBarView(v,editText);
+//                 messege.setClickable(false);
+//                 messege.setVisibility(View.GONE);
+//
+//                 new sThread("s", new In() {
+//                     @Override
+//                     public void act(String s) {
+//                         text.setText(s);
+//                     }
+//                     @Override
+//                     public void anact(String s){
+//                         text.setText(s);
+//                         text.setOnClickListener(new View.OnClickListener() {
+//                             @Override
+//                             public void onClick(View v) {
+//
+//                                 setRanStr();
+//                                 snackBarView(v,editText);
+//                                 text.setClickable(false);
+//                                 new sThread("s", new In() {
+//
+//                                     @Override
+//                                     public void act(String s) {
+//                                         text.setText(s);
+//                                     }
+//                                     @Override
+//                                     public void anact(String s){
+//                                         text.setText(s);
+//                                         text.setClickable(true);
+//                                     }
+//                                 }, strings).start();
+//
+//
+//                             }
+//                         });
+//                     }
+//                 }, strings).start();
+////                sendSMSMessage();
             }
         });
     }
+
+     public String getJSON() // получаем json объект в виде строки
+     {
+         JSONObject bot = new JSONObject();
+         try {
+             bot.put("phone", number);
+         } catch (JSONException e) {
+             e.printStackTrace();
+         }
+         return bot.toString();
+     }
+
+//    class SendPhone extends AsyncTask<String, String, String> {
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            try {
+//                DefaultHttpClient hc = new DefaultHttpClient();
+//                ResponseHandler<String> res = new BasicResponseHandler();
+//                HttpPost postMethod = new HttpPost(params[0]);
+//                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+//                // ключ - "json", параметр - json в виде строки
+//                nameValuePairs.add(new BasicNameValuePair("json", getJSON()));
+//                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
+//                postMethod.setEntity(entity);
+//                return hc.execute(postMethod, res);
+//            } catch (Exception e) {
+//                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+//        }
+//    }
 
     protected void sendSMSMessage() {
 
@@ -282,6 +365,10 @@ public class auth4 extends AppCompatActivity{
             }
         }
     }
+
+
+
+
     public void onBackPressed(){
         sThread.close();
         Intent intent = new Intent(getApplicationContext(), auth3.class);
