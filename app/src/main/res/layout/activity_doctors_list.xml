@@ -76,14 +76,21 @@
             app:layout_constraintTop_toBottomOf="@+id/textView14"
             app:srcCompat="@drawable/ic_filter" />
 
+        <ImageView
+            android:id="@+id/image_to_anim_in_filter"
+            android:layout_width="180dp"
+            android:layout_height="27dp"
+            android:src="@drawable/back_color_10"
+            app:layout_constraintStart_toStartOf="@id/professions_text"
+            app:layout_constraintTop_toTopOf="@id/professions_text" />
+
         <TextView
             android:id="@+id/professions_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="180dp"
+            android:layout_height="27dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="21dp"
             android:alpha="0.9"
-            android:background="@drawable/back_color_10"
             android:paddingStart="16dp"
             android:paddingTop="5dp"
             android:paddingEnd="16dp"
@@ -95,8 +102,8 @@
 
         <TextView
             android:id="@+id/doctors_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="180dp"
+            android:layout_height="27dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="21dp"
             android:alpha="0.9"

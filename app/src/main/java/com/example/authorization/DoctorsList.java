@@ -64,13 +64,16 @@ public class DoctorsList extends AppCompatActivity {
         dialogs = findViewById(R.id.cs_to_dial);
         filter = findViewById(R.id.filter);
         top = findViewById(R.id.top_doctors);
+        //
         professions = findViewById(R.id.professions_text);
+        //
         doctors_tv = findViewById(R.id.doctors_text);
         profile = findViewById(R.id.profile_in_doctorlist);
         input = findViewById(R.id.input);
         back = findViewById(R.id.back_in_doctorlist);
         text = findViewById(R.id.textView14);
         main = findViewById(R.id.main_cs_in_doct);
+        ImageView imageToAnimInFilter = findViewById(R.id.image_to_anim_in_filter);
 
         Intent intent = getIntent();
         number = (String) intent.getExtras().get("number");
@@ -273,20 +276,24 @@ public class DoctorsList extends AppCompatActivity {
         professions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
-                doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+
+                //professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
+                //doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+                imageToAnimInFilter.animate().translationXBy(doctors_tv.getX()).translationX(professions.getX()-10).start();
                 listView.setAdapter(adapterProfs);
                 flag = true;
                 input.setHint("Поиск по специальностям");
             }
+
         });
 
         doctors_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filtredDoctors.clear();
-                doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
-                professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+                //doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
+                //professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+                imageToAnimInFilter.animate().translationXBy(professions.getX()).translationX(doctors_tv.getX()-10).start();
 
                 listView.setAdapter(adapterDoctor);
                 flag = false;
