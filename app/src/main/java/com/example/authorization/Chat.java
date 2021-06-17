@@ -133,7 +133,8 @@ public class Chat extends AppCompatActivity {
         add_image_with_camera = findViewById(R.id.add_image_with_camera);
         videocall= findViewById(R.id.videozvonok);
         call = findViewById(R.id.zvonok);
-        String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69";
+//        String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69";
+        String url = "localhost:8000/api/";
         String username = "u0597423_medclic";
         String password = "kvantoriummagda";
         //Connection conn;

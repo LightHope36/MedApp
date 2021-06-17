@@ -40,8 +40,9 @@ public class Profile extends AppCompatActivity {
         data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Profile_data.class);
+                Intent intent = new Intent(getApplicationContext(), Reg.class);
                 intent.putExtra("number", number);
+                intent.putExtra("from", "Profile");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
