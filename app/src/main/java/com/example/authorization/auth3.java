@@ -69,7 +69,12 @@ public class auth3 extends AppCompatActivity  {
                 }else {
                     if (reg.getText().length() <= 4 & reg.getText().charAt(0) == '+') {
                         if (phone.length() == 10) {
-                            String number = reg.getText().toString() + phone.getText().toString();
+                            String number;
+                            if(reg.equals("+7")){
+                                number = "8"+phone.getText().toString();
+                            } else {
+                                number = reg.getText().toString() + phone.getText().toString();
+                            }
 
 //                            String data = sendHttpRequest(url, name);
 //                            try {

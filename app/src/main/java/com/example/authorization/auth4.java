@@ -5,48 +5,35 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dropbox.core.DbxRequestUtil;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.JsonObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import io.fabric.sdk.android.services.concurrency.AsyncTask;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
- public class auth4 extends AppCompatActivity{
+import java.io.IOException;
+import java.util.Random;
+
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public class auth4 extends AppCompatActivity{
 
     private Button messege;
     private Button back3;
@@ -57,6 +44,8 @@ import org.json.JSONObject;
     private String number;
     String answerHTTP;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    OkHttpClient client = new OkHttpClient();
 
 
     @Override
@@ -149,23 +138,7 @@ import org.json.JSONObject;
 //                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 //                }
 
-                try {
-                    DefaultHttpClient hc = new DefaultHttpClient();
-                    ResponseHandler<String> res = new BasicResponseHandler();
-                    HttpPost postMethod = new HttpPost("http://localhost:8000/");
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                    // ключ - "json", параметр - json в виде строки
-                    nameValuePairs.add(new BasicNameValuePair("json", getJSON()));
-                    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
-                    postMethod.setEntity(entity);
-                    answerHTTP = hc.execute(postMethod, res);
-
-                    Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-
+                new SendPhone().execute();
 
 //                String [] strings = new String[]{getString(R.string.Время_на_подтверждение1),
 //                                                 getString(R.string.Время_на_подтверждение2),
@@ -213,43 +186,68 @@ import org.json.JSONObject;
         });
     }
 
-     public String getJSON() // получаем json объект в виде строки
-     {
-         JSONObject bot = new JSONObject();
-         try {
-             bot.put("phone", number);
-         } catch (JSONException e) {
-             e.printStackTrace();
-         }
-         return bot.toString();
-     }
+//     public String getJSON() // получаем json объект в виде строки
+//     {
+//         JSONObject bot = new JSONObject();
+//         try {
+//             bot.put("phone", number);
+//         } catch (JSONException e) {
+//             e.printStackTrace();
+//         }
+//         return bot.toString();
+//     }
 
-//    class SendPhone extends AsyncTask<String, String, String> {
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            try {
-//                DefaultHttpClient hc = new DefaultHttpClient();
-//                ResponseHandler<String> res = new BasicResponseHandler();
-//                HttpPost postMethod = new HttpPost(params[0]);
-//                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-//                // ключ - "json", параметр - json в виде строки
-//                nameValuePairs.add(new BasicNameValuePair("json", getJSON()));
-//                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
-//                postMethod.setEntity(entity);
-//                return hc.execute(postMethod, res);
-//            } catch (Exception e) {
-//                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            super.onPostExecute(result);
+    String post(String url, String json) throws IOException {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("phone", number);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(JSON, json);
+        System.out.println("gg");
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Accept", "application/json")
+                .post(body)
+                .build();
+        System.out.println("gg");
+        try (Response response = client.newCall(request).execute()) {
+            System.out.println("gg");
+            return response.body().string();
+        }
+    }
+
+    class SendPhone extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+
+//                String json = "{\"phone\": \"" + number + "\"}";
+//                String json = "{\"phone\": \"89806344281\"}";
+                String json = "phone%99" + number + "";
+//                String json = "{\"phone\": \"89806344281\"}";
+                System.out.println(json);
+                String response = post("http://89.223.30.250:8001/api/auth/phone/", json);
+                System.out.println("final");
+//                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                System.out.println(response);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
 //            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
-//        }
-//    }
+        }
+    }
 
     protected void sendSMSMessage() {
 
