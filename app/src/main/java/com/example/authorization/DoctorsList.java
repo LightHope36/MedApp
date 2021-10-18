@@ -280,6 +280,8 @@ public class DoctorsList extends AppCompatActivity {
                 //professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
                 //doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
                 imageToAnimInFilter.animate().translationXBy(doctors_tv.getX()).translationX(professions.getX()-10).start();
+                professions.setTextColor(getResources().getColor(R.color.btn_text));
+                doctors_tv.setTextColor(getResources().getColor(R.color.black));
                 listView.setAdapter(adapterProfs);
                 flag = true;
                 input.setHint("Поиск по специальностям");
@@ -295,6 +297,8 @@ public class DoctorsList extends AppCompatActivity {
                 //professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
                 imageToAnimInFilter.animate().translationXBy(professions.getX()).translationX(doctors_tv.getX()-10).start();
 
+                professions.setTextColor(getResources().getColor(R.color.black));
+                doctors_tv.setTextColor(getResources().getColor(R.color.btn_text));
                 listView.setAdapter(adapterDoctor);
                 flag = false;
                 input.setHint("Поиск среди врачей");

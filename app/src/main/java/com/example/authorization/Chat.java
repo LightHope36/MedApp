@@ -246,6 +246,7 @@ public class Chat extends AppCompatActivity {
                 }
                 message.setMessageType(0);
                 adapter.add(message);
+                messages.add(message);
                 thisdate = dateText;
             }
 
@@ -262,6 +263,7 @@ public class Chat extends AppCompatActivity {
                     message.setImage(bitmapImage);
                     message.setMessageTime(timeText);
                     adapter.add(message);
+                    messages.add(message);
                 }else {
                     message.setMessageId(c.getLong(messageIDIndex));
                     message.setMessageUser("You");
@@ -269,6 +271,7 @@ public class Chat extends AppCompatActivity {
                     message.setMessageText(c.getString(messageTextIndex));
                     message.setMessageTime(timeTextInMessage);
                     adapter.add(message);
+                    messages.add(message);
                 }
 
 
@@ -284,6 +287,7 @@ public class Chat extends AppCompatActivity {
                 message.setMessageText(c.getString(messageTextIndex));
                 message.setMessageTime(timeTextInMessage);
                 message.setMessageType(2);
+                messages.add(message);
 
                 if(c.getLong(messageIDIndex)==id){
                     n=i;
@@ -332,6 +336,8 @@ public class Chat extends AppCompatActivity {
         } catch (MalformedURLException e) {
 //            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
+
+        System.out.println(messages);
 
         videocall.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -386,7 +392,7 @@ public class Chat extends AppCompatActivity {
                         startActivity(intent);
                         overridePendingTransition(0, 0);
                     } catch (Exception e){
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -407,6 +413,7 @@ public class Chat extends AppCompatActivity {
                     case MotionEvent.ACTION_UP: // отпускание
                         vlojenia.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.elm_view));
                         Intent intent = new Intent(getApplicationContext(), Invest.class);
+                        intent.putExtra("person", person);
                         intent.putExtra("number", number);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent);
@@ -544,6 +551,7 @@ public class Chat extends AppCompatActivity {
                     message.setMessageType(1);
                     message.setMessageTime(timeTextInMessage);
                     adapter.add(message);
+                    messages.add(message);
                     listView.setSelection(listView.getCount() - 1);
 
 

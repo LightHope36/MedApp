@@ -20,6 +20,7 @@ public class Invest extends AppCompatActivity {
     private String number;
     private ImageView back;
     private GridLayout gridlayout;
+    private Person person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class Invest extends AppCompatActivity {
         setContentView(R.layout.activity_invest);
 
         Intent intent = getIntent();
+        person = (Person) intent.getExtras().get("person");
         number = (String) intent.getExtras().get("number");
         back = findViewById(R.id.back_btn_in_invest);
         gridlayout = findViewById(R.id.Grid_layout);
@@ -61,6 +63,7 @@ public class Invest extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Chat.class);
                 intent.putExtra("number", number);
+                intent.putExtra("person", person);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 overridePendingTransition(0, 0);

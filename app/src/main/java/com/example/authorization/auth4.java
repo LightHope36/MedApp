@@ -140,48 +140,48 @@ public class auth4 extends AppCompatActivity{
 
                 new SendPhone().execute();
 
-//                String [] strings = new String[]{getString(R.string.Время_на_подтверждение1),
-//                                                 getString(R.string.Время_на_подтверждение2),
-//                                                 getString(R.string.Отправить_повторно)};
-//                setRanStr();
-//                 snackBarView(v,editText);
-//                 messege.setClickable(false);
-//                 messege.setVisibility(View.GONE);
-//
-//                 new sThread("s", new In() {
-//                     @Override
-//                     public void act(String s) {
-//                         text.setText(s);
-//                     }
-//                     @Override
-//                     public void anact(String s){
-//                         text.setText(s);
-//                         text.setOnClickListener(new View.OnClickListener() {
-//                             @Override
-//                             public void onClick(View v) {
-//
-//                                 setRanStr();
-//                                 snackBarView(v,editText);
-//                                 text.setClickable(false);
-//                                 new sThread("s", new In() {
-//
-//                                     @Override
-//                                     public void act(String s) {
-//                                         text.setText(s);
-//                                     }
-//                                     @Override
-//                                     public void anact(String s){
-//                                         text.setText(s);
-//                                         text.setClickable(true);
-//                                     }
-//                                 }, strings).start();
-//
-//
-//                             }
-//                         });
-//                     }
-//                 }, strings).start();
-////                sendSMSMessage();
+                String [] strings = new String[]{getString(R.string.Время_на_подтверждение1),
+                                                 getString(R.string.Время_на_подтверждение2),
+                                                 getString(R.string.Отправить_повторно)};
+                setRanStr();
+                 snackBarView(v,editText);
+                 messege.setClickable(false);
+                 messege.setVisibility(View.GONE);
+
+                 new sThread("s", new In() {
+                     @Override
+                     public void act(String s) {
+                         text.setText(s);
+                     }
+                     @Override
+                     public void anact(String s){
+                         text.setText(s);
+                         text.setOnClickListener(new View.OnClickListener() {
+                             @Override
+                             public void onClick(View v) {
+
+                                 setRanStr();
+                                 snackBarView(v,editText);
+                                 text.setClickable(false);
+                                 new sThread("s", new In() {
+
+                                     @Override
+                                     public void act(String s) {
+                                         text.setText(s);
+                                     }
+                                     @Override
+                                     public void anact(String s){
+                                         text.setText(s);
+                                         text.setClickable(true);
+                                     }
+                                 }, strings).start();
+
+
+                             }
+                         });
+                     }
+                 }, strings).start();
+//                sendSMSMessage();
             }
         });
     }
