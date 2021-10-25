@@ -42,6 +42,13 @@ public class Dialogs extends AppCompatActivity {
     private ConstraintLayout profile;
     DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    DateFormat dayAndMonthFormat = new SimpleDateFormat("d M", Locale.getDefault());
+    DateFormat dayFormat = new SimpleDateFormat("d", Locale.getDefault());
+    DateFormat monthFormat = new SimpleDateFormat("M", Locale.getDefault());
+    String days[] = new String[]{"Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"};
+    Date currentDate = new Date();
+    String thisdate = dayAndMonthFormat.format(currentDate);
+    String today = dayAndMonthFormat.format(currentDate);
     private ConstraintLayout main;
     private TextView dialogs;
     private ConstraintLayout dial_cs;
@@ -212,9 +219,21 @@ public class Dialogs extends AppCompatActivity {
 
                 String timeText = person.getMessageTime();
                 Date timeTextDate = fullDateFormat.parse(timeText);
-                String timeTextInMessage = timeFormat.format(timeTextDate);
 
-                person.setMessageTime(timeTextInMessage);
+                String day = dayFormat.format(timeTextDate);
+                String dateText = dayAndMonthFormat.format(timeTextDate);
+                String month = monthFormat.format(timeTextDate);
+
+                if(!dateText.equals(today)){
+                    day += " " + days[Integer.parseInt(month) - 1];
+                    person.setMessageTime(day);
+                }
+                else{
+                    String timeTextInMessage = timeFormat.format(timeTextDate);
+
+                    person.setMessageTime(timeTextInMessage);
+                }
+
             }
             catch (Exception e){
             }

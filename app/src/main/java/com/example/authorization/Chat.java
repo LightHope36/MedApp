@@ -14,9 +14,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -30,10 +35,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dropbox.core.v2.users.GetAccountArg;
+
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
 import java.net.MalformedURLException;
@@ -101,6 +109,19 @@ public class Chat extends AppCompatActivity {
    // String password = "kvantoriummagda";
     List<Message> messages = new ArrayList<>();
 
+    private String fileName;
+    private MediaRecorder mediaRecorder;
+    private MediaPlayer mediaPlayer;
+
+
+    Date currentDate = new Date();
+    String thisdate = dayAndMonthFormat.format(currentDate);
+    String today = dayAndMonthFormat.format(currentDate);
+
+    private static final int MY_PERMISSIONS_RECORD_AUDIO =0 ;
+    private static final int MY_PERMISSIONS_READ_FILES = 0;
+    private static final int MY_PERMISSIONS_WRITE_IN_FILES = 0;
+
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -138,6 +159,7 @@ public class Chat extends AppCompatActivity {
         String username = "u0597423_medclic";
         String password = "kvantoriummagda";
         //Connection conn;
+        fileName = Environment.getExternalStorageDirectory() + "/record.3gpp";
 
 
             //conn = DriverManager.getConnection("https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69","u0597423_medclic","kvantoriummagda");
@@ -146,10 +168,10 @@ public class Chat extends AppCompatActivity {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 //            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             try (Connection conn = DriverManager.getConnection(url, username, password)) {
-                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
             } catch (Exception e) {
 //                Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }catch (Exception e){
 
@@ -211,9 +233,35 @@ public class Chat extends AppCompatActivity {
         Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))", new String[] {user, taker, number, taker, number});
         c.moveToFirst();
 
-        Date currentDate = new Date();
-        String thisdate = dayAndMonthFormat.format(currentDate);
-        String today = dayAndMonthFormat.format(currentDate);
+        if(c.moveToFirst()) {
+            int messageTimeIndex = c.getColumnIndex("messageTime");
+            String timeText = c.getString(messageTimeIndex);
+            String dateText = "";
+            String day = "";
+            String month = "1";
+            String timeTextInMessage = "";
+            try {
+                Date timeTextDate = fullDateFormat.parse(timeText);
+                dateText = dayAndMonthFormat.format(timeTextDate);
+                day = dayFormat.format(timeTextDate);
+                month = monthFormat.format(timeTextDate);
+                timeTextInMessage = timeFormat.format(timeTextDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Message message = new Message();
+            if (!dateText.equals(today)) {
+                day += " " + days[Integer.parseInt(month) - 1];
+                message.setMessageText(day);
+            } else {
+                message.setMessageText("Сегодня");
+            }
+            message.setMessageType(0);
+            adapter.add(message);
+            messages.add(message);
+        }
+
         while (!c.isAfterLast()) {
             int messageTextIndex = c.getColumnIndex("messageText");
             int messageTimeIndex = c.getColumnIndex("messageTime");
@@ -226,6 +274,7 @@ public class Chat extends AppCompatActivity {
             String day = "";
             String month = "1";
             String timeTextInMessage = "";
+            System.out.println(timeText);
 
             try {
                 Date timeTextDate = fullDateFormat.parse(timeText);
@@ -398,7 +447,56 @@ public class Chat extends AppCompatActivity {
             }
         });
 
+        mic.setOnTouchListener(new View.OnTouchListener() {
 
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: // нажатие
+                        record_audio();
+
+                        try {
+                            if (mediaRecorder != null) {
+                                mediaRecorder.release();
+                                mediaRecorder = null;
+                            }
+
+                            File outFile = new File(fileName);
+                            if (outFile.exists()) {
+                                outFile.delete();
+                            }
+
+
+                            mediaRecorder = new MediaRecorder();
+                            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                            mediaRecorder.setOutputFile(fileName);
+                            mediaRecorder.prepare();
+                            mediaRecorder.start();
+                            mediaRecorder.stop();
+                            mediaRecorder.reset();   // You can reuse the object by going back to setAudioSource() step
+                            mediaRecorder.release(); // Now the object cannot be reused
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case MotionEvent.ACTION_MOVE: // движение
+                        break;
+                    case MotionEvent.ACTION_UP: // отпускание
+                        try {
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            System.out.println(e.getMessage());
+                        }
+                    case MotionEvent.ACTION_CANCEL:
+                        break;
+                }
+                return true;
+            }
+        });
 
         vlojenia.setOnTouchListener(new View.OnTouchListener(){
 
@@ -515,45 +613,75 @@ public class Chat extends AppCompatActivity {
                     toast.show();
                 }
                 else{
-
-                    Date currentDate = new Date();
-                    String timeText = fullDateFormat.format(currentDate);
-                    Date timeTextDate = null;
+                    String timeText = "";
                     try {
-                        timeTextDate = fullDateFormat.parse(timeText);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))", new String[] {user, taker, number, taker, number});
+                        c.moveToLast();
+                        int messageTimeIndex = c.getColumnIndex("messageTime");
+                        timeText = c.getString(messageTimeIndex);
+                    }catch (Exception e){
                     }
-                    String timeTextInMessage = timeFormat.format(timeTextDate);
+                        String dateText = "";
+                        String day = "";
+                        String month = "1";
+                        String timeTextInMessage = "";
+
+                        try {
+                            Date timeTextDate = fullDateFormat.parse(timeText);
+                            dateText = dayAndMonthFormat.format(timeTextDate);
+                            day = dayFormat.format(timeTextDate);
+                            month = monthFormat.format(timeTextDate);
+                            timeTextInMessage = timeFormat.format(timeTextDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        if (!dateText.equals(thisdate)) {
+                            Message message = new Message();
+                            message.setMessageText("Сегодня");
+                            message.setMessageType(0);
+                            adapter.add(message);
+                            messages.add(message);
+                            thisdate = dateText;
+                        }
 
 
-                    String text = input.getText().toString();
+                        Date currentDate = new Date();
+                        timeText = fullDateFormat.format(currentDate);
+                        Date timeTextDate = null;
+                        try {
+                            timeTextDate = fullDateFormat.parse(timeText);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        timeTextInMessage = timeFormat.format(timeTextDate);
 
-                    input.getText().clear();
+
+                        String text = input.getText().toString();
+
+                        input.getText().clear();
 
 
-                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender,messageText, messageTaker, messageTime) values('"+user+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
-                    VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender,messageText, messageTaker, messageTime) values('"+taker+"','"+number+"','"+text+"','"+taker+"','"+timeText+"')");
+                        VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender,messageText, messageTaker, messageTime) values('" + user + "','" + number + "','" + text + "','" + taker + "','" + timeText + "')");
+                        VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender,messageText, messageTaker, messageTime) values('" + taker + "','" + number + "','" + text + "','" + taker + "','" + timeText + "')");
 
 
-                    Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess", null);
-                    cmes.moveToLast();
+                        Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess", null);
+                        cmes.moveToLast();
 
-                    int messageIDIndex = cmes.getColumnIndex("ID");
+                        int messageIDIndex = cmes.getColumnIndex("ID");
 
-                    coffee.setVisibility(View.INVISIBLE);
-                    empty.setVisibility(View.INVISIBLE);
+                        coffee.setVisibility(View.INVISIBLE);
+                        empty.setVisibility(View.INVISIBLE);
 
-                    messageType=1;
-                    Message message = new Message();
-                    message.setMessageId(cmes.getLong(messageIDIndex));
-                    message.setMessageText(text);
-                    message.setMessageType(1);
-                    message.setMessageTime(timeTextInMessage);
-                    adapter.add(message);
-                    messages.add(message);
-                    listView.setSelection(listView.getCount() - 1);
-
+                        messageType = 1;
+                        Message message = new Message();
+                        message.setMessageId(cmes.getLong(messageIDIndex));
+                        message.setMessageText(text);
+                        message.setMessageType(1);
+                        message.setMessageTime(timeTextInMessage);
+                        adapter.add(message);
+                        messages.add(message);
+                        listView.setSelection(listView.getCount() - 1);
 
                 }
                 i++;
@@ -728,5 +856,67 @@ public class Chat extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         overridePendingTransition(0, 0);
+    }
+    private void releaseRecorder() {
+        if (mediaRecorder != null) {
+            mediaRecorder.release();
+            mediaRecorder = null;
+        }
+    }
+
+    private void releasePlayer() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
+        releaseRecorder();
+    }
+
+    protected void record_audio() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_READ_FILES);
+            }
+        }
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_WRITE_IN_FILES);
+            }
+        }
+
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.RECORD_AUDIO)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_RECORD_AUDIO);
+            }
+        }
     }
 }

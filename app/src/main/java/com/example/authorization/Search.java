@@ -40,6 +40,13 @@ public class Search extends AppCompatActivity {
     MessageAdapter adapter = new MessageAdapter(this);
     DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    DateFormat dayAndMonthFormat = new SimpleDateFormat("d M", Locale.getDefault());
+    DateFormat dayFormat = new SimpleDateFormat("d", Locale.getDefault());
+    DateFormat monthFormat = new SimpleDateFormat("M", Locale.getDefault());
+    String days[] = new String[]{"Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"};
+    Date currentDate = new Date();
+    String thisdate = dayAndMonthFormat.format(currentDate);
+    String today = dayAndMonthFormat.format(currentDate);
 
 
     @Override
@@ -125,13 +132,73 @@ public class Search extends AppCompatActivity {
 
                         c.moveToFirst();
 
+                        if(c.moveToFirst()) {
+                            int messageTimeIndex = c.getColumnIndex("messageTime");
+                            String timeText = c.getString(messageTimeIndex);
+                            String dateText = "";
+                            String day = "";
+                            String month = "1";
+                            String timeTextInMessage = "";
+                            try {
+                                Date timeTextDate = fullDateFormat.parse(timeText);
+                                dateText = dayAndMonthFormat.format(timeTextDate);
+                                day = dayFormat.format(timeTextDate);
+                                month = monthFormat.format(timeTextDate);
+                                timeTextInMessage = timeFormat.format(timeTextDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            Message message = new Message();
+                            if (!dateText.equals(today)) {
+                                day += " " + days[Integer.parseInt(month) - 1];
+                                message.setMessageText(day);
+                            } else {
+                                message.setMessageText("Сегодня");
+                            }
+                            message.setMessageType(0);
+                            adapter.add(message);
+                            messages.add(message);
+                        }
 
                         int messageSenderIndex = c.getColumnIndex("messageSender");
                         int messageTextIndex = c.getColumnIndex("messageText");
                         int messageTimeIndex = c.getColumnIndex("messageTime");
                         int messageIDIndex = c.getColumnIndex("ID");
 
+
+
                         while (!c.isAfterLast()) {
+                            String timeText = c.getString(messageTimeIndex);
+                            String dateText = "";
+                            String day = "";
+                            String month = "1";
+                            String timeTextInMessage = "";
+                            System.out.println(timeText);
+
+                            try {
+                                Date timeTextDate = fullDateFormat.parse(timeText);
+                                dateText = dayAndMonthFormat.format(timeTextDate);
+                                day = dayFormat.format(timeTextDate);
+                                month = monthFormat.format(timeTextDate);
+                                timeTextInMessage = timeFormat.format(timeTextDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if(!dateText.equals(thisdate)){
+                                Message message = new Message();
+                                if(!dateText.equals(today)) {
+                                    day += " " + days[Integer.parseInt(month) - 1];
+                                    message.setMessageText(day);
+                                } else{
+                                    message.setMessageText("Сегодня");
+                                }
+                                message.setMessageType(0);
+                                adapter.add(message);
+                                messages.add(message);
+                                thisdate = dateText;
+                            }
+
                             Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone=?", new String[]{c.getString(messageSenderIndex)});
                             cper.moveToFirst();
 
@@ -152,14 +219,14 @@ public class Search extends AppCompatActivity {
                                 message.setMessageUser(taker_text);
                             }
 
-                            String timeText = c.getString(messageTimeIndex);
+                            timeText = c.getString(messageTimeIndex);
                             Date timeTextDate = null;
                             try {
                                 timeTextDate = fullDateFormat.parse(timeText);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-                            String timeTextInMessage = timeFormat.format(timeTextDate);
+                            timeTextInMessage = timeFormat.format(timeTextDate);
 
                             message.setMessageTime(timeTextInMessage);
 
