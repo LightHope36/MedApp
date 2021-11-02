@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -112,6 +113,8 @@ public class Chat extends AppCompatActivity {
     private String fileName;
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
+    private MediaPlayer   player = null;
+    private boolean voice = false;
 
 
     Date currentDate = new Date();
@@ -159,7 +162,8 @@ public class Chat extends AppCompatActivity {
         String username = "u0597423_medclic";
         String password = "kvantoriummagda";
         //Connection conn;
-        fileName = Environment.getExternalStorageDirectory() + "/record.3gpp";
+        fileName = getExternalCacheDir().getAbsolutePath();
+        fileName += "/audiorecordtest.3gp";
 
 
             //conn = DriverManager.getConnection("https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69","u0597423_medclic","kvantoriummagda");
@@ -444,6 +448,24 @@ public class Chat extends AppCompatActivity {
 //                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
+
+                if(message.getMessageType()==5){
+
+                    try{
+                        if(voice==false){
+                            player = new MediaPlayer();
+                            player.setDataSource(fileName);
+                            player.prepare();
+                            player.start();
+                        } else{
+                            player.release();
+                            player = null;
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -455,29 +477,16 @@ public class Chat extends AppCompatActivity {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: // нажатие
                         record_audio();
+                        write_in_files();
 
                         try {
-                            if (mediaRecorder != null) {
-                                mediaRecorder.release();
-                                mediaRecorder = null;
-                            }
-
-                            File outFile = new File(fileName);
-                            if (outFile.exists()) {
-                                outFile.delete();
-                            }
-
-
                             mediaRecorder = new MediaRecorder();
                             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
                             mediaRecorder.setOutputFile(fileName);
+                            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
                             mediaRecorder.prepare();
                             mediaRecorder.start();
-                            mediaRecorder.stop();
-                            mediaRecorder.reset();   // You can reuse the object by going back to setAudioSource() step
-                            mediaRecorder.release(); // Now the object cannot be reused
                         } catch (Exception e) {
                             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                             System.out.println(e.getMessage());
@@ -487,6 +496,34 @@ public class Chat extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_UP: // отпускание
                         try {
+                            mediaRecorder.stop();
+                            mediaRecorder.release(); // Now the object cannot be reused
+                            mediaRecorder = null;
+
+                            Uri uri = Uri.parse(fileName);
+                            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                            mmr.setDataSource(getApplicationContext(),uri);
+                            String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                            int millSecond = Integer.parseInt(durationStr);
+
+
+                            Date currentDate = new Date();
+                            String timeText = fullDateFormat.format(currentDate);
+                            Date timeTextDate = null;
+                            try {
+                                timeTextDate = fullDateFormat.parse(timeText);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            String timeTextInMessage = timeFormat.format(timeTextDate);
+
+                            Message message = new Message();
+                            message.setMessageType(5);
+                            message.setMessageTime(timeTextInMessage);
+                            message.setMessageVoicetime(millSecond/1000+1);
+                            adapter.add(message);
+                            messages.add(message);
+
                         } catch (Exception e) {
                             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                             System.out.println(e.getMessage());
@@ -880,18 +917,21 @@ public class Chat extends AppCompatActivity {
 
     protected void record_audio() {
         if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
+                Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Manifest.permission.RECORD_AUDIO)) {
             } else {
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        MY_PERMISSIONS_READ_FILES);
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_RECORD_AUDIO);
             }
         }
 
+    }
+
+    protected void write_in_files() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -905,18 +945,7 @@ public class Chat extends AppCompatActivity {
             }
         }
 
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.RECORD_AUDIO)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.RECORD_AUDIO},
-                        MY_PERMISSIONS_RECORD_AUDIO);
-            }
-        }
     }
+
+
 }

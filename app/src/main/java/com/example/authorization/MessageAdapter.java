@@ -97,12 +97,39 @@ public class MessageAdapter extends BaseAdapter {
 
                 convertView.setTag(holder);
                 break;
+            case 5:
+                convertView = inflater.inflate(R.layout.my_voice_message, null);
+
+                holder.UserText = convertView.findViewById(R.id.message_text);
+                holder.Time = convertView.findViewById(R.id.message_time);
+                holder.voicetime = convertView.findViewById(R.id.message_voicetime);
+
+                holder.Time = convertView.findViewById(R.id.message_time);
+                holder.UserText.setText("Голосовое сообщение");
+                int seconds = message.getMessageVoicetime();
+                String sec="";
+                if (seconds % 10 == 1 && seconds %100/10!=1){
+                    sec="секунда";
+                }
+                else if ((seconds % 10 == 2 || seconds % 10 == 3 || seconds % 10 == 4) && seconds %100/10!=1){
+                    sec="секунды";
+                }
+                else{
+                    sec="секунд";
+                }
+                holder.voicetime.setText(Integer.toString(seconds) + " " + sec);
+
+                holder.Time.setText(message.getMessageTime());
+
+                convertView.setTag(holder);
+                break;
         }
 
         return convertView;
     }
 
     private static class MessageHolder {
+        public TextView voicetime;
         public TextView UserName;
         public TextView UserText;
         public TextView Time;

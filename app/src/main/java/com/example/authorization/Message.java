@@ -3,10 +3,6 @@ package com.example.authorization;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class Message implements Serializable {
 
@@ -16,6 +12,7 @@ public class Message implements Serializable {
     private Long messageId;
     private Bitmap image;
     private int messageType;
+    private int messageVoicetime;
 
     public Message(String messageText, String messageUser, String messageTime) {
         this.messageText = messageText;
@@ -25,6 +22,14 @@ public class Message implements Serializable {
 
     public Message(){
 
+    }
+
+    public int getMessageVoicetime() {
+        return messageVoicetime;
+    }
+
+    public void setMessageVoicetime(int messageVoicetime) {
+        this.messageVoicetime = messageVoicetime;
     }
 
     public void setMessageType(int messageType) {
