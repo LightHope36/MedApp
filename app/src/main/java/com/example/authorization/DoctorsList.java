@@ -133,8 +133,8 @@ public class DoctorsList extends AppCompatActivity {
             }
             text.setText(doctor.getProffession());
             listView.setAdapter(adapterDoctor);
-            professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
-            doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+//            professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+//            doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
         }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -158,8 +158,8 @@ public class DoctorsList extends AppCompatActivity {
                         cprof.moveToNext();
                     }
 
-                    professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
-                    doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+//                    professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+//                    doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
                     filter.setVisibility(View.INVISIBLE);
                     text.setText(proffessions_array.get(position));
                     back.setVisibility(View.VISIBLE);
@@ -230,35 +230,42 @@ public class DoctorsList extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                filter.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(getApplicationContext(), DoctorsList.class);
+                intent.putExtra("number", number);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
 
-                Intent intent2 = new Intent(getApplicationContext(), DoctorsList.class);
-                intent2.putExtra("number", number);
-                filter.setVisibility(View.VISIBLE);
-                text.setText("Получить консультацию");
 
-                int width68inDp = (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 68, getResources().getDisplayMetrics());
-
-                ConstraintLayout.LayoutParams long_input= (ConstraintLayout.LayoutParams) input.getLayoutParams();
-                long_input.rightMargin = width68inDp;
-                input.setLayoutParams(long_input);
-
-                ListView listView = findViewById(R.id.list_of_professions);
-                listView.setAdapter(adapterProfs);
-                flag = true;
-                professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
-                doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
-
-                int margin112inDp = (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 112, getResources().getDisplayMetrics());
-                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
-                        (ConstraintLayout.LayoutParams.MATCH_PARENT, margin112inDp);
-                layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-                top.setLayoutParams(layoutParams);
-                filter.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_filter));
-
-                back.setVisibility(View.INVISIBLE);
+//                filter.setVisibility(View.VISIBLE);
+//
+//                Intent intent2 = new Intent(getApplicationContext(), DoctorsList.class);
+//                intent2.putExtra("number", number);
+//                filter.setVisibility(View.VISIBLE);
+//                text.setText("Получить консультацию");
+//
+//                int width68inDp = (int) TypedValue.applyDimension(
+//                        TypedValue.COMPLEX_UNIT_DIP, 68, getResources().getDisplayMetrics());
+//
+//                ConstraintLayout.LayoutParams long_input= (ConstraintLayout.LayoutParams) input.getLayoutParams();
+//                long_input.rightMargin = width68inDp;
+//                input.setLayoutParams(long_input);
+//
+//                ListView listView = findViewById(R.id.list_of_professions);
+//                listView.setAdapter(adapterProfs);
+//                flag = true;
+////                professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
+////                doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+//
+//                int margin112inDp = (int) TypedValue.applyDimension(
+//                        TypedValue.COMPLEX_UNIT_DIP, 112, getResources().getDisplayMetrics());
+//                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
+//                        (ConstraintLayout.LayoutParams.MATCH_PARENT, margin112inDp);
+//                layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+//                top.setLayoutParams(layoutParams);
+//                filter.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_filter));
+//
+//                back.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -414,8 +421,8 @@ public class DoctorsList extends AppCompatActivity {
 
             listView.setAdapter(adapterProfs);
             flag = true;
-            professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
-            doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
+//            professions.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.back_color_10));
+//            doctors_tv.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.flow_shape_white));
             /*Intent intent = new Intent(getApplicationContext(), MainPage2.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);

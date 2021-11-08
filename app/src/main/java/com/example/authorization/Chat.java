@@ -452,14 +452,31 @@ public class Chat extends AppCompatActivity {
                 if(message.getMessageType()==5){
 
                     try{
+                        if(player!=null) {
+                            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer player) {
+                                    if (player != null) {
+                                        player.release();
+                                        player = null;
+                                        voice = false;
+                                    }
+                                }
+                            });
+                        }
                         if(voice==false){
+                            voice = true;
                             player = new MediaPlayer();
                             player.setDataSource(fileName);
                             player.prepare();
                             player.start();
                         } else{
-                            player.release();
-                            player = null;
+                            if(player!=null) {
+                                player.stop();
+                                player.release();
+                                player = null;
+                                voice=false;
+                            }
                         }
 
                     } catch (IOException e) {
@@ -478,6 +495,21 @@ public class Chat extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN: // нажатие
                         record_audio();
                         write_in_files();
+
+//                        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+//                                Manifest.permission.RECORD_AUDIO)
+//                                != PackageManager.PERMISSION_GRANTED) {
+//                            Toast.makeText(getApplicationContext(), Manifest.permission.RECORD_AUDIO + "got", Toast.LENGTH_LONG).show();
+//
+//                        }
+//                        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+//                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                                != PackageManager.PERMISSION_GRANTED) {
+//                            Toast.makeText(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE + "got", Toast.LENGTH_LONG).show();
+//
+//                        }
+//                        Toast.makeText(getApplicationContext(), Manifest.permission.RECORD_AUDIO + Manifest.permission.WRITE_EXTERNAL_STORAGE, Toast.LENGTH_LONG).show();
+
 
                         try {
                             mediaRecorder = new MediaRecorder();
@@ -914,6 +946,7 @@ public class Chat extends AppCompatActivity {
         releasePlayer();
         releaseRecorder();
     }
+
 
     protected void record_audio() {
         if (ContextCompat.checkSelfPermission(this,
