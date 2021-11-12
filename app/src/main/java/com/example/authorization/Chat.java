@@ -163,7 +163,7 @@ public class Chat extends AppCompatActivity {
         String password = "kvantoriummagda";
         //Connection conn;
         fileName = getExternalCacheDir().getAbsolutePath();
-        fileName += "/audiorecordtest.3gp";
+        fileName += "/" + i + "audiorecordtest.3gp";
 
 
             //conn = DriverManager.getConnection("https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69","u0597423_medclic","kvantoriummagda");
@@ -467,6 +467,9 @@ public class Chat extends AppCompatActivity {
                         if(voice==false){
                             voice = true;
                             player = new MediaPlayer();
+
+                            fileName = getExternalCacheDir().getAbsolutePath();
+                            fileName += "/" + message.getMessageText() + "audiorecordtest.3gp";
                             player.setDataSource(fileName);
                             player.prepare();
                             player.start();
@@ -477,6 +480,15 @@ public class Chat extends AppCompatActivity {
                                 player = null;
                                 voice=false;
                             }
+
+                            voice = true;
+                            player = new MediaPlayer();
+
+                            fileName = getExternalCacheDir().getAbsolutePath();
+                            fileName += "/" + message.getMessageText() + "audiorecordtest.3gp";
+                            player.setDataSource(fileName);
+                            player.prepare();
+                            player.start();
                         }
 
                     } catch (IOException e) {
@@ -515,6 +527,9 @@ public class Chat extends AppCompatActivity {
                             mediaRecorder = new MediaRecorder();
                             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                            i+=1;
+                            fileName = getExternalCacheDir().getAbsolutePath();
+                            fileName += "/" + i + "audiorecordtest.3gp";
                             mediaRecorder.setOutputFile(fileName);
                             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
                             mediaRecorder.prepare();
@@ -551,10 +566,14 @@ public class Chat extends AppCompatActivity {
 
                             Message message = new Message();
                             message.setMessageType(5);
+                            message.setMessageText(Integer.toString(i));
                             message.setMessageTime(timeTextInMessage);
                             message.setMessageVoicetime(millSecond/1000+1);
                             adapter.add(message);
                             messages.add(message);
+
+                            coffee.setVisibility(View.INVISIBLE);
+                            empty.setVisibility(View.INVISIBLE);
 
                         } catch (Exception e) {
                             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();

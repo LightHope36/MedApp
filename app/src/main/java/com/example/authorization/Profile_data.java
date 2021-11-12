@@ -147,4 +147,11 @@ public class Profile_data extends AppCompatActivity {
             setInitialDateTime();
         }
     };
+
+    public void onBackPressed(){
+        Intent intent = new Intent(getApplicationContext(), Profile.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
 }

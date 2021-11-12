@@ -35,6 +35,8 @@ public class Reg extends AppCompatActivity {
     private String Usermiddlename;
     public TextView error;
     private EditText middlename;
+    private String from;
+    private String number;
 
     Calendar dateAndTime=Calendar.getInstance();
 
@@ -54,8 +56,8 @@ public class Reg extends AppCompatActivity {
         middlename = findViewById(R.id.middle_name);
 
         Intent intent = getIntent();
-        String number = (String) intent.getExtras().get("number");
-        String from = (String) intent.getExtras().get("from");
+        number = (String) intent.getExtras().get("number");
+        from = (String) intent.getExtras().get("from");
 
         SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
         usersDataBase.execSQL("create table if not exists users\n" +
@@ -235,10 +237,18 @@ public class Reg extends AppCompatActivity {
         }
     };
     public void onBackPressed(){
-        Intent intent = new Intent(getApplicationContext(), auth3.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
+        if(from.equals("auth4")) {
+            Intent intent = new Intent(getApplicationContext(), auth3.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        } else{
+            Intent intent = new Intent(getApplicationContext(), Profile.class);
+            intent.putExtra("number", number);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        }
     }
 
 }
