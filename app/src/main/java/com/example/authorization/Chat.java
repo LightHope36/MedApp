@@ -502,8 +502,10 @@ public class Chat extends AppCompatActivity {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                mic.setImageDrawable(getDrawable(R.drawable.ic_micbtnblue));
 
                 switch (event.getAction()) {
+
                     case MotionEvent.ACTION_DOWN: // нажатие
                         record_audio();
                         write_in_files();
@@ -575,6 +577,8 @@ public class Chat extends AppCompatActivity {
                             coffee.setVisibility(View.INVISIBLE);
                             empty.setVisibility(View.INVISIBLE);
 
+                            mic.setImageDrawable(getDrawable(R.drawable.ic_micbtn));
+
                         } catch (Exception e) {
                             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                             System.out.println(e.getMessage());
@@ -582,8 +586,11 @@ public class Chat extends AppCompatActivity {
                     case MotionEvent.ACTION_CANCEL:
                         break;
                 }
+
                 return true;
+
             }
+
         });
 
         vlojenia.setOnTouchListener(new View.OnTouchListener(){
