@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.firebase.ui.auth.ui.User;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class Reg extends AppCompatActivity {
 
@@ -39,6 +40,16 @@ public class Reg extends AppCompatActivity {
     private String number;
 
     Calendar dateAndTime=Calendar.getInstance();
+
+    Date currentDate = new Date();
+
+    private int cYear=dateAndTime.get(Calendar.YEAR);
+    private int cMonth=dateAndTime.get(Calendar.MONTH);
+    private int cDay=dateAndTime.get(Calendar.DAY_OF_MONTH);
+
+    private int Year=dateAndTime.get(Calendar.YEAR);
+    private int Month=dateAndTime.get(Calendar.MONTH);
+    private int Day=dateAndTime.get(Calendar.DAY_OF_MONTH);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +99,15 @@ public class Reg extends AppCompatActivity {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !polis.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
+                    if(!(cYear-Year>18 || (cYear-Year==18 && (cMonth-Month>0 || (cMonth-Month==0 && cDay-Day>=0))))){
+                        Toast.makeText(getApplicationContext(), "Вам должно быть 18+ лет", Toast.LENGTH_LONG).show();
+                        System.out.println(Year);
+                        System.out.println(cYear);
+                        Year=dateAndTime.get(Calendar.YEAR);
+                        Month=dateAndTime.get(Calendar.MONTH);
+                        Day=dateAndTime.get(Calendar.DAY_OF_MONTH);
+                    }
+                    else if (!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !polis.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
                         Username = name.getText().toString();
                         Usersurname = surname.getText().toString();
                         Userbithday = birth.getText().toString();
@@ -170,7 +189,15 @@ public class Reg extends AppCompatActivity {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if( !name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
+                    if(!(cYear-Year>18 || (cYear-Year==18 && (cMonth-Month>0 || (cMonth-Month==0 && cDay-Day>=0))))){
+                        Toast.makeText(getApplicationContext(), "Вам должно быть 18+ лет", Toast.LENGTH_LONG).show();
+                        System.out.println(Year);
+                        System.out.println(cYear);
+                        Year=dateAndTime.get(Calendar.YEAR);
+                        Month=dateAndTime.get(Calendar.MONTH);
+                        Day=dateAndTime.get(Calendar.DAY_OF_MONTH);
+                    }
+                    else if( !name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
                         ContentValues values = new ContentValues();
                         values.put("UserName", name.getText().toString());
                         values.put("UserSurname", surname.getText().toString());
@@ -215,9 +242,9 @@ public class Reg extends AppCompatActivity {
 
     public void setDate(View v) {
         new DatePickerDialog(this, d,
-                dateAndTime.get(Calendar.YEAR),
-                dateAndTime.get(Calendar.MONTH),
-                dateAndTime.get(Calendar.DAY_OF_MONTH))
+                Year,
+                Month,
+                Day)
                 .show();
     }
 
@@ -231,8 +258,11 @@ public class Reg extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             dateAndTime.set(Calendar.YEAR, year);
+            Year=year;
             dateAndTime.set(Calendar.MONTH, monthOfYear);
+            Month=monthOfYear;
             dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            Day=dayOfMonth;
             setInitialDateTime();
         }
     };
