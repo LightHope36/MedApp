@@ -13,6 +13,7 @@ public class Message implements Serializable {
     private Bitmap image;
     private int messageType;
     private int messageVoicetime;
+    private String Imagefile;
 
     public Message(String messageText, String messageUser, String messageTime) {
         this.messageText = messageText;
@@ -22,6 +23,14 @@ public class Message implements Serializable {
 
     public Message(){
 
+    }
+
+    public void setImagefile(String imagefile) {
+        Imagefile = imagefile;
+    }
+
+    public String getImagefile() {
+        return Imagefile;
     }
 
     public int getMessageVoicetime() {

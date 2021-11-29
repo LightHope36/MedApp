@@ -81,6 +81,13 @@ public class Dialogs extends AppCompatActivity {
         PersonAdapter adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
         listView.setAdapter(adapter);
 
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+            Toast.makeText(getApplicationContext(), "Driver connected", Toast.LENGTH_SHORT).show();
+        }catch (Exception e ){
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
 
         SQLiteDatabase VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
         VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +

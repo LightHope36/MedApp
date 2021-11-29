@@ -103,6 +103,7 @@ public class Reg extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Вам должно быть 18+ лет", Toast.LENGTH_LONG).show();
                         System.out.println(Year);
                         System.out.println(cYear);
+                        System.out.println(cYear-Year);
                         Year=dateAndTime.get(Calendar.YEAR);
                         Month=dateAndTime.get(Calendar.MONTH);
                         Day=dateAndTime.get(Calendar.DAY_OF_MONTH);
@@ -193,6 +194,7 @@ public class Reg extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Вам должно быть 18+ лет", Toast.LENGTH_LONG).show();
                         System.out.println(Year);
                         System.out.println(cYear);
+                        System.out.println(cYear-Year);
                         Year=dateAndTime.get(Calendar.YEAR);
                         Month=dateAndTime.get(Calendar.MONTH);
                         Day=dateAndTime.get(Calendar.DAY_OF_MONTH);
@@ -241,11 +243,19 @@ public class Reg extends AppCompatActivity {
     }
 
     public void setDate(View v) {
-        new DatePickerDialog(this, d,
-                Year,
-                Month,
-                Day)
-                .show();
+        if(Year==cYear) {
+            new DatePickerDialog(this, d,
+                    Year-18,
+                    Month,
+                    Day)
+                    .show();
+        }else{
+            new DatePickerDialog(this, d,
+                    Year,
+                    Month,
+                    Day)
+                    .show();
+        }
     }
 
     private void setInitialDateTime() {

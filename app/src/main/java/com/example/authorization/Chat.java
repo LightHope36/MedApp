@@ -37,12 +37,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropbox.core.v2.users.GetAccountArg;
+import com.example.authorization.MessageAdapter;
 
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import java.net.MalformedURLException;
@@ -73,6 +76,7 @@ public class Chat extends AppCompatActivity {
     private EditText input;
     private ImageView mic;
     private ConstraintLayout bot;
+    FileOutputStream out = null;
     private ConstraintLayout details;
     private ConstraintLayout delete_chat;
     private ImageView add_image;
@@ -90,6 +94,7 @@ public class Chat extends AppCompatActivity {
     private String user;
     private ImageView coffee;
     private TextView empty;
+    private Uri outputFileUri;
     Bitmap bitmap = null;
     JitsiMeetConferenceOptions videooptions;
     JitsiMeetConferenceOptions audiooptions;
@@ -105,12 +110,14 @@ public class Chat extends AppCompatActivity {
     DateFormat dayFormat = new SimpleDateFormat("d", Locale.getDefault());
     DateFormat monthFormat = new SimpleDateFormat("M", Locale.getDefault());
     String days[] = new String[]{"Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"};
-  //  String url = "https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69";
-    //String username = "u0597423_medclic";
-   // String password = "kvantoriummagda";
+    String url = "jdbc:mysql://server23.hosting.reg.ru:33060/u0597423_medclick.kvantorium69";
+    String username = "u0597423_medclic";
+    String password = "kvantoriummagda";
     List<Message> messages = new ArrayList<>();
 
     private String fileName;
+    private String Imagefile;
+    private int numberImage=0;
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
     private MediaPlayer   player = null;
@@ -157,29 +164,32 @@ public class Chat extends AppCompatActivity {
         add_image_with_camera = findViewById(R.id.add_image_with_camera);
         videocall= findViewById(R.id.videozvonok);
         call = findViewById(R.id.zvonok);
-//        String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69";
-        String url = "localhost:8000/api/";
-        String username = "u0597423_medclic";
-        String password = "kvantoriummagda";
+//        String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69:3306";
         //Connection conn;
         fileName = getExternalCacheDir().getAbsolutePath();
         fileName += "/" + i + "audiorecordtest.3gp";
+        
+        Imagefile = getExternalCacheDir().getAbsolutePath();
+        Imagefile +="/" + numberImage + "Image.jpg";
 
 
             //conn = DriverManager.getConnection("https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69","u0597423_medclic","kvantoriummagda");
           //  Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-//            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            try (Connection conn = DriverManager.getConnection(url, username, password)) {
-//                Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-//                Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_LONG).show();
-//                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }catch (Exception e){
 
-        }
+            try{
+                Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+                try (Connection conn = DriverManager.getConnection(url, username, password)){
+
+                    Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
+                }
+                catch(Exception ex){
+                    Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            catch(Exception e){
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
 
         Intent intent = getIntent();
         Person person = (Person) intent.getExtras().get("person");
@@ -432,13 +442,15 @@ public class Chat extends AppCompatActivity {
                     cs.setVisibility(View.INVISIBLE);
                 }
                 Message message = messages.get(position);
+//                Toast.makeText(getApplicationContext(), message.getMessageType(), Toast.LENGTH_LONG).show();
+
                 if(message.getMessageType()==3 || message.getMessageType()==4){
                     try {
                         Intent intent = new Intent(getApplicationContext(), Big_photo.class);
-
-                        ByteArrayOutputStream bs = new ByteArrayOutputStream();
-                        message.getImage().compress(Bitmap.CompressFormat.JPEG, 50, bs);
-                        intent.putExtra("byteArray", bs.toByteArray());
+                        intent.putExtra("message", message.getImagefile());
+//                        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+//                        message.getImage().compress(Bitmap.CompressFormat.JPEG, 50, bs);
+//                        intent.putExtra("byteArray", bs.toByteArray());
 
                         intent.putExtra("number", number);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -831,6 +843,8 @@ public class Chat extends AppCompatActivity {
 
 
     private void getImage(){
+        write_in_files();
+        read_files();
         String permission = Manifest.permission.CAMERA;
         int grant = ContextCompat.checkSelfPermission(this, permission);
         if (grant != PackageManager.PERMISSION_GRANTED) {
@@ -842,7 +856,7 @@ public class Chat extends AppCompatActivity {
 
         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try{
-            startActivityForResult(takePhotoIntent, REQUEST_TAKE_PHOTO);
+            saveFullImage();
 //            Toast.makeText(getApplicationContext(), "gg", Toast.LENGTH_LONG).show();
         }catch (Exception e){
 //            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -874,50 +888,72 @@ public class Chat extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             // Фотка сделана, извлекаем миниатюру картинки
-            Bundle extras = imageReturnedIntent.getExtras();
-            Bitmap thumbnailBitmap = (Bitmap) extras.get("data");
+            Bundle extras = data.getExtras();
+            Bitmap thumbnailBitmap = null;
+
+            thumbnailBitmap = data.getParcelableExtra("data");
+
+            File file = new File(Environment.getExternalStorageDirectory(), numberImage+
+                    "Image.jpg");
+            try {
+                if(!file.exists()) {
+                    file.createNewFile();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                out = new FileOutputStream(file);
+                thumbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+            numberImage+=1;
+            outputFileUri = Uri.fromFile(file);
 
             Date currentDate = new Date();
             String timeText = timeFormat.format(currentDate);
 
             Message message = new Message();
+            message.setImagefile(Imagefile);
             message.setMessageType(3);
             message.setImage(thumbnailBitmap);
             message.setMessageTime(timeText);
             messages.add(message);
             adapter.add(message);
+
         }
+            switch (requestCode) {
+                case GALLERY_REQUEST:
+                    if (resultCode == RESULT_OK) {
+                        Uri selectedImage = data.getData();
+                        try {
+                            Intent intent = getIntent();
+                            Person person = (Person) intent.getExtras().get("person");
+                            String taker = person.getNumber();
 
-        switch(requestCode) {
-            case GALLERY_REQUEST:
-                if(resultCode == RESULT_OK){
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    try {
-                        Intent intent = getIntent();
-                        Person person = (Person) intent.getExtras().get("person");
-                        String taker = person.getNumber();
+                            Date currentDate = new Date();
+                            String timeText = timeFormat.format(currentDate);
 
-                        Date currentDate = new Date();
-                        String timeText = timeFormat.format(currentDate);
+                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
 
-                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                            Message message = new Message();
+                            message.setMessageType(3);
+                            message.setImage(bitmap);
+                            message.setMessageTime(timeText);
+                            messages.add(message);
+                            adapter.add(message);
+                            listView.setSelection(listView.getCount() - 1);
 
-                        Message message = new Message();
-                        message.setMessageType(3);
-                        message.setImage(bitmap);
-                        message.setMessageTime(timeText);
-                        messages.add(message);
-                        adapter.add(message);
-                        listView.setSelection(listView.getCount() - 1);
-
-                        coffee.setVisibility(View.INVISIBLE);
-                        empty.setVisibility(View.INVISIBLE);
+                            coffee.setVisibility(View.INVISIBLE);
+                            empty.setVisibility(View.INVISIBLE);
 
 //                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 //                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
@@ -937,13 +973,19 @@ public class Chat extends AppCompatActivity {
 //                            Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
 //                        }
 
-                    } catch (IOException e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
-        }
-    }
+            }
 
+    }
+    private void saveFullImage() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+    }
 
     public void onBackPressed(){
         Intent intent = new Intent(getApplicationContext(), Dialogs.class);
@@ -958,6 +1000,7 @@ public class Chat extends AppCompatActivity {
             mediaRecorder = null;
         }
     }
+
 
     private void releasePlayer() {
         if (mediaPlayer != null) {
@@ -1001,6 +1044,22 @@ public class Chat extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         MY_PERMISSIONS_WRITE_IN_FILES);
+            }
+        }
+
+    }
+
+    protected void read_files() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_READ_FILES);
             }
         }
 
