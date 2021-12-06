@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -42,11 +43,15 @@ public class Big_photo extends AppCompatActivity {
 //                    getIntent().getByteArrayExtra("byteArray"), 0, getIntent().getByteArrayExtra("byteArray").length);
 //            imv.setImageBitmap(bitmap);
 //        }
-        Imagefile = (String) intent.getExtras().get("message");
+        try {
+            Imagefile = (String) intent.getExtras().get("message");
 
-        outputFileUri = Uri.fromFile(new File(Imagefile));
+            outputFileUri = Uri.fromFile(new File(Imagefile));
 //        BigPhoto.setImageBitmap(bitmap);
-        BigPhoto.setImageURI(outputFileUri);
+            BigPhoto.setImageURI(outputFileUri);
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

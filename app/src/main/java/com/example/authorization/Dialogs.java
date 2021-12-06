@@ -81,12 +81,12 @@ public class Dialogs extends AppCompatActivity {
         PersonAdapter adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
         listView.setAdapter(adapter);
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-            Toast.makeText(getApplicationContext(), "Driver connected", Toast.LENGTH_SHORT).show();
-        }catch (Exception e ){
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+//        try {
+//            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+//            Toast.makeText(getApplicationContext(), "Driver connected", Toast.LENGTH_SHORT).show();
+//        }catch (Exception e ){
+//            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//        }
 
 
         SQLiteDatabase VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
@@ -273,16 +273,6 @@ public class Dialogs extends AppCompatActivity {
             return (int)(time2-time1);
         }
     }
-
-    public void onBackPressed(){
-        Intent intent = new Intent(getApplicationContext(), auth3.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-    }
-
-
-
 
     private static class PersonAdapter extends ArrayAdapter<Person> {
 

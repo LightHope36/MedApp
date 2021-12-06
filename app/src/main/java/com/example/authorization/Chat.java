@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -17,6 +18,8 @@ import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ import android.provider.MediaStore;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -59,6 +63,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 public class Chat extends AppCompatActivity {
 
@@ -110,7 +116,7 @@ public class Chat extends AppCompatActivity {
     DateFormat dayFormat = new SimpleDateFormat("d", Locale.getDefault());
     DateFormat monthFormat = new SimpleDateFormat("M", Locale.getDefault());
     String days[] = new String[]{"Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"};
-    String url = "jdbc:mysql://server23.hosting.reg.ru:33060/u0597423_medclick.kvantorium69";
+    String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69";
     String username = "u0597423_medclic";
     String password = "kvantoriummagda";
     List<Message> messages = new ArrayList<>();
@@ -131,6 +137,7 @@ public class Chat extends AppCompatActivity {
     private static final int MY_PERMISSIONS_RECORD_AUDIO =0 ;
     private static final int MY_PERMISSIONS_READ_FILES = 0;
     private static final int MY_PERMISSIONS_WRITE_IN_FILES = 0;
+    private static final int MY_PERMISSIONS_INTERNET = 0;
 
 
 
@@ -172,30 +179,20 @@ public class Chat extends AppCompatActivity {
         Imagefile = getExternalCacheDir().getAbsolutePath();
         Imagefile +="/" + numberImage + "Image.jpg";
 
+        get_Internet();
 
             //conn = DriverManager.getConnection("https://server23.hosting.reg.ru/phpmyadmin/db_structure.php?db=u0597423_medclick.kvantorium69","u0597423_medclic","kvantoriummagda");
           //  Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
 
-            try{
-                Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-                try (Connection conn = DriverManager.getConnection(url, username, password)){
 
-                    Toast.makeText(getApplicationContext(), "Connection succesfull!", Toast.LENGTH_LONG).show();
-                }
-                catch(Exception ex){
-                    Toast.makeText(getApplicationContext(), "Connection failed...", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-            catch(Exception e){
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
 
         Intent intent = getIntent();
         Person person = (Person) intent.getExtras().get("person");
         number = (String) intent.getExtras().get("number");
         user = number;
 
+
+        new GetConnection().execute();
 
         try{
             id = (long) intent.getExtras().get("messageId");
@@ -843,23 +840,31 @@ public class Chat extends AppCompatActivity {
 
 
     private void getImage(){
-        write_in_files();
-        read_files();
-        String permission = Manifest.permission.CAMERA;
-        int grant = ContextCompat.checkSelfPermission(this, permission);
-        if (grant != PackageManager.PERMISSION_GRANTED) {
-            String[] permission_list = new String[1];
-            permission_list[0] = permission;
-            ActivityCompat.requestPermissions(this, permission_list, 1);
+        try {
+//            write_in_files();
+            read_files();
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.CAMERA)) {
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.CAMERA},
+                            0);
+                }
+            }
+
+        } catch (Exception e){
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-
         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try{
             saveFullImage();
 //            Toast.makeText(getApplicationContext(), "gg", Toast.LENGTH_LONG).show();
         }catch (Exception e){
-//            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -871,21 +876,7 @@ public class Chat extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // perform your action here
 
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        GALLERY_REQUEST);
-            }
-        }
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -899,7 +890,7 @@ public class Chat extends AppCompatActivity {
 
             thumbnailBitmap = data.getParcelableExtra("data");
 
-            File file = new File(Environment.getExternalStorageDirectory(), numberImage+
+            File file = new File(getExternalCacheDir().getAbsolutePath(), numberImage+
                     "Image.jpg");
             try {
                 if(!file.exists()) {
@@ -982,8 +973,18 @@ public class Chat extends AppCompatActivity {
     }
     private void saveFullImage() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        File file = new File(getExternalCacheDir().getAbsolutePath(), numberImage+
+                "Image.jpg");
+        numberImage++;
+        try {
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        outputFileUri = Uri.fromFile(file);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
 
@@ -1065,5 +1066,53 @@ public class Chat extends AppCompatActivity {
 
     }
 
+    protected void get_Internet() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_NETWORK_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_NETWORK_STATE)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_NETWORK_STATE},
+                        MY_PERMISSIONS_INTERNET);
+            }
+        }
+
+    }
+
+    class GetConnection extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                try{
+                    try (Connection conn = DriverManager.getConnection(url, username, password)){
+                        Log.e("Connection", "CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    }
+                    catch(Exception ex){
+                        ex.printStackTrace();
+                        Log.e("error", ex.getMessage());
+                        Log.e("error", ex.getMessage());
+                    }
+                }
+                catch(Exception e){
+                    Log.e("error", e.getMessage());
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
 
 }

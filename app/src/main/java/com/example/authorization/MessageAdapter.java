@@ -2,6 +2,8 @@ package com.example.authorization;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +89,8 @@ public class MessageAdapter extends BaseAdapter {
                 convertView = inflater.inflate(R.layout.my_message_image, null);
 
                 holder.Time = convertView.findViewById(R.id.message_time);
+
+
                 try {
                     ImageView picture = convertView.findViewById(R.id.user_image);
                     picture.setImageBitmap(message.getImage());
