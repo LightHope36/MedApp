@@ -104,9 +104,9 @@ public class Chat extends AppCompatActivity {
     Bitmap bitmap = null;
     JitsiMeetConferenceOptions videooptions;
     JitsiMeetConferenceOptions audiooptions;
-    public String Signature;
     private ConstraintLayout videocall;
     private ConstraintLayout call;
+    public String Signature;
     private ImageView add_image_with_camera;
     SQLiteDatabase VisibleMessagesDataBase;
     MessageAdapter adapter = new MessageAdapter (this);
@@ -160,12 +160,12 @@ public class Chat extends AppCompatActivity {
         send = findViewById(R.id.send);
         input = findViewById(R.id.input);
         mic = findViewById(R.id.mic);
+        vlojenia = findViewById(R.id.vlojenia);
         bot = findViewById(R.id.bot);
         details = findViewById(R.id.details);
         add_image = findViewById(R.id.add_image);
         search_open = findViewById(R.id.search_cs_chat_open);
         layout = findViewById(R.id.clicker);
-        vlojenia = findViewById(R.id.vlojenia);
         coffee = findViewById(R.id.coffee_in_chat);
         empty = findViewById(R.id.empty_in_chat);
         add_image_with_camera = findViewById(R.id.add_image_with_camera);

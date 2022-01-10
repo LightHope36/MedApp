@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Random;
 
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
@@ -47,6 +53,16 @@ public class auth4 extends AppCompatActivity{
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client = new OkHttpClient();
 
+
+    String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69";
+    String username = "u0597423_medclic";
+    String password = "kvantoriummagda";
+    ResultSet cper;
+
+
+    private String OpenTable = ("create table if not exists client");
+
+    private String getUser="select UserPhone from users where Phone_number=" + number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,24 +88,6 @@ public class auth4 extends AppCompatActivity{
                 ");");
 
 
-
-        SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
-        usersDataBase.execSQL("create table if not exists users\n" +
-                "(\n" +
-                "\tUserPhone varchar(10), \n" +
-                "\tUserMiddlename text, \n" +
-                "\tUserDopInfo text, \n" +
-                "\tUserName text, \n" +
-                "\tUserSurname text, \n" +
-                "\tUserBirthday varchar(1000), \n" +
-                "\tUserPolis varchar(1000) \n" +
-                ");");
-
-
-        Cursor cper = usersDataBase.rawQuery("select UserPhone from users where UserPhone=?", new String[]{number});
-
-
-
         back3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,23 +104,27 @@ public class auth4 extends AppCompatActivity{
             public void onClick(View v) {
                 System.out.println(ranStr);
                 if((editText.getText().toString()).equals(ranStr)) {
-                    if(cper.moveToFirst()){
-                        sThread.close();
-                        lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
-                        Intent intent_dial = new Intent(getApplicationContext(), MainPage2.class);
-                        intent_dial.putExtra("number", number);
-                        intent_dial.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent_dial);
-                        overridePendingTransition(0, 0);
-                    }
-                    else {
-                        sThread.close();
-                        Intent intent_reg = new Intent(getApplicationContext(), Reg.class);
-                        intent_reg.putExtra("from", "auth4");
-                        intent_reg.putExtra("number", number);
-                        intent_reg.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent_reg);
-                        overridePendingTransition(0, 0);
+                    try {
+                        if (cper!=null){
+                            sThread.close();
+                            lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
+                            Intent intent_dial = new Intent(getApplicationContext(), MainPage2.class);
+                            intent_dial.putExtra("number", number);
+                            intent_dial.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            startActivity(intent_dial);
+                            overridePendingTransition(0, 0);
+                        }
+                        else {
+                            sThread.close();
+                            Intent intent_reg = new Intent(getApplicationContext(), Reg.class);
+                            intent_reg.putExtra("from", "auth4");
+                            intent_reg.putExtra("number", number);
+                            intent_reg.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            startActivity(intent_reg);
+                            overridePendingTransition(0, 0);
+                        }
+                    } catch (Exception e) {
+                        Log.e("error", e.getMessage());
                     }
                 }
             }
@@ -364,7 +366,36 @@ public class auth4 extends AppCompatActivity{
         }
     }
 
+    class GetConnection extends AsyncTask<String, String, String> {
 
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                try (Connection conn = DriverManager.getConnection(url, username, password)){
+                    Statement statement = conn.createStatement();
+                    // создание таблицы
+                    statement.executeUpdate(OpenTable);
+                    ResultSet cper = statement.executeQuery(getUser);
+                    Log.e("Connection", "CONNECTED");
+
+                }
+                catch(Exception ex){
+                    Log.e("error", ex.getMessage());
+                }
+            }
+            catch(Exception e){
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
 
 
     public void onBackPressed(){
