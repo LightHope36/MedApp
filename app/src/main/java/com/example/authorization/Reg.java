@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -18,8 +19,14 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.ui.User;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Calendar;
 import java.util.Date;
+
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 public class Reg extends AppCompatActivity {
 
@@ -50,6 +57,25 @@ public class Reg extends AppCompatActivity {
     private int Year=dateAndTime.get(Calendar.YEAR);
     private int Month=dateAndTime.get(Calendar.MONTH);
     private int Day=dateAndTime.get(Calendar.DAY_OF_MONTH);
+
+    String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69";
+    String username = "u0597423_medclic";
+    String password = "kvantoriummagda";
+
+    private String OpenTable = ("create table if not exists client (\n" +
+            "\tclientid INT PRIMARY KEY AUTO_INCREMENT, \n" +
+            "\tname varchar(15), \n" +
+            "\tsurname varchar(15), \n" +
+            "\tpatronymic varchar(15), \n" +
+            "\tmedical_policy int, \n" +
+            "\tPhone_number int, \n" +
+            "\tsnils int, \n" +
+            "\tEmail varchar(45), \n" +
+            "\tdate_of_birth datetime, \n" +
+            "\tmedical_history int, \n" +
+            "\tcompanies_providing_medical_insurance int )\n");
+
+    private String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + Userbithday + "','" + Userpolis + "', '" + Usermiddlename + "')";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +142,7 @@ public class Reg extends AppCompatActivity {
                         Usermiddlename = middlename.getText().toString();
 
 
-                        usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis, UserMiddlename) values('" + number + "', '" + Username + "','" + Usersurname + "','" + Userbithday + "','" + Userpolis + "', '" + Usermiddlename + "')");
+                        new CreateUser().execute();
                         lastuser.execSQL("insert into lastuser (UserPhone) values ('" + number + "')");
 
                         Intent intent = new Intent(getApplicationContext(), MainPage2.class);
@@ -291,4 +317,36 @@ public class Reg extends AppCompatActivity {
         }
     }
 
+
+    class CreateUser extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                try (Connection conn = DriverManager.getConnection(url, username, password)){
+                    Statement statement = conn.createStatement();
+                    // создание таблицы
+                    statement.executeUpdate(OpenTable);
+                    int call = statement.executeUpdate(CreateUser);
+                    Log.e("Connection", "CONNECTED");
+                    Log.e("call", "" + call + "");
+
+                }
+                catch(Exception ex){
+                    Log.e("error", ex.getMessage());
+                }
+            }
+            catch(Exception e){
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
 }

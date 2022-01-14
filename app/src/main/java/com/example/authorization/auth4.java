@@ -60,7 +60,19 @@ public class auth4 extends AppCompatActivity{
     ResultSet cper;
 
 
-    private String OpenTable = ("create table if not exists client");
+    private String OpenTable = ("create table if not exists client (\n" +
+            "\tclientid INT PRIMARY KEY AUTO_INCREMENT, \n" +
+            "\tname varchar(15), \n" +
+            "\tsurname varchar(15), \n" +
+            "\tpatronymic varchar(15), \n" +
+            "\tmedical_policy int, \n" +
+            "\tPhone_number int, \n" +
+            "\tsnils int, \n" +
+            "\tEmail varchar(45), \n" +
+            "\tdate_of_birth datetime, \n" +
+            "\tmedical_history int, \n" +
+            "\tcompanies_providing_medical_insurance int )\n");
+
 
     private String getUser="select UserPhone from users where Phone_number=" + number;
 
@@ -105,6 +117,7 @@ public class auth4 extends AppCompatActivity{
                 System.out.println(ranStr);
                 if((editText.getText().toString()).equals(ranStr)) {
                     try {
+                        new GetConnection().execute();
                         if (cper!=null){
                             sThread.close();
                             lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
@@ -375,7 +388,7 @@ public class auth4 extends AppCompatActivity{
                     Statement statement = conn.createStatement();
                     // создание таблицы
                     statement.executeUpdate(OpenTable);
-                    ResultSet cper = statement.executeQuery(getUser);
+                    cper = statement.executeQuery(getUser);
                     Log.e("Connection", "CONNECTED");
 
                 }
