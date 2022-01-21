@@ -74,7 +74,7 @@ public class auth4 extends AppCompatActivity{
             "\tcompanies_providing_medical_insurance int )\n");
 
 
-    private String getUser="select UserPhone from users where Phone_number=" + number;
+    private String getUser="select Phone_number from client where Phone_number=" + number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

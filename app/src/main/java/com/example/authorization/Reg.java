@@ -23,8 +23,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
@@ -38,7 +45,7 @@ public class Reg extends AppCompatActivity {
     private EditText polis;
     public String Username;
     public String Usersurname;
-    public String Userbithday;
+    public Date Userbithday;
     public String Userpolis;
     private String Usermiddlename;
     public TextView error;
@@ -62,6 +69,10 @@ public class Reg extends AppCompatActivity {
     String username = "u0597423_medclic";
     String password = "kvantoriummagda";
 
+    java.sql.Date sqlDate;
+    DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+
+
     private String OpenTable = ("create table if not exists client (\n" +
             "\tclientid INT PRIMARY KEY AUTO_INCREMENT, \n" +
             "\tname varchar(15), \n" +
@@ -75,7 +86,7 @@ public class Reg extends AppCompatActivity {
             "\tmedical_history int, \n" +
             "\tcompanies_providing_medical_insurance int )\n");
 
-    private String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + Userbithday + "','" + Userpolis + "', '" + Usermiddlename + "')";
+    private String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "')";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,20 +107,27 @@ public class Reg extends AppCompatActivity {
         number = (String) intent.getExtras().get("number");
         from = (String) intent.getExtras().get("from");
 
-        SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
-        usersDataBase.execSQL("create table if not exists users\n" +
-                "(\n" +
-                "\tUserPhone varchar(10), \n" +
-                "\tUserMiddlename text, \n" +
-                "\tUserDopInfo text, \n" +
-                "\tUserName text, \n" +
-                "\tUserSurname text, \n" +
-                "\tUserBirthday varchar(1000), \n" +
-                "\tUserPolis varchar(1000) \n" +
-                ");");
+        try{
+            Log.e("number", number);
+        }
+        catch(Exception e){
+            Log.e("error", e.getMessage());
+        }
 
-        Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone=?", new String[]{number});
-        cper.moveToFirst();
+//        SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
+//        usersDataBase.execSQL("create table if not exists users\n" +
+//                "(\n" +
+//                "\tUserPhone varchar(10), \n" +
+//                "\tUserMiddlename text, \n" +
+//                "\tUserDopInfo text, \n" +
+//                "\tUserName text, \n" +
+//                "\tUserSurname text, \n" +
+//                "\tUserBirthday varchar(1000), \n" +
+//                "\tUserPolis varchar(1000) \n" +
+//                ");");
+//
+//        Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone=?", new String[]{number});
+//        cper.moveToFirst();
 
         if(from.equals("auth4")) {
 
@@ -137,7 +155,12 @@ public class Reg extends AppCompatActivity {
                     else if (!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !polis.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
                         Username = name.getText().toString();
                         Usersurname = surname.getText().toString();
-                        Userbithday = birth.getText().toString();
+                        try {
+                            Userbithday = fullDateFormat.parse(String.valueOf(birth.getText()));
+                            sqlDate = new java.sql.Date(Userbithday.getTime());
+                        } catch (ParseException e) {
+                            Log.e("error", e.getMessage());
+                        }
                         Userpolis = polis.getText().toString();
                         Usermiddlename = middlename.getText().toString();
 
@@ -160,11 +183,11 @@ public class Reg extends AppCompatActivity {
 
                         Username = name.getText().toString();
                         Usersurname = surname.getText().toString();
-                        Userbithday = birth.getText().toString();
+                        Userbithday = (Date) birth.getText();
                         Usermiddlename = middlename.getText().toString();
                         String zero = "";
 
-                        usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis, UserMiddlename) values('" + number + "', '" + Username + "','" + Usersurname + "','" + Userbithday + "', null, '" + Usermiddlename + "')");
+//                        usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis, UserMiddlename) values('" + number + "', '" + Username + "','" + Usersurname + "','" + Userbithday + "', null, '" + Usermiddlename + "')");
                         lastuser.execSQL("insert into lastuser (UserPhone) values ('" + number + "')");
 
                         Intent intent = new Intent(getApplicationContext(), MainPage2.class);
@@ -196,22 +219,22 @@ public class Reg extends AppCompatActivity {
             next.setText("Сохранить");
             next.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
 
-            try {
-                int UserNameIndex = cper.getColumnIndex("UserName");
-                int UserBirthdayIndex = cper.getColumnIndex("UserBirthday");
-                int UserSurnameIndex = cper.getColumnIndex("UserSurname");
-                int UserMiddlenameIndex = cper.getColumnIndex("UserMiddlename");
-                int UserPolisIndex = cper.getColumnIndex("UserPolis");
-
-                name.setText(cper.getString(UserNameIndex));
-                surname.setText(cper.getString(UserSurnameIndex));
-                birth.setText(cper.getString(UserBirthdayIndex));
-                middlename.setText(cper.getString(UserMiddlenameIndex));
-                polis.setText(cper.getString(UserPolisIndex));
-            } catch (Exception e){
-                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-
-            }
+//            try {
+//                int UserNameIndex = cper.getColumnIndex("UserName");
+//                int UserBirthdayIndex = cper.getColumnIndex("UserBirthday");
+//                int UserSurnameIndex = cper.getColumnIndex("UserSurname");
+//                int UserMiddlenameIndex = cper.getColumnIndex("UserMiddlename");
+//                int UserPolisIndex = cper.getColumnIndex("UserPolis");
+//
+//                name.setText(cper.getString(UserNameIndex));
+//                surname.setText(cper.getString(UserSurnameIndex));
+//                birth.setText(cper.getString(UserBirthdayIndex));
+//                middlename.setText(cper.getString(UserMiddlenameIndex));
+//                polis.setText(cper.getString(UserPolisIndex));
+//            } catch (Exception e){
+//                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+//
+//            }
 
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -232,7 +255,7 @@ public class Reg extends AppCompatActivity {
                         values.put("UserBirthday", birth.getText().toString());
                         values.put("UserMiddlename", middlename.getText().toString());
                         values.put("UserPolis", polis.getText().toString());
-                        usersDataBase.update("users", values, "UserPhone=?", new String[]{number});
+//                        usersDataBase.update("users", values, "UserPhone=?", new String[]{number});
 
                         Intent intent = new Intent(getApplicationContext(), Profile.class);
                         intent.putExtra("number", number);
@@ -285,7 +308,6 @@ public class Reg extends AppCompatActivity {
     }
 
     private void setInitialDateTime() {
-
         birth.setText(DateUtils.formatDateTime(this,
                 dateAndTime.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
