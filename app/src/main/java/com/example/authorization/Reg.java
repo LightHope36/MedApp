@@ -156,9 +156,10 @@ public class Reg extends AppCompatActivity {
                         Username = name.getText().toString();
                         Usersurname = surname.getText().toString();
                         try {
-                            Userbithday = fullDateFormat.parse(String.valueOf(birth.getText()));
+                            Userbithday = dateAndTime.getTime();
                             sqlDate = new java.sql.Date(Userbithday.getTime());
-                        } catch (ParseException e) {
+                            Log.e("error", String.valueOf(sqlDate));
+                        } catch (Exception e) {
                             Log.e("error", e.getMessage());
                         }
                         Userpolis = polis.getText().toString();
