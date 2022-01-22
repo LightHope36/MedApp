@@ -57,7 +57,8 @@ public class auth4 extends AppCompatActivity{
     String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69";
     String username = "u0597423_medclic";
     String password = "kvantoriummagda";
-    ResultSet cper;
+    public ResultSet cper;
+    private Boolean result;
 
 
     private String OpenTable = ("create table if not exists client (\n" +
@@ -99,7 +100,7 @@ public class auth4 extends AppCompatActivity{
                 "\tUserPhone varchar(10) \n" +
                 ");");
 
-
+        new GetConnection().execute();
         back3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,8 +118,10 @@ public class auth4 extends AppCompatActivity{
                 System.out.println(ranStr);
                 if((editText.getText().toString()).equals(ranStr)) {
                     try {
-                        new GetConnection().execute();
-                        if (cper!=null){
+                        new GetUser().execute();
+                        Log.e("number", number);
+
+                        if (result){
                             sThread.close();
                             lastuser.execSQL("insert into lastuser (UserPhone) values ('"+number+"')");
                             Intent intent_dial = new Intent(getApplicationContext(), MainPage2.class);
@@ -379,6 +382,8 @@ public class auth4 extends AppCompatActivity{
         }
     }
 
+
+
     class GetConnection extends AsyncTask<String, String, String> {
 
         @Override
@@ -388,7 +393,6 @@ public class auth4 extends AppCompatActivity{
                     Statement statement = conn.createStatement();
                     // создание таблицы
                     statement.executeUpdate(OpenTable);
-                    cper = statement.executeQuery(getUser);
                     Log.e("Connection", "CONNECTED");
 
                 }
@@ -402,10 +406,48 @@ public class auth4 extends AppCompatActivity{
 
             return null;
         }
-
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class GetUser extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                try (Connection conn = DriverManager.getConnection(url, username, password)){
+                    Statement statement = conn.createStatement();
+                    // создание таблицы
+                    statement.executeUpdate(OpenTable);
+                    Log.e("Connection", "CONNECTED");
+                    String getUser="select Phone_number from client where Phone_number=" + number;
+                    cper = statement.executeQuery(getUser);
+                    if (cper.next()){
+                        result=true;
+                    }
+                    else{
+                        result = false;
+                    }
+                    Log.e("get", "gotUser");
+
+                }
+                catch(Exception ex){
+                    Log.e("error", ex.getMessage());
+                }
+            }
+            catch(Exception e){
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
+        }
+
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
 //            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
         }
     }
