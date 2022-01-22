@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
@@ -45,10 +46,10 @@ public class Reg extends AppCompatActivity {
     private EditText polis;
     public String Username;
     public String Usersurname;
-    public Date Userbithday;
-    public String Userpolis;
-    private String Usermiddlename;
-    public TextView error;
+    private Date Userbithday;
+    private long Userpolis=123123;
+    public String Usermiddlename;
+    private TextView error;
     private EditText middlename;
     private String from;
     private String number;
@@ -65,11 +66,11 @@ public class Reg extends AppCompatActivity {
     private int Month=dateAndTime.get(Calendar.MONTH);
     private int Day=dateAndTime.get(Calendar.DAY_OF_MONTH);
 
-    String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69";
+    String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69?characterEncoding=utf-8";
     String username = "u0597423_medclic";
     String password = "kvantoriummagda";
 
-    java.sql.Date sqlDate;
+    java.sql.Timestamp sqlDate = new java.sql.Timestamp(dateAndTime.getTime().getTime());
     DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
 
@@ -86,7 +87,7 @@ public class Reg extends AppCompatActivity {
             "\tmedical_history int, \n" +
             "\tcompanies_providing_medical_insurance int )\n");
 
-    private String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "')";
+    private String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic, snils, Email) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "', '12345', 'email@mail.ru' )";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,12 +158,13 @@ public class Reg extends AppCompatActivity {
                         Usersurname = surname.getText().toString();
                         try {
                             Userbithday = dateAndTime.getTime();
-                            sqlDate = new java.sql.Date(Userbithday.getTime());
-                            Log.e("error", String.valueOf(sqlDate));
+                            sqlDate = new java.sql.Timestamp(dateAndTime.getTime().getTime());
+                            Userpolis = Long.parseLong(polis.getText().toString());
+                            Log.e("date", String.valueOf(sqlDate));
+                            Log.e("polis", String.valueOf(Userpolis));
                         } catch (Exception e) {
                             Log.e("error", e.getMessage());
                         }
-                        Userpolis = polis.getText().toString();
                         Usermiddlename = middlename.getText().toString();
 
 
@@ -322,6 +324,7 @@ public class Reg extends AppCompatActivity {
             Month=monthOfYear;
             dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             Day=dayOfMonth;
+            dateAndTime= new GregorianCalendar(year, monthOfYear, dayOfMonth);
             setInitialDateTime();
         }
     };
@@ -349,9 +352,11 @@ public class Reg extends AppCompatActivity {
                 try (Connection conn = DriverManager.getConnection(url, username, password)){
                     Statement statement = conn.createStatement();
                     // создание таблицы
+                    final String name = Username;
+                    String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic, snils, Email) values('" + number + "', '" + name + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "', '12345', 'email@mail.ru')";
                     statement.executeUpdate(OpenTable);
                     int call = statement.executeUpdate(CreateUser);
-                    Log.e("Connection", "CONNECTED");
+                    Log.e("Connection", "Created");
                     Log.e("call", "" + call + "");
 
                 }
