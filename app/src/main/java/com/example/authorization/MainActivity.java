@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import android.widget.Button;
@@ -17,9 +18,12 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +32,22 @@ public class MainActivity extends AppCompatActivity {
     private ImageView sogl;
     private ConstraintLayout cs;
     public List<Map.Entry<String, String>> list;
+
+    String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69";
+    String username = "u0597423_medclic";
+    String password = "kvantoriummagda";
+
+    private String OpenTable = ("create table if not exists client (\n" +
+            "\tclientid INT PRIMARY KEY AUTO_INCREMENT, \n" +
+            "\tname varchar(15), \n" +
+            "\tsurname varchar(15), \n" +
+            "\tpatronymic varchar(15), \n" +
+            "\tmedical_policy varchar(16), \n" +
+            "\tPhone_number int, \n" +
+            "\tsnils int, \n" +
+            "\tdate_of_birth datetime, \n" +
+            "\tmedical_history int, \n" +
+            "\tcompanies_providing_medical_insurance int )\n");
 
 
     @Override
@@ -41,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         cs = findViewById(R.id.sogl_cs);
 
         list = new LinkedList<>();
+
 
         SQLiteDatabase lastuser = openOrCreateDatabase("lastuser", MODE_PRIVATE, null);
         lastuser.execSQL("create table if not exists lastuser\n" +
@@ -79,4 +100,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 }

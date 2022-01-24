@@ -47,7 +47,7 @@ public class Reg extends AppCompatActivity {
     public String Username;
     public String Usersurname;
     private Date Userbithday;
-    private long Userpolis=123123;
+    private String Userpolis;
     public String Usermiddlename;
     private TextView error;
     private EditText middlename;
@@ -74,20 +74,24 @@ public class Reg extends AppCompatActivity {
     DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
 
+
+
     private String OpenTable = ("create table if not exists client (\n" +
             "\tclientid INT PRIMARY KEY AUTO_INCREMENT, \n" +
             "\tname varchar(15), \n" +
             "\tsurname varchar(15), \n" +
             "\tpatronymic varchar(15), \n" +
-            "\tmedical_policy int, \n" +
+            "\tmedical_policy varchar(16), \n" +
             "\tPhone_number int, \n" +
             "\tsnils int, \n" +
-            "\tEmail varchar(45), \n" +
             "\tdate_of_birth datetime, \n" +
             "\tmedical_history int, \n" +
             "\tcompanies_providing_medical_insurance int )\n");
 
-    private String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic, snils, Email) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "', '12345', 'email@mail.ru' )";
+    String CreateUserPolis="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic) values('" + number + "', '" + name + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "')";
+    String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, patronymic) values('" + number + "', '" + name + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "')";
+    Boolean ispolis = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +163,7 @@ public class Reg extends AppCompatActivity {
                         try {
                             Userbithday = dateAndTime.getTime();
                             sqlDate = new java.sql.Timestamp(dateAndTime.getTime().getTime());
-                            Userpolis = Long.parseLong(polis.getText().toString());
+                            Userpolis = (polis.getText().toString());
                             Log.e("date", String.valueOf(sqlDate));
                             Log.e("polis", String.valueOf(Userpolis));
                         } catch (Exception e) {
@@ -352,10 +356,14 @@ public class Reg extends AppCompatActivity {
                 try (Connection conn = DriverManager.getConnection(url, username, password)){
                     Statement statement = conn.createStatement();
                     // создание таблицы
-                    final String name = Username;
-                    String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic, snils, Email) values('" + number + "', '" + name + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "', '12345', 'email@mail.ru')";
+
                     statement.executeUpdate(OpenTable);
-                    int call = statement.executeUpdate(CreateUser);
+                    int call;
+                    if (ispolis){
+                        call = statement.executeUpdate(CreateUserPolis);
+                    }else{
+                        call = statement.executeUpdate(CreateUser);
+                    }
                     Log.e("Connection", "Created");
                     Log.e("call", "" + call + "");
 

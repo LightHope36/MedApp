@@ -59,6 +59,8 @@ public class auth4 extends AppCompatActivity{
     String password = "kvantoriummagda";
     public ResultSet cper;
     private Boolean result;
+    private Statement statement;
+    private Connection conn;
 
 
     private String OpenTable = ("create table if not exists client (\n" +
@@ -66,10 +68,9 @@ public class auth4 extends AppCompatActivity{
             "\tname varchar(15), \n" +
             "\tsurname varchar(15), \n" +
             "\tpatronymic varchar(15), \n" +
-            "\tmedical_policy int, \n" +
+            "\tmedical_policy varchar(16), \n" +
             "\tPhone_number int, \n" +
             "\tsnils int, \n" +
-            "\tEmail varchar(45), \n" +
             "\tdate_of_birth datetime, \n" +
             "\tmedical_history int, \n" +
             "\tcompanies_providing_medical_insurance int )\n");
@@ -101,6 +102,7 @@ public class auth4 extends AppCompatActivity{
                 ");");
 
         new GetConnection().execute();
+        new GetUser().execute();
         back3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,8 +120,6 @@ public class auth4 extends AppCompatActivity{
                 System.out.println(ranStr);
                 if((editText.getText().toString()).equals(ranStr)) {
                     try {
-                        new GetUser().execute();
-                        Log.e("number", number);
 
                         if (result){
                             sThread.close();
@@ -199,7 +199,7 @@ public class auth4 extends AppCompatActivity{
                          });
                      }
                  }, strings).start();
-//                sendSMSMessage();
+                sendSMSMessage();
             }
         });
     }
@@ -389,8 +389,9 @@ public class auth4 extends AppCompatActivity{
         @Override
         protected String doInBackground(String... params) {
             try{
-                try (Connection conn = DriverManager.getConnection(url, username, password)){
-                    Statement statement = conn.createStatement();
+                try {
+                    conn = DriverManager.getConnection(url, username, password);
+                    statement = conn.createStatement();
                     // создание таблицы
                     statement.executeUpdate(OpenTable);
                     Log.e("Connection", "CONNECTED");
@@ -418,11 +419,8 @@ public class auth4 extends AppCompatActivity{
         @Override
         protected String doInBackground(String... params) {
             try{
-                try (Connection conn = DriverManager.getConnection(url, username, password)){
-                    Statement statement = conn.createStatement();
+                try {
                     // создание таблицы
-                    statement.executeUpdate(OpenTable);
-                    Log.e("Connection", "CONNECTED");
                     String getUser="select Phone_number from client where Phone_number=" + number;
                     cper = statement.executeQuery(getUser);
                     if (cper.next()){
@@ -431,7 +429,6 @@ public class auth4 extends AppCompatActivity{
                     else{
                         result = false;
                     }
-                    Log.e("get", "gotUser");
 
                 }
                 catch(Exception ex){
