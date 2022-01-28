@@ -74,6 +74,10 @@ public class Reg extends AppCompatActivity {
     DateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
 
+    public ResultSet cper;
+    private Statement statement;
+
+
 
 
     private String OpenTable = ("create table if not exists client (\n" +
@@ -91,6 +95,7 @@ public class Reg extends AppCompatActivity {
     String CreateUserPolis="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic) values('" + number + "', '" + name + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "')";
     String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, patronymic) values('" + number + "', '" + name + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "')";
     Boolean ispolis = false;
+    private Connection conn;
 
 
     @Override
@@ -118,7 +123,7 @@ public class Reg extends AppCompatActivity {
         catch(Exception e){
             Log.e("error", e.getMessage());
         }
-
+        new GetConnection().execute();
 //        SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
 //        usersDataBase.execSQL("create table if not exists users\n" +
 //                "(\n" +
@@ -222,10 +227,27 @@ public class Reg extends AppCompatActivity {
             });
 
         } else {
-
+            new GetUser().execute();
             next.setText("Сохранить");
             next.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
 
+
+            try {
+                Thread.sleep(1000);
+                name.setText(Username);
+                surname.setText(Usersurname);
+                birth.setText(String.valueOf(Userbithday));
+                middlename.setText(Usermiddlename);
+                polis.setText(Userpolis);
+                Log.e("error", Username);
+                Log.e("error", Usersurname);
+                Log.e("error", String.valueOf(Userbithday));
+                Log.e("error", Usermiddlename);
+                Log.e("error", Userpolis);
+            }catch (Exception e){
+                Log.e("error", e.getMessage());
+
+            }
 //            try {
 //                int UserNameIndex = cper.getColumnIndex("UserName");
 //                int UserBirthdayIndex = cper.getColumnIndex("UserBirthday");
@@ -383,6 +405,83 @@ public class Reg extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 //            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class GetConnection extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                try {
+                    conn = DriverManager.getConnection(url, username, password);
+                    statement = conn.createStatement();
+                    // создание таблицы
+                    statement.executeUpdate(OpenTable);
+                    Log.e("Connection", "CONNECTED");
+
+                }
+                catch(Exception ex){
+                    Log.e("error", ex.getMessage());
+                }
+            }
+            catch(Exception e){
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class GetUser extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                // создание таблицы
+                String getUser = "select * from client where Phone_number=" + number;
+                cper = statement.executeQuery(getUser);
+                cper.next();
+                try {
+                    Log.e("start", "start");
+                    try {
+                        int UserNameIndex = cper.findColumn("name");
+                        int UserBirthdayIndex = cper.findColumn("date_of_birth");
+                        int UserSurnameIndex = cper.findColumn("surname");
+                        int UserMiddlenameIndex = cper.findColumn("patronymic");
+                        int UserPolisIndex = cper.findColumn("medical_policy");
+
+
+                        Username=cper.getString(UserNameIndex);
+                        Usersurname=cper.getString(UserSurnameIndex);
+                        Userbithday=cper.getDate(UserBirthdayIndex);
+                        Usermiddlename=cper.getString(UserMiddlenameIndex);
+                        Userpolis=cper.getString(UserPolisIndex);
+                        Log.e("gotUser", "Got");
+
+                    } catch (Exception e){
+                        Log.e("error", e.getMessage());
+
+                    }
+
+
+
+
+                } catch (Exception e){
+                    Log.e("error", e.getMessage());
+
+                }
+
+            } catch (Exception e) {
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
         }
     }
 }
