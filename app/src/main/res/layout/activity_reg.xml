@@ -41,12 +41,14 @@
             <ScrollView
                 android:id="@+id/scrollView2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="825dp"
                 android:overScrollMode="never"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -55,7 +57,7 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="739dp"
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="0dp"
                         android:layout_marginEnd="30dp"
@@ -79,6 +81,32 @@
                             mask:layout_constraintEnd_toEndOf="parent"
                             mask:layout_constraintStart_toStartOf="parent"
                             tools:targetApi="lollipop" />
+
+                        <TextView
+                            android:id="@+id/textView29"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="Снилс:"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            app:layout_constraintStart_toStartOf="@+id/error"
+                            app:layout_constraintTop_toBottomOf="@+id/birthday" />
+
+                        <EditText
+                            android:id="@+id/editText"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/back_of_person_info"
+                            android:elevation="2dp"
+                            android:ems="10"
+                            android:fontFamily="@font/manrope_light"
+                            android:inputType="textCapSentences"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            app:layout_constraintTop_toBottomOf="@+id/textView29"
+                            tools:layout_editor_absoluteX="0dp" />
 
                         <TextView
                             android:id="@+id/textView3"
@@ -158,12 +186,12 @@
                             android:id="@+id/textView12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="16dp"
                             android:fontFamily="@font/manrope_regular"
                             android:text="@string/Полис"
                             android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/error" />
+                            app:layout_constraintTop_toBottomOf="@+id/editText" />
 
                         <EditText
                             android:id="@+id/Surname"
@@ -189,7 +217,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:fontFamily="@font/manrope_regular"
-                            android:text="Отчество"
+                            android:text="Отчество (не обязательно)"
                             android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/Name" />
@@ -210,6 +238,7 @@
                             android:textColor="@color/thin_text"
                             android:textSize="16sp"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -223,16 +252,18 @@
                             android:elevation="2dp"
                             android:ems="10"
                             android:fontFamily="@font/manrope_light"
-                            android:paddingStart="18dp"
-                            android:inputType="number"
                             android:hint="16 цифр"
+                            android:inputType="number"
+                            android:paddingStart="18dp"
                             android:singleLine="false"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             app:layout_constraintBottom_toTopOf="@+id/next_btn5"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView12"
+                            app:layout_constraintVertical_bias="0.0"
                             tools:targetApi="lollipop" />
 
                         <TextView
@@ -250,7 +281,7 @@
                             android:id="@+id/back_btn5"
                             android:layout_width="140dp"
                             android:layout_height="48dp"
-                            android:layout_marginBottom="30dp"
+                            android:layout_marginBottom="16dp"
                             android:background="@drawable/btn1"
                             android:drawableLeft="@drawable/ic_back"
                             android:elevation="2dp"
@@ -268,7 +299,8 @@
                             android:id="@+id/next_btn5"
                             android:layout_width="140dp"
                             android:layout_height="48dp"
-                            android:layout_marginBottom="30dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="16dp"
                             android:background="@drawable/btn1"
                             android:drawableEnd="@drawable/ic_next"
                             android:elevation="2dp"
