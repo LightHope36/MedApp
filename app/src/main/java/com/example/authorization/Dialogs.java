@@ -7,30 +7,33 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 public class Dialogs extends AppCompatActivity {
 
@@ -52,6 +55,30 @@ public class Dialogs extends AppCompatActivity {
     private ConstraintLayout main;
     private TextView dialogs;
     private ConstraintLayout dial_cs;
+    private String number;
+
+
+    private Connection conn;
+    String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69?characterEncoding=utf-8";
+    String username = "u0597423_medclic";
+    String password = "kvantoriummagda";
+    private List<Person> persons = new ArrayList<>();
+    private PersonAdapter adapter;
+
+    private ResultSet cper;
+    private Statement statement;
+    private String OpenTable = ("create table if not exists client (\n" +
+            "\tclientid INT PRIMARY KEY AUTO_INCREMENT, \n" +
+            "\tname varchar(15), \n" +
+            "\tsurname varchar(15), \n" +
+            "\tpatronymic varchar(15), \n" +
+            "\tmedical_policy varchar(16), \n" +
+            "\tPhone_number int, \n" +
+            "\tsnils int, \n" +
+            "\tdate_of_birth datetime, \n" +
+            "\tmedical_history int, \n" +
+            "\tcompanies_providing_medical_insurance int )\n");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +86,8 @@ public class Dialogs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialogs);
 
+        new GetConnection().execute();
+        new GetConnection().execute();
         listView = findViewById(R.id.list_of_persons);
         search = findViewById(R.id.search_dial);
         main = findViewById(R.id.main_cs_in_dial);
@@ -70,15 +99,17 @@ public class Dialogs extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String number = (String) intent.getExtras().get("number");
+        number = (String) intent.getExtras().get("number");
+
+        adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
 
 //        getApplicationContext().deleteDatabase("users");
 //        getApplicationContext().deleteDatabase("lastuser");
 //        getApplicationContext().deleteDatabase("VisibleMessagess");
 //        getApplicationContext().deleteDatabase("doctors");
-        List<Person> persons = new ArrayList<>();
 
-        PersonAdapter adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
+
+
         listView.setAdapter(adapter);
 
 //        try {
@@ -87,6 +118,8 @@ public class Dialogs extends AppCompatActivity {
 //        }catch (Exception e ){
 //            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 //        }
+
+
 
 
         SQLiteDatabase VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
@@ -113,44 +146,52 @@ public class Dialogs extends AppCompatActivity {
                 "\tUserPolis varchar(1000) \n" +
                 ");");
 
-        Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone!=?", new String[]{number});
-        cper.moveToFirst();
 
-        while (!cper.isAfterLast()) {
-
-            int UserNameIndex = cper.getColumnIndex("UserName");
-            int UserPhoneIndex = cper.getColumnIndex("UserPhone");
-            int UserSurnameIndex = cper.getColumnIndex("UserSurname");
-            String taker = cper.getString(UserPhoneIndex);
-            String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
-
-            try {
-                Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and (messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?)", new String[]{number, taker, number, taker, number});
-                cmes.moveToLast();
-
-                int messageUserIndex = cmes.getColumnIndex("messageUser");
-                int messageTextIndex = cmes.getColumnIndex("messageText");
-                int messageTimeIndex = cmes.getColumnIndex("messageTime");
-
-                Person person = new Person();
-                person.setNumber(cper.getString(UserPhoneIndex));
-                person.setDopinfo(cmes.getString(messageTextIndex));
-                person.setName(taker_text);
-                person.setMessageTime(cmes.getString(messageTimeIndex));
-                person.setAvatar("ic_profile_1");
-                persons.add(person);
-            }
-            catch (Exception e){
-                Person person = new Person();
-                person.setNumber(cper.getString(UserPhoneIndex));
-                person.setDopinfo("Нет сообщений");
-                person.setName(taker_text);
-                person.setMessageTime("");
-                person.setAvatar("ic_profile_1");
-                persons.add(person);
-            }
-            cper.moveToNext();
+        try {
+            persons = new GetUsers().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
+//        Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone!=?", new String[]{number});
+//        cper.moveToFirst();
+
+//        while (!cper.isAfterLast()) {
+//
+//            int UserNameIndex = cper.getColumnIndex("UserName");
+//            int UserPhoneIndex = cper.getColumnIndex("UserPhone");
+//            int UserSurnameIndex = cper.getColumnIndex("UserSurname");
+//            String taker = cper.getString(UserPhoneIndex);
+//            String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
+//
+//            try {
+//                Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and (messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?)", new String[]{number, taker, number, taker, number});
+//                cmes.moveToLast();
+//
+//                int messageUserIndex = cmes.getColumnIndex("messageUser");
+//                int messageTextIndex = cmes.getColumnIndex("messageText");
+//                int messageTimeIndex = cmes.getColumnIndex("messageTime");
+//
+//                Person person = new Person();
+//                person.setNumber(cper.getString(UserPhoneIndex));
+//                person.setDopinfo(cmes.getString(messageTextIndex));
+//                person.setName(taker_text);
+//                person.setMessageTime(cmes.getString(messageTimeIndex));
+//                person.setAvatar("ic_profile_1");
+//                persons.add(person);
+//            }
+//            catch (Exception e){
+//                Person person = new Person();
+//                person.setNumber(cper.getString(UserPhoneIndex));
+//                person.setDopinfo("Нет сообщений");
+//                person.setName(taker_text);
+//                person.setMessageTime("");
+//                person.setAvatar("ic_profile_1");
+//                persons.add(person);
+//            }
+//            cper.moveToNext();
+//        }
         if(adapter.isEmpty()){
 
             coffee.setVisibility(View.VISIBLE);
@@ -215,38 +256,38 @@ public class Dialogs extends AppCompatActivity {
         });
 
 
-        Collections.sort(persons, new SortPersons());
-        adapter.notifyDataSetChanged();
-        cper.moveToFirst();
-
-        while (!cper.isAfterLast()) {
-            try {
-
-                Person person = persons.get(i);
-
-                String timeText = person.getMessageTime();
-                Date timeTextDate = fullDateFormat.parse(timeText);
-
-                String day = dayFormat.format(timeTextDate);
-                String dateText = dayAndMonthFormat.format(timeTextDate);
-                String month = monthFormat.format(timeTextDate);
-
-                if(!dateText.equals(today)){
-                    day += " " + days[Integer.parseInt(month) - 1];
-                    person.setMessageTime(day);
-                }
-                else{
-                    String timeTextInMessage = timeFormat.format(timeTextDate);
-
-                    person.setMessageTime(timeTextInMessage);
-                }
-
-            }
-            catch (Exception e){
-            }
-            cper.moveToNext();
-            i++;
-        }
+//        Collections.sort(persons, new SortPersons());
+//        adapter.notifyDataSetChanged();
+//        cper.moveToFirst();
+//
+//        while (!cper.isAfterLast()) {
+//            try {
+//
+//                Person person = persons.get(i);
+//
+//                String timeText = person.getMessageTime();
+//                Date timeTextDate = fullDateFormat.parse(timeText);
+//
+//                String day = dayFormat.format(timeTextDate);
+//                String dateText = dayAndMonthFormat.format(timeTextDate);
+//                String month = monthFormat.format(timeTextDate);
+//
+//                if(!dateText.equals(today)){
+//                    day += " " + days[Integer.parseInt(month) - 1];
+//                    person.setMessageTime(day);
+//                }
+//                else{
+//                    String timeTextInMessage = timeFormat.format(timeTextDate);
+//
+//                    person.setMessageTime(timeTextInMessage);
+//                }
+//
+//            }
+//            catch (Exception e){
+//            }
+//            cper.moveToNext();
+//            i++;
+//        }
 
     }
 
@@ -315,4 +356,104 @@ public class Dialogs extends AppCompatActivity {
         public ImageView imageView;
         public TextView LastmessageTime;
     }
+
+    class GetConnection extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                try {
+                    conn = DriverManager.getConnection(url, username, password);
+                    statement = conn.createStatement();
+                    // создание таблицы
+                    statement.executeUpdate(OpenTable);
+                    Log.e("Connection", "CONNECTED");
+
+                }
+                catch(Exception ex){
+                    Log.e("error", ex.getMessage());
+                }
+            }
+            catch(Exception e){
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class GetUsers extends AsyncTask<String, String, List<Person>> {
+
+        @Override
+        protected List<Person> doInBackground(String... params) {
+            try {
+                // создание таблицы
+                String getUsers = "select * from client where Phone_number!=" + number;
+                cper = statement.executeQuery(getUsers);
+                cper.next();
+                try {
+                    while (true) {
+
+                        int UserNameIndex = cper.findColumn("name");
+                        int UserSurnameIndex = cper.findColumn("surname");
+                        int UserPhoneIndex = cper.findColumn("Phone_number");
+                        String taker = cper.getString(UserPhoneIndex);
+                        String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
+
+                        try {
+//                            Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and (messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?)", new String[]{number, taker, number, taker, number});
+//                            cmes.moveToLast();
+//
+//                            int messageUserIndex = cmes.getColumnIndex("messageUser");
+//                            int messageTextIndex = cmes.getColumnIndex("messageText");
+//                            int messageTimeIndex = cmes.getColumnIndex("messageTime");
+                            Log.e("fgfds", "dsdf");
+                            Person person = new Person();
+                            person.setNumber(cper.getString(UserPhoneIndex));
+//                            person.setDopinfo(cmes.getString(messageTextIndex));
+                            person.setName(taker_text);
+//                            person.setMessageTime(cmes.getString(messageTimeIndex));
+                            person.setAvatar("ic_profile_1");
+                            persons.add(person);
+                        }
+                        catch (Exception e){
+                            Person person = new Person();
+                            person.setNumber(cper.getString(UserPhoneIndex));
+                            person.setDopinfo("Нет сообщений");
+                            person.setName(taker_text);
+                            person.setMessageTime("");
+                            person.setAvatar("ic_profile_1");
+                            persons.add(person);
+                        }
+                        if (cper.isLast()){
+                            break;
+                        }
+                        else {
+                            cper.next();
+                        }
+
+                    }
+
+                    } catch (Exception e){
+                        Log.e("error", e.getMessage());
+
+                    }
+
+
+
+
+                } catch (Exception e){
+                    Log.e("error", e.getMessage());
+
+                }
+
+            return persons;
+        }
+    }
+
 }

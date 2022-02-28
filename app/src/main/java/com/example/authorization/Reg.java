@@ -66,6 +66,7 @@ public class Reg extends AppCompatActivity {
     private int Month=dateAndTime.get(Calendar.MONTH);
     private int Day=dateAndTime.get(Calendar.DAY_OF_MONTH);
 
+    private Connection conn;
     String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69?characterEncoding=utf-8";
     String username = "u0597423_medclic";
     String password = "kvantoriummagda";
@@ -95,7 +96,6 @@ public class Reg extends AppCompatActivity {
 
     Boolean ispolis = false;
 
-    private Connection conn;
 
 
 

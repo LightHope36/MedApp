@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,6 +34,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 public class Search extends AppCompatActivity {
 
@@ -47,6 +55,32 @@ public class Search extends AppCompatActivity {
     Date currentDate = new Date();
     String thisdate = dayAndMonthFormat.format(currentDate);
     String today = dayAndMonthFormat.format(currentDate);
+    String text;
+
+    private String number;
+
+
+    private Connection conn;
+    String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69?characterEncoding=utf-8";
+    String username = "u0597423_medclic";
+    String password = "kvantoriummagda";
+    private List<Person> persons = new ArrayList<>();
+    private PersonAdapter person_adapter;
+
+    private ResultSet cper;
+    private Statement statement;
+    private String OpenTable = ("create table if not exists client (\n" +
+            "\tclientid INT PRIMARY KEY AUTO_INCREMENT, \n" +
+            "\tname varchar(15), \n" +
+            "\tsurname varchar(15), \n" +
+            "\tpatronymic varchar(15), \n" +
+            "\tmedical_policy varchar(16), \n" +
+            "\tPhone_number int, \n" +
+            "\tsnils int, \n" +
+            "\tdate_of_birth datetime, \n" +
+            "\tmedical_history int, \n" +
+            "\tcompanies_providing_medical_insurance int )\n");
+
 
 
     @Override
@@ -58,13 +92,14 @@ public class Search extends AppCompatActivity {
         back = findViewById(R.id.back_im_from_search);
         search = findViewById(R.id.search_input_chat);
         listView = findViewById(R.id.list_of_messages_in_search);
+        new GetConnection().execute();
 
         Intent intent = getIntent();
         String type = (String) intent.getExtras().get("from");
         String number = (String) intent.getExtras().get("number");
         String user = number;
         List<Message> messages = new ArrayList<>();
-        List<Person> persons = new ArrayList<>();
+
 
         SQLiteDatabase VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
         VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
@@ -259,32 +294,23 @@ public class Search extends AppCompatActivity {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    PersonAdapter person_adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
-                    String text = search.getText().toString();
+                    person_adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
+                    text = search.getText().toString();
                     listView.setAdapter(person_adapter);
                     persons.clear();
 
                     if (!text.equals("")) {
 
                         person_adapter.clear();
+                        try {
+                            persons = new GetUsers().execute().get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
 
-                        Cursor cper = usersDataBase.rawQuery("select * from users where UserPhone!=? and ((UserName like '%' || ? || '%') or  (UserSurname like '%' || ? || '%'))", new String[]{number, text, text});
-                        cper.moveToFirst();
 
-                        while (!cper.isAfterLast()) {
-
-                            int UserNameIndex = cper.getColumnIndex("UserName");
-                            int UserPhoneIndex = cper.getColumnIndex("UserPhone");
-                            int UserSurnameIndex = cper.getColumnIndex("UserSurname");
-                            String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
-
-                            Person person = new Person();
-                            person.setNumber(cper.getString(UserPhoneIndex));
-                            person.setName(taker_text);
-                            person.setAvatar("ic_profile_1");
-                            persons.add(person);
-                            cper.moveToNext();
-                            }
                         }
                     else {
                         person_adapter.clear();
@@ -335,7 +361,6 @@ public class Search extends AppCompatActivity {
             convertView = inflater.inflate(R.layout.person, null);
 
 
-
             PersonHolder holder = new PersonHolder();
             holder.UserName = convertView.findViewById(R.id.user);
             holder.UserText = convertView.findViewById(R.id.dopinfo_text);
@@ -353,6 +378,109 @@ public class Search extends AppCompatActivity {
 
 
             return convertView;
+        }
+
+    }
+
+
+    class GetConnection extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                try {
+                    conn = DriverManager.getConnection(url, username, password);
+                    statement = conn.createStatement();
+                    // создание таблицы
+                    statement.executeUpdate(OpenTable);
+                    Log.e("Connection", "CONNECTED");
+
+                }
+                catch(Exception ex){
+                    Log.e("error", ex.getMessage());
+                }
+            }
+            catch(Exception e){
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class GetUsers extends AsyncTask<String, String, List<Person>> {
+
+        @Override
+        protected List<Person> doInBackground(String... params) {
+            try {
+                // создание таблицы
+                String getUsers = "select * from client where Phone_number!=" + number+ " and ((name like '%' || " + text + " || '%') or  (surname like '%' || " + text + " || '%'))";
+                cper = statement.executeQuery(getUsers);
+                cper.next();
+                try {
+                    while (true) {
+
+                        int UserNameIndex = cper.findColumn("name");
+                        int UserSurnameIndex = cper.findColumn("surname");
+                        int UserPhoneIndex = cper.findColumn("Phone_number");
+                        String taker = cper.getString(UserPhoneIndex);
+                        String taker_text = cper.getString(UserNameIndex) + " " + cper.getString(UserSurnameIndex);
+
+                        try {
+//                            Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and (messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?)", new String[]{number, taker, number, taker, number});
+//                            cmes.moveToLast();
+//
+//                            int messageUserIndex = cmes.getColumnIndex("messageUser");
+//                            int messageTextIndex = cmes.getColumnIndex("messageText");
+//                            int messageTimeIndex = cmes.getColumnIndex("messageTime");
+
+
+                            Log.e("fgfds", "dsdf");
+                            Person person = new Person();
+                            person.setNumber(cper.getString(UserPhoneIndex));
+//                            person.setDopinfo(cmes.getString(messageTextIndex));
+                            person.setName(taker_text);
+//                            person.setMessageTime(cmes.getString(messageTimeIndex));
+                            person.setAvatar("ic_profile_1");
+                            persons.add(person);
+                        }
+                        catch (Exception e){
+                            Person person = new Person();
+                            person.setNumber(cper.getString(UserPhoneIndex));
+                            person.setDopinfo("Нет сообщений");
+                            person.setName(taker_text);
+                            person.setMessageTime("");
+                            person.setAvatar("ic_profile_1");
+                            persons.add(person);
+                        }
+                        if (cper.isLast()){
+                            break;
+                        }
+                        else {
+                            cper.next();
+                        }
+
+                    }
+
+                } catch (Exception e){
+                    Log.e("error", e.getMessage());
+
+                }
+
+
+
+
+            } catch (Exception e){
+                Log.e("error", e.getMessage());
+
+            }
+
+            return persons;
         }
     }
 
