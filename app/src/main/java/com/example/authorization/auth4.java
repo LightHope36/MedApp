@@ -59,8 +59,8 @@ public class auth4 extends AppCompatActivity{
     String password = "kvantoriummagda";
     public ResultSet cper;
     private Boolean result;
-    private Statement statement;
-    private Connection conn;
+    public Statement statement;
+    public Connection conn;
 
 
     private String OpenTable = ("create table if not exists client (\n" +

@@ -59,7 +59,7 @@ public class Reg extends AppCompatActivity {
     Date currentDate = new Date();
 
     private int cYear=dateAndTime.get(Calendar.YEAR);
-    private int cMonth=dateAndTime.get(Calendar.MONTH);
+    private int cMonth=dateAndTime.get(Calendar.MONTH)+1;
     private int cDay=dateAndTime.get(Calendar.DAY_OF_MONTH);
 
     private int Year=dateAndTime.get(Calendar.YEAR);
@@ -76,7 +76,7 @@ public class Reg extends AppCompatActivity {
 
     public ResultSet cper;
     private Statement statement;
-
+    String days[] = new String[]{"Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"};
 
 
 
@@ -92,10 +92,11 @@ public class Reg extends AppCompatActivity {
             "\tmedical_history int, \n" +
             "\tcompanies_providing_medical_insurance int )\n");
 
-    String CreateUserPolis="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic) values('" + number + "', '" + name + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "')";
-    String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, patronymic) values('" + number + "', '" + name + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "')";
+
     Boolean ispolis = false;
+
     private Connection conn;
+
 
 
     @Override
@@ -124,6 +125,7 @@ public class Reg extends AppCompatActivity {
             Log.e("error", e.getMessage());
         }
         new GetConnection().execute();
+
 //        SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
 //        usersDataBase.execSQL("create table if not exists users\n" +
 //                "(\n" +
@@ -176,7 +178,9 @@ public class Reg extends AppCompatActivity {
                         }
                         Usermiddlename = middlename.getText().toString();
 
-
+                        if (Userpolis!=null){
+                            ispolis=true;
+                        }
                         new CreateUser().execute();
                         lastuser.execSQL("insert into lastuser (UserPhone) values ('" + number + "')");
 
@@ -236,7 +240,18 @@ public class Reg extends AppCompatActivity {
                 Thread.sleep(1000);
                 name.setText(Username);
                 surname.setText(Usersurname);
-                birth.setText(String.valueOf(Userbithday));
+                birth.setText(String.valueOf(Userbithday).split("-")[2] + " " + days[Integer.parseInt(String.valueOf(Userbithday).split("-")[1])-1] + " " + String.valueOf(Userbithday).split("-")[0] + " г.");
+                Year = Integer.parseInt(String.valueOf(Userbithday).split("-")[0]);
+                Month = Integer.parseInt(String.valueOf(Userbithday).split("-")[1]) - 1;
+                Day = Integer.parseInt(String.valueOf(Userbithday).split("-")[2]);
+
+                Log.e("d", String.valueOf(Year));
+                Log.e("d", String.valueOf(cYear));
+                Log.e("d", String.valueOf(Month));
+                Log.e("d", String.valueOf(cMonth));
+                Log.e("d", String.valueOf(Day));
+                Log.e("d", String.valueOf(cDay));
+
                 middlename.setText(Usermiddlename);
                 polis.setText(Userpolis);
                 Log.e("error", Username);
@@ -268,16 +283,30 @@ public class Reg extends AppCompatActivity {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
                     if(!(cYear-Year>18 || (cYear-Year==18 && (cMonth-Month>0 || (cMonth-Month==0 && cDay-Day>=0))))){
                         Toast.makeText(getApplicationContext(), "Вам должно быть 18+ лет", Toast.LENGTH_LONG).show();
-                        System.out.println(Year);
-                        System.out.println(cYear);
-                        System.out.println(cYear-Year);
-                        Year=dateAndTime.get(Calendar.YEAR);
-                        Month=dateAndTime.get(Calendar.MONTH);
-                        Day=dateAndTime.get(Calendar.DAY_OF_MONTH);
+                        Log.e("fc", String.valueOf(Year) + " " + " " + String.valueOf(cYear) + " " + " " + String.valueOf(Month) + " " + " " + String.valueOf(cMonth) + " " + " " + String.valueOf(Day) + " " + " " + String.valueOf(cDay));
+                        Log.e("fc", String.valueOf(Year) + " " + " " + String.valueOf(cYear) + " " + " " + String.valueOf(Month) + " " + " " + String.valueOf(cMonth) + " " + " " + String.valueOf(Day) + " " + " " + String.valueOf(cDay));
                     }
                     else if( !name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
+                        Username = name.getText().toString();
+                        Usersurname = surname.getText().toString();
+                        dateAndTime.set(Calendar.YEAR, Year);
+                        dateAndTime.set(Calendar.MONTH, Month);
+                        dateAndTime.set(Calendar.DAY_OF_MONTH, Day);
+                        try {
+                            Userbithday = dateAndTime.getTime();
+                            sqlDate = new java.sql.Timestamp(dateAndTime.getTime().getTime());
+                            Userpolis = (polis.getText().toString());
+                        } catch (Exception e) {
+                            Log.e("Reelox", birth.toString());
+
+                            Log.e("error", e.getMessage());
+                        }
+                        Usermiddlename = middlename.getText().toString();
+                        new UpdateUser().execute();
                         ContentValues values = new ContentValues();
                         values.put("UserName", name.getText().toString());
                         values.put("UserSurname", surname.getText().toString());
@@ -337,9 +366,14 @@ public class Reg extends AppCompatActivity {
     }
 
     private void setInitialDateTime() {
-        birth.setText(DateUtils.formatDateTime(this,
-                dateAndTime.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+        try {
+            birth.setText(DateUtils.formatDateTime(this,
+                    dateAndTime.getTimeInMillis(),
+                    DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+            Log.e("edsa", birth.getText().toString());
+        } catch (Exception e){
+
+        }
     }
 
     DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
@@ -375,12 +409,11 @@ public class Reg extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try{
-                try (Connection conn = DriverManager.getConnection(url, username, password)){
-                    Statement statement = conn.createStatement();
-                    // создание таблицы
-
-                    statement.executeUpdate(OpenTable);
+                try {
                     int call;
+                    String CreateUserPolis="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "')";
+                    String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "')";
+                    Log.e("name", Username);
                     if (ispolis){
                         call = statement.executeUpdate(CreateUserPolis);
                     }else{
@@ -464,6 +497,7 @@ public class Reg extends AppCompatActivity {
                         Userpolis=cper.getString(UserPolisIndex);
                         Log.e("gotUser", "Got");
 
+
                     } catch (Exception e){
                         Log.e("error", e.getMessage());
 
@@ -484,4 +518,28 @@ public class Reg extends AppCompatActivity {
             return null;
         }
     }
+
+    class UpdateUser extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String UpdateUserPolis="update client set  name = '" + Username + "', surname = '" + Usersurname + "', date_of_birth = '" + sqlDate + "', medical_policy = '" + Userpolis + "', patronymic = '" + Usermiddlename + "' where Phone_number = '" + number + "'";
+            try {
+                statement.executeUpdate(UpdateUserPolis);
+            }
+            catch(Exception e){
+                Log.e("errorNE", e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
+
+
 }

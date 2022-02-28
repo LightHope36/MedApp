@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -56,6 +57,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -138,6 +140,9 @@ public class Chat extends AppCompatActivity {
     private static final int MY_PERMISSIONS_READ_FILES = 0;
     private static final int MY_PERMISSIONS_WRITE_IN_FILES = 0;
     private static final int MY_PERMISSIONS_INTERNET = 0;
+
+    private Application apl=this.getApplication();
+    public Statement statement;
 
 
 
@@ -1089,7 +1094,8 @@ public class Chat extends AppCompatActivity {
             try {
                 try{
                     try (Connection conn = DriverManager.getConnection(url, username, password)){
-                        Log.e("Connection", "CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        Log.e("Connection", "CONNECTED");
+                        statement = conn.createStatement();
                     }
                     catch(Exception ex){
                         ex.printStackTrace();
