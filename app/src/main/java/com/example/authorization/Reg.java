@@ -97,6 +97,154 @@ public class Reg extends AppCompatActivity {
     Boolean ispolis = false;
 
 
+    class CreateUser extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                try {
+                    int call;
+                    String CreateUserPolis="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "')";
+                    String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "')";
+                    Log.e("name", Username);
+                    if (ispolis){
+                        call = statement.executeUpdate(CreateUserPolis);
+                    }else{
+                        call = statement.executeUpdate(CreateUser);
+                    }
+                    Log.e("Connection", "Created");
+                    Log.e("call", "" + call + "");
+
+                }
+                catch(Exception ex){
+                    Log.e("error", ex.getMessage());
+                }
+            }
+            catch(Exception e){
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class GetConnection extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                try {
+                    conn = DriverManager.getConnection(url, username, password);
+                    statement = conn.createStatement();
+                    // создание таблицы
+                    statement.executeUpdate(OpenTable);
+                    Log.e("Connection", "CONNECTED");
+
+                }
+                catch(Exception ex){
+                    Log.e("error", ex.getMessage());
+                }
+            }
+            catch(Exception e){
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class GetUser extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                // создание таблицы
+                String getUser = "select * from client where Phone_number=" + number;
+                cper = statement.executeQuery(getUser);
+                cper.next();
+                try {
+                    Log.e("start", "start");
+                    try {
+                        int UserNameIndex = cper.findColumn("name");
+                        int UserBirthdayIndex = cper.findColumn("date_of_birth");
+                        int UserSurnameIndex = cper.findColumn("surname");
+                        int UserMiddlenameIndex = cper.findColumn("patronymic");
+                        int UserPolisIndex = cper.findColumn("medical_policy");
+
+
+                        Username=cper.getString(UserNameIndex);
+                        Usersurname=cper.getString(UserSurnameIndex);
+                        Userbithday=cper.getDate(UserBirthdayIndex);
+                        Usermiddlename=cper.getString(UserMiddlenameIndex);
+                        Userpolis=cper.getString(UserPolisIndex);
+
+                        setdata();
+                        Log.e("gotUser", "Got");
+
+
+                    } catch (Exception e){
+                        Log.e("error", e.getMessage());
+
+                    }
+
+
+
+
+                } catch (Exception e){
+                    Log.e("error", e.getMessage());
+
+                }
+
+            } catch (Exception e) {
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
+        }
+    }
+
+    class UpdateUser extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String UpdateUserPolis="update client set  name = '" + Username + "', surname = '" + Usersurname + "', date_of_birth = '" + sqlDate + "', medical_policy = '" + Userpolis + "', patronymic = '" + Usermiddlename + "' where Phone_number = '" + number + "'";
+            try {
+                statement.executeUpdate(UpdateUserPolis);
+            }
+            catch(Exception e){
+                Log.e("errorNE", e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void setdata(){
+        name.setText(Username);
+        surname.setText(Usersurname);
+        birth.setText(String.valueOf(Userbithday).split("-")[2] + " " + days[Integer.parseInt(String.valueOf(Userbithday).split("-")[1])-1] + " " + String.valueOf(Userbithday).split("-")[0] + " г.");
+        middlename.setText(Usermiddlename);
+        polis.setText(Userpolis);
+    }
+
+
 
 
     @Override
@@ -237,10 +385,7 @@ public class Reg extends AppCompatActivity {
 
 
             try {
-                Thread.sleep(1000);
-                name.setText(Username);
-                surname.setText(Usersurname);
-                birth.setText(String.valueOf(Userbithday).split("-")[2] + " " + days[Integer.parseInt(String.valueOf(Userbithday).split("-")[1])-1] + " " + String.valueOf(Userbithday).split("-")[0] + " г.");
+//                Thread.sleep(500);
                 Year = Integer.parseInt(String.valueOf(Userbithday).split("-")[0]);
                 Month = Integer.parseInt(String.valueOf(Userbithday).split("-")[1]) - 1;
                 Day = Integer.parseInt(String.valueOf(Userbithday).split("-")[2]);
@@ -252,8 +397,11 @@ public class Reg extends AppCompatActivity {
                 Log.e("d", String.valueOf(Day));
                 Log.e("d", String.valueOf(cDay));
 
-                middlename.setText(Usermiddlename);
-                polis.setText(Userpolis);
+//                name.setText(Username);
+//                surname.setText(Usersurname);
+//                birth.setText(String.valueOf(Userbithday).split("-")[2] + " " + days[Integer.parseInt(String.valueOf(Userbithday).split("-")[1])-1] + " " + String.valueOf(Userbithday).split("-")[0] + " г.");
+//                middlename.setText(Usermiddlename);
+//                polis.setText(Userpolis);
                 Log.e("error", Username);
                 Log.e("error", Usersurname);
                 Log.e("error", String.valueOf(Userbithday));
@@ -404,142 +552,7 @@ public class Reg extends AppCompatActivity {
     }
 
 
-    class CreateUser extends AsyncTask<String, String, String> {
 
-        @Override
-        protected String doInBackground(String... params) {
-            try{
-                try {
-                    int call;
-                    String CreateUserPolis="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "')";
-                    String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "')";
-                    Log.e("name", Username);
-                    if (ispolis){
-                        call = statement.executeUpdate(CreateUserPolis);
-                    }else{
-                        call = statement.executeUpdate(CreateUser);
-                    }
-                    Log.e("Connection", "Created");
-                    Log.e("call", "" + call + "");
-
-                }
-                catch(Exception ex){
-                    Log.e("error", ex.getMessage());
-                }
-            }
-            catch(Exception e){
-                Log.e("error", e.getMessage());
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    class GetConnection extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            try{
-                try {
-                    conn = DriverManager.getConnection(url, username, password);
-                    statement = conn.createStatement();
-                    // создание таблицы
-                    statement.executeUpdate(OpenTable);
-                    Log.e("Connection", "CONNECTED");
-
-                }
-                catch(Exception ex){
-                    Log.e("error", ex.getMessage());
-                }
-            }
-            catch(Exception e){
-                Log.e("error", e.getMessage());
-            }
-
-            return null;
-        }
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    class GetUser extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                // создание таблицы
-                String getUser = "select * from client where Phone_number=" + number;
-                cper = statement.executeQuery(getUser);
-                cper.next();
-                try {
-                    Log.e("start", "start");
-                    try {
-                        int UserNameIndex = cper.findColumn("name");
-                        int UserBirthdayIndex = cper.findColumn("date_of_birth");
-                        int UserSurnameIndex = cper.findColumn("surname");
-                        int UserMiddlenameIndex = cper.findColumn("patronymic");
-                        int UserPolisIndex = cper.findColumn("medical_policy");
-
-
-                        Username=cper.getString(UserNameIndex);
-                        Usersurname=cper.getString(UserSurnameIndex);
-                        Userbithday=cper.getDate(UserBirthdayIndex);
-                        Usermiddlename=cper.getString(UserMiddlenameIndex);
-                        Userpolis=cper.getString(UserPolisIndex);
-                        Log.e("gotUser", "Got");
-
-
-                    } catch (Exception e){
-                        Log.e("error", e.getMessage());
-
-                    }
-
-
-
-
-                } catch (Exception e){
-                    Log.e("error", e.getMessage());
-
-                }
-
-            } catch (Exception e) {
-                Log.e("error", e.getMessage());
-            }
-
-            return null;
-        }
-    }
-
-    class UpdateUser extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            String UpdateUserPolis="update client set  name = '" + Username + "', surname = '" + Usersurname + "', date_of_birth = '" + sqlDate + "', medical_policy = '" + Userpolis + "', patronymic = '" + Usermiddlename + "' where Phone_number = '" + number + "'";
-            try {
-                statement.executeUpdate(UpdateUserPolis);
-            }
-            catch(Exception e){
-                Log.e("errorNE", e.getMessage());
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
-        }
-    }
 
 
 }
