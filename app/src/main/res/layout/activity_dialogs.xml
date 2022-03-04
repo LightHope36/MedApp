@@ -135,7 +135,7 @@
         android:id="@+id/bot_dial"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@drawable/shadow_flow_shape"
+       android:background="@drawable/shadow_flow_shape"
         android:elevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">

@@ -23,9 +23,13 @@
         <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/drawable/ic_micbtnblue.xml" value="0.2703125" />
         <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/drawable/ic_next.xml" value="0.2703125" />
         <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/drawable/ic_no_photography_black_24dp_1.xml" value="0.2703125" />
-        <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/activity_chat.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/activity_auth4.xml" value="0.2" />
+        <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/activity_chat.xml" value="0.1" />
+        <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/activity_dialogs.xml" value="0.20854700854700856" />
         <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/activity_invest.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/activity_reg.xml" value="0.264" />
+        <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/activity_main_page2.xml" value="0.20854700854700856" />
+        <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/activity_profile_doc_data.xml" value="0.20854700854700856" />
+        <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/activity_reg.xml" value="0.4" />
         <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/btn_oval.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/date.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/magda_as/StudioProjects/MedApp/app/src/main/res/layout/message.xml" value="0.25416666666666665" />
