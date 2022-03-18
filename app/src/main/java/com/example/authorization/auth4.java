@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +31,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
 
-import io.fabric.sdk.android.services.concurrency.AsyncTask;
+import android.os.AsyncTask;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -27,13 +27,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-import io.fabric.sdk.android.services.concurrency.AsyncTask;
+import android.os.AsyncTask;
 
 public class Dialogs extends AppCompatActivity {
 
@@ -63,7 +64,6 @@ public class Dialogs extends AppCompatActivity {
     String username = "u0597423_medclic";
     String password = "kvantoriummagda";
     private List<Person> persons = new ArrayList<>();
-    private PersonAdapter adapter;
 
     private ResultSet cper;
     private Statement statement;
@@ -78,6 +78,9 @@ public class Dialogs extends AppCompatActivity {
             "\tdate_of_birth datetime, \n" +
             "\tmedical_history int, \n" +
             "\tcompanies_providing_medical_insurance int )\n");
+
+    private List<Person> persons2 = new ArrayList<>();
+    private PersonAdapter adapter;
 
 
     class GetConnection extends AsyncTask<String, String, String> {
@@ -145,28 +148,38 @@ public class Dialogs extends AppCompatActivity {
                     Log.e("error", e.getMessage());
 
                 }
-
-
-
-
             } catch (Exception e){
                 Log.e("error", e.getMessage());
 
             }
 
-            return persons;
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Person> people) {
+            super.onPostExecute(people);
+            for (int j=0; j<persons2.size(); j++){
+                try {
+                    coffee.setVisibility(View.INVISIBLE);
+                    empty.setVisibility(View.INVISIBLE);
+                    search.setVisibility(View.VISIBLE);
+                    dialogs.setVisibility(View.INVISIBLE);
+                    dial_cs.setVisibility(View.VISIBLE);
+                    Log.e("dasda", "adadad");
+//                    persons.add(persons2.get(j));
+                    adapter.add(persons2.get(j));
+                }catch (Exception e){
+                    Log.e("error", e.getMessage());
+                }
+            }
         }
     }
 
     private void addUser(String UserPhone, String taker_text){
-        coffee.setVisibility(View.INVISIBLE);
-        empty.setVisibility(View.INVISIBLE);
-        search.setVisibility(View.VISIBLE);
-        dialogs.setVisibility(View.INVISIBLE);
-        dial_cs.setVisibility(View.VISIBLE);
 
+        Log.e("fgfds", "dsdf");
         try {
-            Log.e("fgfds", "dsdf");
             Person person = new Person();
             person.setNumber(UserPhone);
 //                            person.setDopinfo(cmes.getString(messageTextIndex));
@@ -175,7 +188,8 @@ public class Dialogs extends AppCompatActivity {
             person.setDopinfo("Нет сообщений");
 //                            person.setMessageTime(cmes.getString(messageTimeIndex));
             person.setAvatar("ic_profile_1");
-            persons.add(person);
+            persons2.add(person);
+            Log.e("fgfds", "ad1");
         }
         catch (Exception e){
             Person person = new Person();
@@ -184,7 +198,8 @@ public class Dialogs extends AppCompatActivity {
             person.setName(taker_text);
             person.setMessageTime("");
             person.setAvatar("ic_profile_1");
-            persons.add(person);
+            persons2.add(person);
+            Log.e("fgfds", "ad1");
         }
     }
 
@@ -210,7 +225,6 @@ public class Dialogs extends AppCompatActivity {
 
         adapter = new PersonAdapter(getApplicationContext(), R.layout.person, persons);
 
-
         listView.setAdapter(adapter);
 
         new GetConnection().execute();
@@ -231,13 +245,11 @@ public class Dialogs extends AppCompatActivity {
             dial_cs.setVisibility(View.VISIBLE);
         }
 
-
         try {
-            persons = new GetUsers().execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            new GetUsers().execute();
+
+        } catch (Exception e) {
+            Log.e("error", e.getMessage());
         }
 
         main.setOnClickListener(new View.OnClickListener() {

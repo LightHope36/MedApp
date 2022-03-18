@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.ui.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,7 +33,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import io.fabric.sdk.android.services.concurrency.AsyncTask;
+import android.os.AsyncTask;
 
 public class Reg extends AppCompatActivity {
 

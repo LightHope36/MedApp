@@ -42,8 +42,6 @@ dependencies {
 
     implementation('org.jitsi.react:jitsi-meet-sdk:2.9.0') { transitive = true }
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'
-    implementation 'com.google.firebase:firebase-auth:20.0.3'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -56,18 +54,15 @@ dependencies {
 
 
     // Single target that includes all FirebaseUI libraries above
-    implementation 'com.firebaseui:firebase-ui:1.2.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.pyrus:servicedesk:1.4.7'
 
     implementation group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
 
-    implementation platform('com.google.firebase:firebase-bom:26.6.0')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'com.google.firebase:firebase-analytics'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

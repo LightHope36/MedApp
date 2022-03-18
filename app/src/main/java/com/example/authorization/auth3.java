@@ -34,7 +34,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Random;
 
-import io.fabric.sdk.android.services.concurrency.AsyncTask;
+import android.os.AsyncTask;
 
 public class auth3 extends AppCompatActivity  {
 

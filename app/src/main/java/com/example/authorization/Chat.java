@@ -66,7 +66,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import io.fabric.sdk.android.services.concurrency.AsyncTask;
+import android.os.AsyncTask;
 
 public class Chat extends AppCompatActivity {
 
