@@ -419,8 +419,14 @@ public class Search extends AppCompatActivity {
         protected List<Person> doInBackground(String... params) {
             try {
                 // создание таблицы
-                String getUsers = "select * from client where Phone_number!=" + number+ " and ((name like '%' || " + text + " || '%') or  (surname like '%' || " + text + " || '%'))";
-                cper = statement.executeQuery(getUsers);
+                String getUsers = "";
+                try {
+                    getUsers = "select * from client where Phone_number!='" + number + "' and ((name like '%" + text + "%') or  (surname like '%" + text + "%'))";
+                    cper = statement.executeQuery(getUsers);
+                } catch (Exception e){
+                    Log.e("er", e.getMessage());
+                }
+
                 cper.next();
                 try {
                     while (true) {
@@ -450,6 +456,7 @@ public class Search extends AppCompatActivity {
                             persons.add(person);
                         }
                         catch (Exception e){
+                            Log.e("er", e.getMessage());
                             Person person = new Person();
                             person.setNumber(cper.getString(UserPhoneIndex));
                             person.setDopinfo("Нет сообщений");

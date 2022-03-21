@@ -132,7 +132,6 @@ public class Reg extends AppCompatActivity {
 //            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
         }
     }
-
     class GetConnection extends AsyncTask<String, String, String> {
 
         @Override
