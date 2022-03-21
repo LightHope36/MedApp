@@ -210,6 +210,11 @@ public class Reg extends AppCompatActivity {
 
             return null;
         }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
     }
 
     class UpdateUser extends AsyncTask<String, String, String> {
@@ -238,6 +243,9 @@ public class Reg extends AppCompatActivity {
         name.setText(Username);
         surname.setText(Usersurname);
         birth.setText(String.valueOf(Userbithday).split("-")[2] + " " + days[Integer.parseInt(String.valueOf(Userbithday).split("-")[1])-1] + " " + String.valueOf(Userbithday).split("-")[0] + " г.");
+        Year = Integer.parseInt(String.valueOf(Userbithday).split("-")[0]);
+        Day = Integer.parseInt(String.valueOf(Userbithday).split("-")[2]);
+        Month = Integer.parseInt(String.valueOf(Userbithday).split("-")[1])-1;
         middlename.setText(Usermiddlename);
         polis.setText(Userpolis);
     }
