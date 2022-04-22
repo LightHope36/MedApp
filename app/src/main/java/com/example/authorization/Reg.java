@@ -52,6 +52,8 @@ public class Reg extends AppCompatActivity {
     private EditText middlename;
     private String from;
     private String number;
+    private String snils;
+    private EditText snils_et;
 
     Calendar dateAndTime=Calendar.getInstance();
 
@@ -103,14 +105,33 @@ public class Reg extends AppCompatActivity {
             try{
                 try {
                     int call;
-                    String CreateUserPolis="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "')";
-                    String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, patronymic) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "')";
-                    Log.e("name", Username);
-                    if (ispolis){
-                        call = statement.executeUpdate(CreateUserPolis);
-                    }else{
-                        call = statement.executeUpdate(CreateUser);
+
+                    String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, patronymic, snils) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "')";
+
+                    if (snils!=null){
+                        CreateUser=CreateUser+ ", snils";
                     }
+                    if (ispolis){
+                        CreateUser=CreateUser+ ", polis";
+                    }
+
+
+
+                    CreateUser=CreateUser+") values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "'";
+
+
+                    if (snils!=null){
+                        CreateUser=CreateUser + ", '" + snils + "'";
+                    }
+                    if (ispolis){
+                        CreateUser=CreateUser+ ", '" + polis + "'";
+                    }
+                    CreateUser = CreateUser + ")";
+                    String CreateUserPolis="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic, snils) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "', '" + snils + "')";
+
+                    Log.e("name", Username);
+                    call = statement.executeUpdate(CreateUser);
+
                     Log.e("Connection", "Created");
                     Log.e("call", "" + call + "");
 
@@ -179,6 +200,7 @@ public class Reg extends AppCompatActivity {
                         int UserSurnameIndex = cper.findColumn("surname");
                         int UserMiddlenameIndex = cper.findColumn("patronymic");
                         int UserPolisIndex = cper.findColumn("medical_policy");
+                        int UserSnilsIndex = cper.findColumn("snils");
 
 
                         Username=cper.getString(UserNameIndex);
@@ -186,6 +208,7 @@ public class Reg extends AppCompatActivity {
                         Userbithday=cper.getDate(UserBirthdayIndex);
                         Usermiddlename=cper.getString(UserMiddlenameIndex);
                         Userpolis=cper.getString(UserPolisIndex);
+                        snils = cper.getString(UserSnilsIndex);
 
                         setdata();
                         Log.e("gotUser", "Got");
@@ -221,12 +244,27 @@ public class Reg extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String UpdateUserPolis="update client set  name = '" + Username + "', surname = '" + Usersurname + "', date_of_birth = '" + sqlDate + "', medical_policy = '" + Userpolis + "', patronymic = '" + Usermiddlename + "' where Phone_number = '" + number + "'";
+
+            String CreateUser="Update client set name = '" + Username + "', surname = '" + Usersurname + "', date_of_birth = '"  + sqlDate +  "', patronymic = '" + Usermiddlename + "'";
+
+            if (snils!=null){
+                CreateUser=CreateUser + ", snils ='" + snils + "'";
+            }
+            if (Userpolis!=null){
+                CreateUser=CreateUser + ", medical_policy ='" + Userpolis + "'";
+            }
+
+            CreateUser = CreateUser + " where Phone_number = '" + number + "'";
+            String CreateUserPolis="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic, snils) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "', '" + snils + "')";
+
+            Log.e("text", CreateUser);
+            Log.e("asd", Userpolis);
             try {
-                statement.executeUpdate(UpdateUserPolis);
+                statement.executeUpdate(CreateUser);
             }
             catch(Exception e){
                 Log.e("errorNE", e.getMessage());
+                Log.e("text", CreateUser);
             }
 
             return null;
@@ -247,7 +285,12 @@ public class Reg extends AppCompatActivity {
         Day = Integer.parseInt(String.valueOf(Userbithday).split("-")[2]);
         Month = Integer.parseInt(String.valueOf(Userbithday).split("-")[1])-1;
         middlename.setText(Usermiddlename);
-        polis.setText(Userpolis);
+        if (Userpolis!=null) {
+            polis.setText(Userpolis);
+        }
+        if (snils!=null) {
+            snils_et.setText(snils);
+        }
     }
 
 
@@ -267,6 +310,7 @@ public class Reg extends AppCompatActivity {
         polis = findViewById(R.id.Polis);
         error = findViewById(R.id.error);
         middlename = findViewById(R.id.middle_name);
+        snils_et = findViewById(R.id.snils);
 
         Intent intent = getIntent();
         number = (String) intent.getExtras().get("number");
@@ -317,44 +361,14 @@ public class Reg extends AppCompatActivity {
                         Year=dateAndTime.get(Calendar.YEAR);
                         Month=dateAndTime.get(Calendar.MONTH);
                         Day=dateAndTime.get(Calendar.DAY_OF_MONTH);
-                    }
-                    else if (!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !polis.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
-                        Username = name.getText().toString();
-                        Usersurname = surname.getText().toString();
-                        try {
-                            Userbithday = dateAndTime.getTime();
-                            sqlDate = new java.sql.Timestamp(dateAndTime.getTime().getTime());
-                            Userpolis = (polis.getText().toString());
-                            Log.e("date", String.valueOf(sqlDate));
-                            Log.e("polis", String.valueOf(Userpolis));
-                        } catch (Exception e) {
-                            Log.e("error", e.getMessage());
-                        }
-                        Usermiddlename = middlename.getText().toString();
-
-                        if (Userpolis!=null){
-                            ispolis=true;
-                        }
-                        new CreateUser().execute();
-                        lastuser.execSQL("insert into lastuser (UserPhone) values ('" + number + "')");
-
-                        Intent intent = new Intent(getApplicationContext(), MainPage2.class);
-
-                        intent.putExtra("number", number);
-                        intent.putExtra("Username", Username);
-                        intent.putExtra("Usersurname", Usersurname);
-                        intent.putExtra("Userbithday", Userbithday);
-                        intent.putExtra("Userpolis", Userpolis);
-
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
-                        overridePendingTransition(0, 0);
-                    } else if (!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
+                    }else if (!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
 
                         Username = name.getText().toString();
                         Usersurname = surname.getText().toString();
                         Userbithday = (Date) birth.getText();
                         Usermiddlename = middlename.getText().toString();
+                        snils = snils_et.getText().toString();
+                        Userpolis = (polis.getText().toString());
                         String zero = "";
 
 //                        usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis, UserMiddlename) values('" + number + "', '" + Username + "','" + Usersurname + "','" + Userbithday + "', null, '" + Usermiddlename + "')");
@@ -450,6 +464,7 @@ public class Reg extends AppCompatActivity {
                         dateAndTime.set(Calendar.YEAR, Year);
                         dateAndTime.set(Calendar.MONTH, Month);
                         dateAndTime.set(Calendar.DAY_OF_MONTH, Day);
+                        snils = snils_et.getText().toString();
                         try {
                             Userbithday = dateAndTime.getTime();
                             sqlDate = new java.sql.Timestamp(dateAndTime.getTime().getTime());
