@@ -100,8 +100,9 @@ public class auth4 extends AppCompatActivity{
                 "\tUserPhone varchar(10) \n" +
                 ");");
 
+
         new GetConnection().execute();
-        new GetUser().execute();
+
         back3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +117,12 @@ public class auth4 extends AppCompatActivity{
         next3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new GetUser().execute();
+                try {
+                    Thread.sleep(2000);
+                } catch (Exception e){
+                    Log.e("error", e.getMessage());
+                }
                 System.out.println(ranStr);
                 if((editText.getText().toString()).equals(ranStr)) {
                     try {
@@ -428,7 +435,6 @@ public class auth4 extends AppCompatActivity{
                     else{
                         result = false;
                     }
-
                 }
                 catch(Exception ex){
                     Log.e("error", ex.getMessage());

@@ -57,11 +57,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -118,7 +121,7 @@ public class Chat extends AppCompatActivity {
     DateFormat dayFormat = new SimpleDateFormat("d", Locale.getDefault());
     DateFormat monthFormat = new SimpleDateFormat("M", Locale.getDefault());
     String days[] = new String[]{"Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"};
-    String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69";
+    String url = "jdbc:mysql://server23.hosting.reg.ru/u0597423_medclick.kvantorium69?characterEncoding=utf-8";
     String username = "u0597423_medclic";
     String password = "kvantoriummagda";
     List<Message> messages = new ArrayList<>();
@@ -141,8 +144,104 @@ public class Chat extends AppCompatActivity {
     private static final int MY_PERMISSIONS_WRITE_IN_FILES = 0;
     private static final int MY_PERMISSIONS_INTERNET = 0;
 
+
+    Calendar dateAndTime=Calendar.getInstance();
     private Application apl=this.getApplication();
-    public Statement statement;
+    public Statement statementUsers;
+    public Statement statementMessage;
+    public ResultSet c;
+    public String taker;
+    public String Messagetext;
+    public Person person;
+
+    private Connection conn;
+    java.sql.Timestamp sqlDate = new java.sql.Timestamp(dateAndTime.getTime().getTime());
+
+    private String OpenTableMessage = ("create table if not exists VisibleMessagess (\n" +
+            "\tID INT PRIMARY KEY AUTO_INCREMENT, \n" +
+            "\tmessageSender varchar(100), \n" +
+            "\tmessageText text, \n" +
+            "\tmessageTaker varchar(100), \n" +
+            "\tmessageTime date )\n");
+
+//    private String OpenTableUsers = ("create table if not exists client (\n" +
+//            "\tclientid INT PRIMARY KEY AUTO_INCREMENT, \n" +
+//            "\tname varchar(15), \n" +
+//            "\tsurname varchar(15), \n" +
+//            "\tpatronymic varchar(15), \n" +
+//            "\tmedical_policy varchar(16), \n" +
+//            "\tPhone_number int, \n" +
+//            "\tsnils int, \n" +
+//            "\tdate_of_birth datetime, \n" +
+//            "\tmedical_history int, \n" +
+//            "\tcompanies_providing_medical_insurance int )\n");
+//
+
+    class GetConnection extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                try {
+                    conn = DriverManager.getConnection(url, username, password);
+//                    statementUsers = conn.createStatement();
+                    statementMessage = conn.createStatement();
+                    // создание таблицы
+//                    statementUsers.executeUpdate(OpenTableUsers);
+                    statementMessage.executeUpdate(OpenTableMessage);
+                    Log.e("Connection", "CONNECTED");
+
+                }
+                catch(Exception ex){
+                    Log.e("error", ex.getMessage());
+                }
+            }
+            catch(Exception e){
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class SendMessage extends AsyncTask<String, String, String>  {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                try {
+                    int call;
+                    String user1 = params[0];
+                    String user2 = params[1];
+                    String text = params[2];
+
+                    String SendText="insert into VisibleMessagess(messageSender, messageText, messageTaker) values('" + user1 + "','" + text + "','" + user2 + "')";
+
+                    call = statementMessage.executeUpdate(SendText);
+
+
+                }
+                catch(Exception ex){
+                    Log.e("error", ex.getMessage());
+                }
+            }
+            catch(Exception e){
+                Log.e("error", e.getMessage());
+            }
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+        }
+    }
 
 
 
@@ -192,12 +291,15 @@ public class Chat extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        Person person = (Person) intent.getExtras().get("person");
+        person = (Person) intent.getExtras().get("person");
         number = (String) intent.getExtras().get("number");
         user = number;
 
+        taker = person.getNumber();
 
         new GetConnection().execute();
+
+        new getMessages().execute(number, taker);
 
         try{
             id = (long) intent.getExtras().get("messageId");
@@ -218,20 +320,8 @@ public class Chat extends AppCompatActivity {
 
         listView.setAdapter(adapter);
 
-        String taker = person.getNumber();
 
 
-        VisibleMessagesDataBase = openOrCreateDatabase("VisibleMessagess", MODE_PRIVATE, null);
-        VisibleMessagesDataBase.execSQL("create table if not exists VisibleMessagess\n" +
-                "(\n" +
-                "\tID INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "\tmessageUser varchar(100), \n" +
-                "\tmessageSender varchar(10), \n" +
-                "\tmessageText text, \n" +
-                "\tmessageImage blob, \n" +
-                "\tmessageTaker varchar(10), \n" +
-                "\tmessageTime varchar(100) \n" +
-                ");");
 //        getApplicationContext().deleteDatabase("VisibleMessagess");
 
         SQLiteDatabase usersDataBase = openOrCreateDatabase("users", MODE_PRIVATE, null);
@@ -245,125 +335,6 @@ public class Chat extends AppCompatActivity {
                 "\tUserBirthday varchar(1000), \n" +
                 "\tUserPolis varchar(1000) \n" +
                 ");");
-
-        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))", new String[] {user, taker, number, taker, number});
-        c.moveToFirst();
-
-        if(c.moveToFirst()) {
-            int messageTimeIndex = c.getColumnIndex("messageTime");
-            String timeText = c.getString(messageTimeIndex);
-            String dateText = "";
-            String day = "";
-            String month = "1";
-            String timeTextInMessage = "";
-            try {
-                Date timeTextDate = fullDateFormat.parse(timeText);
-                dateText = dayAndMonthFormat.format(timeTextDate);
-                day = dayFormat.format(timeTextDate);
-                month = monthFormat.format(timeTextDate);
-                timeTextInMessage = timeFormat.format(timeTextDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            Message message = new Message();
-            if (!dateText.equals(today)) {
-                day += " " + days[Integer.parseInt(month) - 1];
-                message.setMessageText(day);
-            } else {
-                message.setMessageText("Сегодня");
-            }
-            message.setMessageType(0);
-            adapter.add(message);
-            messages.add(message);
-        }
-
-        while (!c.isAfterLast()) {
-            int messageTextIndex = c.getColumnIndex("messageText");
-            int messageTimeIndex = c.getColumnIndex("messageTime");
-            int messageSenderIndex = c.getColumnIndex("messageSender");
-            int messageImageIndex = c.getColumnIndex("messageImage");
-            int messageIDIndex = c.getColumnIndex("ID");
-
-            String timeText = c.getString(messageTimeIndex);
-            String dateText = "";
-            String day = "";
-            String month = "1";
-            String timeTextInMessage = "";
-            System.out.println(timeText);
-
-            try {
-                Date timeTextDate = fullDateFormat.parse(timeText);
-                dateText = dayAndMonthFormat.format(timeTextDate);
-                day = dayFormat.format(timeTextDate);
-                month = monthFormat.format(timeTextDate);
-                timeTextInMessage = timeFormat.format(timeTextDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            if(!dateText.equals(thisdate)){
-                Message message = new Message();
-                if(!dateText.equals(today)) {
-                    day += " " + days[Integer.parseInt(month) - 1];
-                    message.setMessageText(day);
-                } else{
-                    message.setMessageText("Сегодня");
-                }
-                message.setMessageType(0);
-                adapter.add(message);
-                messages.add(message);
-                thisdate = dateText;
-            }
-
-            Message message = new Message();
-
-            if ((c.getString(messageSenderIndex)).equals(number)) {
-
-                if (!(c.isNull(messageImageIndex))) {
-                    byte[] bytesImage = c.getBlob(messageImageIndex);
-                    Bitmap bitmapImage = BitmapFactory.decodeByteArray(bytesImage, 0, bytesImage.length);
-
-                    message.setMessageUser("You");
-                    message.setMessageType(3);
-                    message.setImage(bitmapImage);
-                    message.setMessageTime(timeText);
-                    adapter.add(message);
-                    messages.add(message);
-                }else {
-                    message.setMessageId(c.getLong(messageIDIndex));
-                    message.setMessageUser("You");
-                    message.setMessageType(1);
-                    message.setMessageText(c.getString(messageTextIndex));
-                    message.setMessageTime(timeTextInMessage);
-                    adapter.add(message);
-                    messages.add(message);
-                }
-
-
-                if(c.getLong(messageIDIndex)==id){
-                    n=i;
-                }
-                i++;
-
-            }
-            else{
-                message.setMessageId(c.getLong(messageIDIndex));
-                message.setMessageUser(person.getName());
-                message.setMessageText(c.getString(messageTextIndex));
-                message.setMessageTime(timeTextInMessage);
-                message.setMessageType(2);
-                messages.add(message);
-
-                if(c.getLong(messageIDIndex)==id){
-                    n=i;
-                }
-                i++;
-
-                adapter.add(message);
-            }
-            c.moveToNext();
-        }
-
 
 
         if (n == 0) {
@@ -723,13 +694,7 @@ public class Chat extends AppCompatActivity {
                 }
                 else{
                     String timeText = "";
-                    try {
-                        Cursor c = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess where messageUser = ? and ((messageTaker=? and messageSender=?) or (messageSender=? and messageTaker=?))", new String[] {user, taker, number, taker, number});
-                        c.moveToLast();
-                        int messageTimeIndex = c.getColumnIndex("messageTime");
-                        timeText = c.getString(messageTimeIndex);
-                    }catch (Exception e){
-                    }
+
                         String dateText = "";
                         String day = "";
                         String month = "1";
@@ -770,21 +735,16 @@ public class Chat extends AppCompatActivity {
                         input.getText().clear();
 
 
-                        VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender,messageText, messageTaker, messageTime) values('" + user + "','" + number + "','" + text + "','" + taker + "','" + timeText + "')");
-                        VisibleMessagesDataBase.execSQL("insert into VisibleMessagess(messageUser, messageSender,messageText, messageTaker, messageTime) values('" + taker + "','" + number + "','" + text + "','" + taker + "','" + timeText + "')");
+
+                        new SendMessage().execute(user, taker, text);
 
 
-                        Cursor cmes = VisibleMessagesDataBase.rawQuery("select * from VisibleMessagess", null);
-                        cmes.moveToLast();
-
-                        int messageIDIndex = cmes.getColumnIndex("ID");
 
                         coffee.setVisibility(View.INVISIBLE);
                         empty.setVisibility(View.INVISIBLE);
 
                         messageType = 1;
                         Message message = new Message();
-                        message.setMessageId(cmes.getLong(messageIDIndex));
                         message.setMessageText(text);
                         message.setMessageType(1);
                         message.setMessageTime(timeTextInMessage);
@@ -1087,38 +1047,114 @@ public class Chat extends AppCompatActivity {
 
     }
 
-    class GetConnection extends AsyncTask<String, String, String> {
+    class getMessages extends AsyncTask<String, String, String>  {
 
         @Override
         protected String doInBackground(String... params) {
-            try {
-                try{
-                    try (Connection conn = DriverManager.getConnection(url, username, password)){
-                        Log.e("Connection", "CONNECTED");
-                        statement = conn.createStatement();
-                    }
-                    catch(Exception ex){
-                        ex.printStackTrace();
-                        Log.e("error", ex.getMessage());
-                        Log.e("error", ex.getMessage());
-                    }
+            try{
+                try {
+                    String user1 = params[0];
+                    String user2 = params[1];
+
+                    Log.e("P", "start");
+                    String exec ="select * from VisibleMessagess where ((messageTaker= " + user2 + " and messageSender= " + user1 + ") or (messageSender= " + user2 + " and messageTaker= " + user1 + "))";
+                    Log.e("exec", exec);
+                    c=statementMessage.executeQuery(exec);
+
                 }
-                catch(Exception e){
-                    Log.e("error", e.getMessage());
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                catch(Exception ex){
+                    Log.e("error", ex.getMessage());
                 }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            }
+            catch(Exception e){
+                Log.e("error", e.getMessage());
             }
 
             return null;
         }
-
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-//            Toast.makeText(getApplicationContext(), answerHTTP, Toast.LENGTH_LONG).show();
+
+
+            try {
+                while (c.next()) {
+                    int messageTextIndex = c.findColumn("messageText");
+//                    int messageTimeIndex = c.findColumn("messageTime");
+                    int messageSenderIndex = c.findColumn("messageSender");
+                    int messageIDIndex = c.findColumn("ID");
+
+//                    String timeText = c.getString(messageTimeIndex);
+                    String timeText = dateAndTime.toString();
+                    String dateText = "";
+                    String day = "";
+                    String month = "1";
+                    String timeTextInMessage = "";
+                    System.out.println(timeText);
+
+                    try {
+                        Date timeTextDate = fullDateFormat.parse(timeText);
+                        dateText = dayAndMonthFormat.format(timeTextDate);
+                        day = dayFormat.format(timeTextDate);
+                        month = monthFormat.format(timeTextDate);
+                        timeTextInMessage = timeFormat.format(timeTextDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if (!dateText.equals(thisdate)) {
+                        Message message = new Message();
+                        if (!dateText.equals(today)) {
+                            day += " " + days[Integer.parseInt(month) - 1];
+                            message.setMessageText(day);
+                        } else {
+                            message.setMessageText("Сегодня");
+                        }
+                        message.setMessageType(0);
+                        adapter.add(message);
+                        messages.add(message);
+                        thisdate = dateText;
+                    }
+
+                    Message message = new Message();
+
+                    if ((c.getString(messageSenderIndex)).equals(number)) {
+
+
+                        message.setMessageId(c.getLong(messageIDIndex));
+                        message.setMessageType(1);
+                        message.setMessageText(c.getString(messageTextIndex));
+                        message.setMessageTime(timeTextInMessage);
+                        adapter.add(message);
+                        messages.add(message);
+
+
+                        if (c.getLong(messageIDIndex) == id) {
+                            n = i;
+                        }
+                        i++;
+
+                    } else {
+                        message.setMessageId(c.getLong(messageIDIndex));
+                        message.setMessageText(c.getString(messageTextIndex));
+                        message.setMessageTime(timeTextInMessage);
+                        message.setMessageType(2);
+                        messages.add(message);
+
+                        if (c.getLong(messageIDIndex) == id) {
+                            n = i;
+                        }
+                        i++;
+
+                        adapter.add(message);
+                    }
+                }
+
+                Log.e("end", String.valueOf(messages.size()));
+            } catch(Exception e){
+                Log.e("errorgetmes", e.getMessage());
+            }
+
         }
     }
-
 }
+

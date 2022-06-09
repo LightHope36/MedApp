@@ -106,27 +106,21 @@ public class Reg extends AppCompatActivity {
                 try {
                     int call;
 
-                    String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, patronymic, snils) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "')";
-
-                    if (snils!=null){
-                        CreateUser=CreateUser+ ", snils";
-                    }
-                    if (ispolis){
-                        CreateUser=CreateUser+ ", polis";
-                    }
+                    String CreateUser="insert into client(Phone_number, name, surname, date_of_birth, patronymic, snils) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "', '" + snils + "')";
 
 
 
-                    CreateUser=CreateUser+") values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "'";
 
-
-                    if (snils!=null){
-                        CreateUser=CreateUser + ", '" + snils + "'";
-                    }
-                    if (ispolis){
-                        CreateUser=CreateUser+ ", '" + polis + "'";
-                    }
-                    CreateUser = CreateUser + ")";
+//                    CreateUser=CreateUser+") values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "', '" + Usermiddlename + "'";
+//
+//
+//                    if (snils!=null){
+//                        CreateUser=CreateUser + ", '" + snils + "'";
+//                    }
+//                    if (ispolis){
+//                        CreateUser=CreateUser+ ", '" + polis + "'";
+//                    }
+//                    CreateUser = CreateUser + ")";
                     String CreateUserPolis="insert into client(Phone_number, name, surname, date_of_birth, medical_policy, patronymic, snils) values('" + number + "', '" + Username + "','" + Usersurname + "','" + sqlDate + "','" + Userpolis + "', '" + Usermiddlename + "', '" + snils + "')";
 
                     Log.e("name", Username);
@@ -223,12 +217,12 @@ public class Reg extends AppCompatActivity {
 
 
                 } catch (Exception e){
-                    Log.e("error", e.getMessage());
+                    Log.e("errorget", e.getMessage());
 
                 }
 
             } catch (Exception e) {
-                Log.e("error", e.getMessage());
+                Log.e("errorget", e.getMessage());
             }
 
             return null;
@@ -344,6 +338,7 @@ public class Reg extends AppCompatActivity {
             next.setText("Далее");
             next.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_next, 0);
 
+
             SQLiteDatabase lastuser = openOrCreateDatabase("lastuser", MODE_PRIVATE, null);
             lastuser.execSQL("create table if not exists lastuser\n" +
                     "(\n" +
@@ -363,14 +358,23 @@ public class Reg extends AppCompatActivity {
                         Day=dateAndTime.get(Calendar.DAY_OF_MONTH);
                     }else if (!name.getText().toString().equals("") && !surname.getText().toString().equals("") && !birth.getText().toString().equals("") && !middlename.getText().toString().equals("")) {
 
-                        Username = name.getText().toString();
-                        Usersurname = surname.getText().toString();
-                        Userbithday = (Date) birth.getText();
-                        Usermiddlename = middlename.getText().toString();
-                        snils = snils_et.getText().toString();
-                        Userpolis = (polis.getText().toString());
-                        String zero = "";
-
+                        try {
+                            Username = name.getText().toString();
+                            Usersurname = surname.getText().toString();
+                            Userbithday = (Date) birth.getText();
+                            Usermiddlename = middlename.getText().toString();
+                            snils = snils_et.getText().toString();
+                            Userpolis = (polis.getText().toString());
+                        } catch (Exception e){
+                            Log.e("error", e.getMessage());
+                        }
+                        new CreateUser().execute();
+                        try {
+                            Thread.sleep(10000);
+                            String zero = "";
+                        } catch (Exception e){
+                            Log.e("error", e.getMessage());
+                        }
 //                        usersDataBase.execSQL("insert into users(UserPhone, UserName,UserSurname, UserBirthday, UserPolis, UserMiddlename) values('" + number + "', '" + Username + "','" + Usersurname + "','" + Userbithday + "', null, '" + Usermiddlename + "')");
                         lastuser.execSQL("insert into lastuser (UserPhone) values ('" + number + "')");
 
@@ -402,7 +406,6 @@ public class Reg extends AppCompatActivity {
             new GetUser().execute();
             next.setText("Сохранить");
             next.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-
 
             try {
 //                Thread.sleep(500);
