@@ -68,6 +68,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import android.os.AsyncTask;
 
@@ -125,6 +126,8 @@ public class Chat extends AppCompatActivity {
     String username = "u0597423_medclic";
     String password = "kvantoriummagda";
     List<Message> messages = new ArrayList<>();
+
+    private boolean isActive = true;
 
     private String fileName;
     private String Imagefile;
@@ -375,6 +378,20 @@ public class Chat extends AppCompatActivity {
 
         System.out.println(messages);
 
+
+        new sThread("s", new In() {
+            @Override
+            public void act(String s) {
+
+            }
+
+            @Override
+            public void anact(String s) {
+
+            }
+        }).start();
+
+
         videocall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -590,6 +607,7 @@ public class Chat extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_UP: // отпускание
                         vlojenia.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.elm_view));
+                        isActive = false;
                         Intent intent = new Intent(getApplicationContext(), Invest.class);
                         intent.putExtra("person", person);
                         intent.putExtra("number", number);
@@ -634,6 +652,7 @@ public class Chat extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isActive = false;
                 Intent intent = new Intent(getApplicationContext(), Dialogs.class);
                 intent.putExtra("number", number);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -954,6 +973,7 @@ public class Chat extends AppCompatActivity {
     }
 
     public void onBackPressed(){
+        isActive = false;
         Intent intent = new Intent(getApplicationContext(), Dialogs.class);
         intent.putExtra("number", number);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -977,9 +997,11 @@ public class Chat extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        isActive = false;
         super.onDestroy();
         releasePlayer();
         releaseRecorder();
+        ;
     }
 
 
@@ -1075,7 +1097,8 @@ public class Chat extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
+            messages.clear();
+            adapter.clear();
 
             try {
                 while (c.next()) {
@@ -1148,12 +1171,50 @@ public class Chat extends AppCompatActivity {
                         adapter.add(message);
                     }
                 }
-
                 Log.e("end", String.valueOf(messages.size()));
             } catch(Exception e){
                 Log.e("errorgetmes", e.getMessage());
             }
 
+        }
+    }
+
+
+    interface In {
+        void act(String s);
+        void anact(String s);
+    }
+
+    class sThread extends Thread{
+        private String [] strings;
+
+        public sThread(String s, In in) {
+        }
+
+        void close(){
+            isActive = false;
+        }
+
+        private In in;
+        public sThread(String name, In in, String [] strings){
+            super(name);
+            this.in = in;
+            this.strings = strings;
+        }
+
+        @Override
+        public void run() {
+
+            isActive = true;
+            String s;
+            while (isActive == true){
+                try{
+                    new getMessages().execute(user, taker);
+                    Thread.sleep(1000);
+                    Log.e("got","g");
+                }catch(Throwable t){
+                }
+            }
         }
     }
 }
